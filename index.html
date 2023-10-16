@@ -186,7 +186,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-10-16 16:23:17 / Modified: 16:29:30" itemprop="dateCreated datePublished" datetime="2023-10-16T16:23:17+08:00">2023-10-16</time>
+              <time title="Created: 2023-10-16 16:23:17 / Modified: 17:07:12" itemprop="dateCreated datePublished" datetime="2023-10-16T16:23:17+08:00">2023-10-16</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,15 +213,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode1409.jpg" alt="leetcode"></p>
-<h4 id="題目說明"><a href="#題目說明" class="headerlink" title="題目說明"></a>題目說明</h4><p>需產生一個陣列p範圍為{1,2,3,..m}，再從queries陣列中各別找出對應到p陣列值的位置，再將對應到p的該數值移置陣列首位，繼續比對最後再將每次比對到的索引值存成陣列回傳。</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ol>
-<li>第一個for迴圈set p的資料</li>
-<li>第二組for迴圈找出所有queries[j]對應到p[]的位置，並逐一改變其位置。</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] processQueries(<span class="type">int</span>[] queries, <span class="type">int</span> m) &#123;</span><br><span class="line">        <span class="type">int</span>[] p = <span class="keyword">new</span> <span class="title class_">int</span>[m];</span><br><span class="line">        <span class="type">int</span>[] ans = <span class="keyword">new</span> <span class="title class_">int</span>[queries.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            p[i] = i + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; queries.length; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">                <span class="comment">// 找出queries中對應p[i]的索引，傳入updateIdx()</span></span><br><span class="line">                <span class="keyword">if</span> (queries[j] == p[i]) &#123;</span><br><span class="line">                    p = updateIdx(p, i, queries[j]);</span><br><span class="line">                    ans[j] = i;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] updateIdx(<span class="type">int</span>[] arr, <span class="type">int</span> idx, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">//調整索引值(含)以前的位置</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> idx; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">//往後挪一個位置</span></span><br><span class="line">            arr[i] = arr[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//target移置首位</span></span><br><span class="line">        arr[<span class="number">0</span>] = target;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <p>這題需產生一個陣列p範圍為{1,2,3,..m}，再從queries陣列中各別找出對應到p陣列值的位置，再將對應到p的該數值移置陣列首位，繼續比對最後再將每次比對到的索引值存成陣列回傳。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/10/16/009-LeetCode-1409/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
