@@ -6,7 +6,7 @@
   <link href="https://jenny83318.github.io/atom.xml" rel="self"/>
   
   <link href="https://jenny83318.github.io/"/>
-  <updated>2023-10-16T06:40:00.279Z</updated>
+  <updated>2023-10-16T06:57:03.866Z</updated>
   <id>https://jenny83318.github.io/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://jenny83318.github.io/2023/10/16/008-LeetCode-274/"/>
     <id>https://jenny83318.github.io/2023/10/16/008-LeetCode-274/</id>
     <published>2023-10-16T03:23:17.000Z</published>
-    <updated>2023-10-16T06:40:00.279Z</updated>
+    <updated>2023-10-16T06:57:03.866Z</updated>
     
     
-    <summary type="html">&lt;p&gt;在做這題之前稍微了解一下H Index的定義，下面是維基百科上的定義:&lt;br&gt;&lt;span class =&quot;markWord&quot;&gt;H指數的計算基於其研究者的論文數量及其論文被引用的次數。&lt;/span&gt;赫希認為：一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：&lt;/p&gt;
+    <summary type="html">&lt;p&gt;在做這題之前稍微了解一下H Index的定義，下面是維基百科上的定義:&lt;br&gt;H指數的計算基於其研究者的論文數量及其論文被引用的次數。赫希認為：&lt;span class =&quot;markWord&quot;&gt;一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。&lt;/span&gt;如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;將其發表的所有SCI論文[來源請求]按被引次數從高到低排序；&lt;/li&gt;
+&lt;li&gt;將其發表的所有SCI論文來源請求按被引次數從高到低排序；&lt;/li&gt;
 &lt;li&gt;從前往後查找排序後的列表，只要當前的引用量大於當前的索引值，則H指數加1，最後得到的結果即為最終的H指數。</summary>
     
     
