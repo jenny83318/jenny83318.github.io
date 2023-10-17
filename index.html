@@ -192,7 +192,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-17 13:08:15" itemprop="dateModified" datetime="2023-10-17T13:08:15+08:00">2023-10-17</time>
+                <time title="Modified: 2023-10-17 14:05:53" itemprop="dateModified" datetime="2023-10-17T14:05:53+08:00">2023-10-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -219,7 +219,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>看到這題覺得蠻有趣，題目看起來描述得很簡單，但實際的邏輯還要想一下，題目是有若干糖果要分給一群小孩，分配糖果需滿足下列兩個條件<br>a. 每個人至少要有一顆糖<br>b. 評分較高的孩子比隔壁的孩子獲得更多醣果</p>
+          <p>看到這題覺得蠻有趣，題目看起來描述得很簡單，但實際的邏輯還要想一下，題目是有若干糖果要分給一群小孩，分配糖果需滿足下列兩個條件:<br>a. 每個人至少要有一顆糖<br>b. 評分較高的孩子比隔壁的孩子獲得更多醣果</p>
 <h5 id="解題邏輯"><a href="#解題邏輯" class="headerlink" title="解題邏輯"></a>解題邏輯</h5><ol>
 <li>用一個陣列<span class="mark">candies</span>紀錄要分給<span class="mark">n</span>個小孩的糖果數，先由左到右依序比對評分<span class="mark">ratings</span>，如果第二個小孩比第一個小孩高分<span class="mark">ratings[1] &gt; ratings[0] </span>，糖果卻少於或等於第一個小孩的糖果數<span class="mark">candies[1] &lt;&#x3D; candies[0] </span>，則<span class="markWord">第二個小孩的糖果數為第一個小孩的糖果數+1</span> ➔ <span class="mark">candies[0] + 1</span>，以此類推…
           <!--noindex-->

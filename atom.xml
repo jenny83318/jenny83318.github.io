@@ -6,7 +6,7 @@
   <link href="https://jenny83318.github.io/atom.xml" rel="self"/>
   
   <link href="https://jenny83318.github.io/"/>
-  <updated>2023-10-17T05:08:15.181Z</updated>
+  <updated>2023-10-17T06:05:53.821Z</updated>
   <id>https://jenny83318.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://jenny83318.github.io/2023/10/20/010-LeetCode-135/"/>
     <id>https://jenny83318.github.io/2023/10/20/010-LeetCode-135/</id>
     <published>2023-10-20T08:23:17.000Z</published>
-    <updated>2023-10-17T05:08:15.181Z</updated>
+    <updated>2023-10-17T06:05:53.821Z</updated>
     
     
-    <summary type="html">&lt;p&gt;看到這題覺得蠻有趣，題目看起來描述得很簡單，但實際的邏輯還要想一下，題目是有若干糖果要分給一群小孩，分配糖果需滿足下列兩個條件&lt;br&gt;a. 每個人至少要有一顆糖&lt;br&gt;b. 評分較高的孩子比隔壁的孩子獲得更多醣果&lt;/p&gt;
+    <summary type="html">&lt;p&gt;看到這題覺得蠻有趣，題目看起來描述得很簡單，但實際的邏輯還要想一下，題目是有若干糖果要分給一群小孩，分配糖果需滿足下列兩個條件:&lt;br&gt;a. 每個人至少要有一顆糖&lt;br&gt;b. 評分較高的孩子比隔壁的孩子獲得更多醣果&lt;/p&gt;
 &lt;h5 id=&quot;解題邏輯&quot;&gt;&lt;a href=&quot;#解題邏輯&quot; class=&quot;headerlink&quot; title=&quot;解題邏輯&quot;&gt;&lt;/a&gt;解題邏輯&lt;/h5&gt;&lt;ol&gt;
 &lt;li&gt;用一個陣列&lt;span class=&quot;mark&quot;&gt;candies&lt;/span&gt;紀錄要分給&lt;span class=&quot;mark&quot;&gt;n&lt;/span&gt;個小孩的糖果數，先由左到右依序比對評分&lt;span class=&quot;mark&quot;&gt;ratings&lt;/span&gt;，如果第二個小孩比第一個小孩高分&lt;span class=&quot;mark&quot;&gt;ratings[1] &amp;gt; ratings[0] &lt;/span&gt;，糖果卻少於或等於第一個小孩的糖果數&lt;span class=&quot;mark&quot;&gt;candies[1] &amp;lt;&amp;#x3D; candies[0] &lt;/span&gt;，則&lt;span class=&quot;markWord&quot;&gt;第二個小孩的糖果數為第一個小孩的糖果數+1&lt;/span&gt; ➔ &lt;span class=&quot;mark&quot;&gt;candies[0] + 1&lt;/span&gt;，以此類推…</summary>
     
