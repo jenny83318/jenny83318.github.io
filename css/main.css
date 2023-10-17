@@ -249,10 +249,10 @@ hr {
 }
 blockquote {
   border-left: 4px solid rgba(144,209,168,0.6);
-  color: #e98c69;
+  color: #745e56;
   margin: 0;
   padding: 0 15px;
-  font-weight: bold;
+  font-weight: 600;
   background: rgba(249,242,232,0.549);
 }
 blockquote cite::before {
@@ -1217,7 +1217,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #2e629f;
+  background: #ff2e85;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2645,6 +2645,12 @@ ul.breadcrumb li + li:last-child {
 .markWord a {
   color: #f1773f;
   text-decoration-color: #ae6533;
+}
+.mark {
+  color: #689873;
+  font-weight: 600;
+  background: #eae9e9;
+  border-radius: 5px;
 }
 .site-subtitle {
   font-family: Kosugi Maru;
