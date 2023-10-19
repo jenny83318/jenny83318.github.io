@@ -30,9 +30,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://jenny83318.github.io/image/nginx1.jpg">
 <meta property="og:image" content="https://jenny83318.github.io/image/nginx2.jpg">
-<meta property="og:image" content="https://forest-bhfq.com/image/index.gif">
+<meta property="og:image" content="https://jenny83318.github.io/image/index.gif">
 <meta property="article:published_time" content="2023-07-18T05:23:17.000Z">
-<meta property="article:modified_time" content="2023-10-16T06:41:22.216Z">
+<meta property="article:modified_time" content="2023-10-19T07:03:37.114Z">
 <meta property="article:author" content="Jenny Ou Yang">
 <meta property="article:tag" content="Linode">
 <meta property="article:tag" content="deploy a website">
@@ -202,7 +202,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-16 14:41:22" itemprop="dateModified" datetime="2023-10-16T14:41:22+08:00">2023-10-16</time>
+                <time title="Modified: 2023-10-19 15:03:37" itemprop="dateModified" datetime="2023-10-19T15:03:37+08:00">2023-10-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,10 +257,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    <span class="comment">#預設Port</span></span><br><span class="line">    listen 80 default_server;</span><br><span class="line">    listen [::]:80 default_server;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#你的Angular專案路徑</span></span><br><span class="line">    root /var/www/jolui;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#默認首頁為angular 的index.html</span></span><br><span class="line">    index index.html;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#你的Server IP</span></span><br><span class="line">    server_name 139.XXX.XX.XX;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#設定專案的請求路徑URL，找不到該路徑則會返回index.html</span></span><br><span class="line">    location /product&#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     location /orderlist &#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line">    location /cartitem&#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">#設定後端專案路徑，這邊的路徑要跟當初設定的專案路徑一樣</span></span><br><span class="line">     location /jolserver&#123;</span><br><span class="line">        proxy_pass http://localhost:8080;</span><br><span class="line">        proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>配置設定完成後，要重啟nginx服務才會生效</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
-<p>重啟後，就可以輸入 http:&#x2F;&#x2F;你的ip 來驗證是否佈署成功</p>
-<img src="https://forest-bhfq.com/image/index.gif" alt="index and product" style="width:820px">
-
-
+<p>重啟後，就可以輸入 http:&#x2F;&#x2F;你的ip 來驗證是否佈署成功<br><img src="/../image/index.gif" alt="index and product"></p>
 <h2 id="申請SSL憑證"><a href="#申請SSL憑證" class="headerlink" title="申請SSL憑證"></a>申請SSL憑證</h2><p>雖然我們已經成功架站，但是少了https安全協定，就變成不安全的網頁，因此可以透過ZeroSSL申請免費的憑證來使用，不過免費版的憑證只有90天的效期。申請ZeroSSL憑證的流程，可以參考下面的網站我覺得說明得很清楚，只是裡面提到的電子郵件的驗證方式現在已經沒有了，只能使用HTTP文件上傳的驗證方式。</p>
 <p><a target="_blank" rel="noopener" href="https://www.mytechgirl.com/tw/how-to/add-ssl-to-website-free-mtg6688.html">ZeroSSL憑證申請教學</a></p>
 <p>申請完憑證後會有certificate.crt 和 private.key兩個檔案，分別放到&#x2F;etc&#x2F;ssl&#x2F;certs和&#x2F;etc&#x2F;ssl&#x2F;private目錄下，再到Nginx的defult配置檔進行設定:</p>
@@ -271,7 +268,8 @@
 
 <p>然後就可以透過https:&#x2F;&#x2F;來訪問你的網頁了，可以考慮申請一個domain就更完整囉，下面提供一個免費domain的影片教學，有需要的可以參考看看囉~</p>
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=s5f3Rdl5r5I&vl=zh-TW">免費域名教學</a></p>
-<p><a target="_blank" rel="noopener" href="https://forest-bhfq.com/">我佈署的Linode</a></p>
+<p><a target="_blank" rel="noopener" href="https://ocean-hcz.com/">我佈署的Linode</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/</a></p>
 <h5 id="到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了-下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享"><a href="#到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了-下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享" class="headerlink" title="到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了~ 下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享"></a>到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了~ 下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享</h5><hr>
 
     </div>

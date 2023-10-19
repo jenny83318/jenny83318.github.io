@@ -142,7 +142,7 @@
     <link href="https://jenny83318.github.io/2023/07/18/005-Linode-5/"/>
     <id>https://jenny83318.github.io/2023/07/18/005-Linode-5/</id>
     <published>2023-07-18T07:23:17.000Z</published>
-    <updated>2023-10-19T05:22:23.149Z</updated>
+    <updated>2023-10-19T07:06:21.018Z</updated>
     
     
     <summary type="html">&lt;p&gt;會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~&lt;/p&gt;</summary>
@@ -167,7 +167,7 @@
     <link href="https://jenny83318.github.io/2023/07/18/004-Linode-4/"/>
     <id>https://jenny83318.github.io/2023/07/18/004-Linode-4/</id>
     <published>2023-07-18T05:23:17.000Z</published>
-    <updated>2023-10-16T06:41:22.216Z</updated>
+    <updated>2023-10-19T07:03:37.114Z</updated>
     
     
     <summary type="html">&lt;p&gt;建至完tomcat及佈署專案後，接著就差最後一步就可以擁有自己的網頁了，就是要把前端的專案部署到Nginx就大功告成啦，所以我們趕快開始吧~&lt;/p&gt;</summary>
