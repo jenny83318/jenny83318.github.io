@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Playpen Sans:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://jenny83318.github.io/image/tomcat1.jpg">
 <meta property="og:image" content="https://jenny83318.github.io/image/tomcat2.jpg">
 <meta property="article:published_time" content="2023-07-16T05:23:17.000Z">
-<meta property="article:modified_time" content="2023-10-16T03:32:26.571Z">
+<meta property="article:modified_time" content="2023-10-31T07:06:41.909Z">
 <meta property="article:author" content="Jenny Ou Yang">
 <meta property="article:tag" content="Linode">
 <meta property="article:tag" content="deploy a website">
@@ -201,7 +201,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-16 11:32:26" itemprop="dateModified" datetime="2023-10-16T11:32:26+08:00">2023-10-16</time>
+                <time title="Modified: 2023-10-31 15:06:41" itemprop="dateModified" datetime="2023-10-31T15:06:41+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -232,13 +232,13 @@
 <span id="more"></span>
 
 <h2 id="安裝tomcat"><a href="#安裝tomcat" class="headerlink" title="安裝tomcat"></a>安裝tomcat</h2><p>以下整理了兩種安裝tomcat的方式，建議可以先使用linode官方提供的方式來安裝tomcat，不行的話在使用第二種方式手動安裝，我自己是使用官方的方式就可以安裝了。</p>
-<h3 id="Linode-官方提供"><a href="#Linode-官方提供" class="headerlink" title="Linode 官方提供"></a>Linode 官方提供</h3><h4 id="1-設定主機名稱"><a href="#1-設定主機名稱" class="headerlink" title="1. 設定主機名稱"></a>1. 設定主機名稱</h4><p>這邊我是沒有在另外設定，hostname -f 指令會返回當前主機的主機名+域名，hostname預設應該是localhost，這邊我是使用預設的沒有特別設定。</p>
+<h3 id="Linode-官方提供"><a href="#Linode-官方提供" class="headerlink" title="Linode 官方提供"></a>Linode 官方提供</h3><h4 id="設定主機名稱"><a href="#設定主機名稱" class="headerlink" title="設定主機名稱"></a>設定主機名稱</h4><p>這邊我是沒有在另外設定，hostname -f 指令會返回當前主機的主機名+域名，hostname預設應該是localhost，這邊我是使用預設的沒有特別設定。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hostname</span><br><span class="line">hostname -f</span><br></pre></td></tr></table></figure>
 
-<h4 id="2-安裝可用更新"><a href="#2-安裝可用更新" class="headerlink" title="2. 安裝可用更新"></a>2. 安裝可用更新</h4><p>確保當前系統是最新的狀態</p>
+<h4 id="安裝可用更新"><a href="#安裝可用更新" class="headerlink" title="安裝可用更新"></a>安裝可用更新</h4><p>確保當前系統是最新的狀態</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get upgrade</span><br></pre></td></tr></table></figure>
 
-<h4 id="3-安裝tomcat"><a href="#3-安裝tomcat" class="headerlink" title="3. 安裝tomcat"></a>3. 安裝tomcat</h4><p>從 Ubuntu 安裝 Tomcat</p>
+<h4 id="安裝tomcat-1"><a href="#安裝tomcat-1" class="headerlink" title="安裝tomcat"></a>安裝tomcat</h4><p>從 Ubuntu 安裝 Tomcat</p>
 <blockquote>
 <p>這邊要注意的是，在安裝tomcat9的時候，會一起安裝open jdk11，所以不用在自行安裝jdk</p>
 </blockquote>
@@ -246,31 +246,31 @@
 <p>另外，可以依自行需求選擇是否要安裝tomcat9-docs、tomcat9-examples和tomcat9-admin</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install tomcat9-docs tomcat9-examples tomcat9-admin</span><br></pre></td></tr></table></figure>
 
-<h4 id="4-啟動服務"><a href="#4-啟動服務" class="headerlink" title="4. 啟動服務"></a>4. 啟動服務</h4><p>安裝完成後我們就可以啟動tomcat服務啦</p>
+<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>安裝完成後我們就可以啟動tomcat服務啦</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start tomcat9</span><br></pre></td></tr></table></figure>
 
 <p>另外如果要停止或重啟服務可以執行下列指令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop tomcat9</span><br><span class="line">sudo systemctl restart tomcat9</span><br></pre></td></tr></table></figure>
 
-<h3 id="手動安裝"><a href="#手動安裝" class="headerlink" title="手動安裝"></a>手動安裝</h3><h4 id="1-安裝JDK"><a href="#1-安裝JDK" class="headerlink" title="1.安裝JDK"></a>1.安裝JDK</h4><p>執行以下指令安裝OpenJDK，記得要把jdk11&#x2F;11.0.12換成自己要安裝的版本。</p>
+<h3 id="手動安裝"><a href="#手動安裝" class="headerlink" title="手動安裝"></a>手動安裝</h3><h4 id="安裝JDK"><a href="#安裝JDK" class="headerlink" title="安裝JDK"></a>安裝JDK</h4><p>執行以下指令安裝OpenJDK，記得要把jdk11&#x2F;11.0.12換成自己要安裝的版本。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo wget https://download.java.net/java/GA/jdk11/11.0.12/GPL/openjdk-11.0.12_linux-x64_bin.tar.gz</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="2-下載tomcat"><a href="#2-下載tomcat" class="headerlink" title="2. 下載tomcat"></a>2. 下載tomcat</h4><p>可以到<a target="_blank" rel="noopener" href="https://archive.apache.org/dist/tomcat"><strong>Apache官網</strong></a>複製要下載的版本網址，執行下列指令，即可安裝</p>
+<h4 id="下載tomcat"><a href="#下載tomcat" class="headerlink" title="下載tomcat"></a>下載tomcat</h4><p>可以到<a target="_blank" rel="noopener" href="https://archive.apache.org/dist/tomcat"><strong>Apache官網</strong></a>複製要下載的版本網址，執行下列指令，即可安裝</p>
 <p><img src="/../image/tomcat1.jpg" alt="tomcat"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.0.8/bin/apache-tomcat-10.0.8.tar.gz</span><br></pre></td></tr></table></figure>
 
-<h4 id="3-解壓縮tomct"><a href="#3-解壓縮tomct" class="headerlink" title="3. 解壓縮tomct"></a>3. 解壓縮tomct</h4><p>使用tar指令來解壓縮下載的tomcat檔案</p>
+<h4 id="解壓縮tomct"><a href="#解壓縮tomct" class="headerlink" title="解壓縮tomct"></a>解壓縮tomct</h4><p>使用tar指令來解壓縮下載的tomcat檔案</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo tar xvf apache-tomcat-10.0.8.tar.gz /opt/tomcat</span><br></pre></td></tr></table></figure>
 
 <p>將解壓縮好的tomcat目錄移動適當的目錄(建議&#x2F;opt底下)</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">mv</span> apache-tomcat-10.0.8 /opt/tomcat</span><br></pre></td></tr></table></figure>
 
-<h4 id="4-設定環境變數"><a href="#4-設定環境變數" class="headerlink" title="4. 設定環境變數"></a>4. 設定環境變數</h4><p>回到根目錄，編輯根目錄的.bashrc，新增下列指令至.bashrc檔案</p>
+<h4 id="設定環境變數"><a href="#設定環境變數" class="headerlink" title="設定環境變數"></a>設定環境變數</h4><p>回到根目錄，編輯根目錄的.bashrc，新增下列指令至.bashrc檔案</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> CATALINA_HOME=<span class="string">&quot;/opt/tomcat&quot;</span></span><br><span class="line"><span class="built_in">export</span> PATH= <span class="string">&quot;<span class="variable">$CATALINA_HOME</span>/bin:<span class="variable">$PATH</span>&quot;</span></span><br></pre></td></tr></table></figure>
 <p>執行下列指令使變更的內容生效</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<h4 id="5-啟動服務"><a href="#5-啟動服務" class="headerlink" title="5. 啟動服務"></a>5. 啟動服務</h4><p>啟動tomcat服務</p>
+<h4 id="啟動服務-1"><a href="#啟動服務-1" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>啟動tomcat服務</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">catalina.sh.start</span><br></pre></td></tr></table></figure>
 <p>然後就可以輸入http:&#x2F;&#x2F;你的ip:8080，這時候應該會看到tomcat預設的畫面就完成啦</p>
 <p>如果想停止服務</p>
@@ -311,10 +311,10 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linode/" rel="tag"># Linode</a>
-              <a href="/tags/deploy-a-website/" rel="tag"># deploy a website</a>
-              <a href="/tags/tomcat/" rel="tag"># tomcat</a>
-              <a href="/tags/spring-boot/" rel="tag"># spring boot</a>
+              <a href="/tags/Linode/" rel="tag"><i class="fa fa-tags"></i> Linode</a>
+              <a href="/tags/deploy-a-website/" rel="tag"><i class="fa fa-tags"></i> deploy a website</a>
+              <a href="/tags/tomcat/" rel="tag"><i class="fa fa-tags"></i> tomcat</a>
+              <a href="/tags/spring-boot/" rel="tag"><i class="fa fa-tags"></i> spring boot</a>
           </div>
 
         
@@ -395,7 +395,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9Dtomcat"><span class="nav-number">1.</span> <span class="nav-text">安裝tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linode-%E5%AE%98%E6%96%B9%E6%8F%90%E4%BE%9B"><span class="nav-number">1.1.</span> <span class="nav-text">Linode 官方提供</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%A8%AD%E5%AE%9A%E4%B8%BB%E6%A9%9F%E5%90%8D%E7%A8%B1"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 設定主機名稱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%9D%E5%8F%AF%E7%94%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 安裝可用更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%9Dtomcat"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 安裝tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 啟動服務</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8B%95%E5%AE%89%E8%A3%9D"><span class="nav-number">1.2.</span> <span class="nav-text">手動安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%9DJDK"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.安裝JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%8B%E8%BC%89tomcat"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 下載tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%A7%A3%E5%A3%93%E7%B8%AEtomct"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 解壓縮tomct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E8%A8%AD%E5%AE%9A%E7%92%B0%E5%A2%83%E8%AE%8A%E6%95%B8"><span class="nav-number">1.2.4.</span> <span class="nav-text">4. 設定環境變數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99"><span class="nav-number">1.2.5.</span> <span class="nav-text">5. 啟動服務</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%88%E7%BD%B2%E5%B0%88%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">佈署專案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%B0%E9%80%99%E8%A3%A1%E6%81%AD%E5%96%9C%E4%BD%A0%E5%B7%B2%E7%B6%93%E5%AE%8C%E6%88%90%E5%BB%BA%E7%BD%AEtomcat%E5%92%8C%E4%BD%88%E7%BD%B2%E5%B0%88%E6%A1%88%E4%BA%86%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%83%B3%E8%A6%81%E6%9B%B4%E9%80%B2%E4%B8%80%E6%AD%A5%E6%B8%AC%E8%A9%A6%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BB%A5%E5%B0%87%E8%87%AA%E5%B7%B1%E7%9A%84%E5%89%8D%E7%AB%AF%E7%B6%B2%E9%A0%81call-http%E8%AB%8B%E6%B1%82%E7%9A%84%E6%99%82%E5%80%99%E7%9B%B4%E6%8E%A5%E6%8C%87%E5%90%91%E5%88%B0linode%E7%9A%84ip%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BA%86%E3%80%82"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9Dtomcat"><span class="nav-number">1.</span> <span class="nav-text">安裝tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linode-%E5%AE%98%E6%96%B9%E6%8F%90%E4%BE%9B"><span class="nav-number">1.1.</span> <span class="nav-text">Linode 官方提供</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E4%B8%BB%E6%A9%9F%E5%90%8D%E7%A8%B1"><span class="nav-number">1.1.1.</span> <span class="nav-text">設定主機名稱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E5%8F%AF%E7%94%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">安裝可用更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9Dtomcat-1"><span class="nav-number">1.1.3.</span> <span class="nav-text">安裝tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99"><span class="nav-number">1.1.4.</span> <span class="nav-text">啟動服務</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8B%95%E5%AE%89%E8%A3%9D"><span class="nav-number">1.2.</span> <span class="nav-text">手動安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9DJDK"><span class="nav-number">1.2.1.</span> <span class="nav-text">安裝JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E8%BC%89tomcat"><span class="nav-number">1.2.2.</span> <span class="nav-text">下載tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%A3%93%E7%B8%AEtomct"><span class="nav-number">1.2.3.</span> <span class="nav-text">解壓縮tomct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E7%92%B0%E5%A2%83%E8%AE%8A%E6%95%B8"><span class="nav-number">1.2.4.</span> <span class="nav-text">設定環境變數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">啟動服務</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%88%E7%BD%B2%E5%B0%88%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">佈署專案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%B0%E9%80%99%E8%A3%A1%E6%81%AD%E5%96%9C%E4%BD%A0%E5%B7%B2%E7%B6%93%E5%AE%8C%E6%88%90%E5%BB%BA%E7%BD%AEtomcat%E5%92%8C%E4%BD%88%E7%BD%B2%E5%B0%88%E6%A1%88%E4%BA%86%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%83%B3%E8%A6%81%E6%9B%B4%E9%80%B2%E4%B8%80%E6%AD%A5%E6%B8%AC%E8%A9%A6%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BB%A5%E5%B0%87%E8%87%AA%E5%B7%B1%E7%9A%84%E5%89%8D%E7%AB%AF%E7%B6%B2%E9%A0%81call-http%E8%AB%8B%E6%B1%82%E7%9A%84%E6%99%82%E5%80%99%E7%9B%B4%E6%8E%A5%E6%8C%87%E5%90%91%E5%88%B0linode%E7%9A%84ip%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BA%86%E3%80%82"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

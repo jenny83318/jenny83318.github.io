@@ -193,7 +193,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Playpen Sans', 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-weight: bold;
   line-height: 1.5;
   margin: 20px 0 15px;
@@ -283,7 +283,7 @@ kbd {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-  font-size: 0.875em;
+  font-size: 0.975em;
   margin: 0 0 20px 0;
   width: 100%;
 }
@@ -318,7 +318,7 @@ td {
   border-radius: 2px;
   color: var(--btn-default-color);
   display: inline-block;
-  font-size: 0.875em;
+  font-size: 0.975em;
   line-height: 2;
   padding: 0 20px;
   text-decoration: none;
@@ -437,7 +437,7 @@ pre {
 }
 pre,
 code {
-  font-family: consolas, Menlo, monospace, "PingFang SC", "Microsoft YaHei";
+  font-family: 'JetBrains Mono', consolas, Menlo, monospace, "PingFang SC", "Microsoft YaHei";
 }
 code {
   background: #eee;
@@ -468,7 +468,7 @@ code {
   background: #1b1b1b;
   color: #ccc;
   display: flex;
-  font-size: 0.875em;
+  font-size: 0.975em;
   justify-content: space-between;
   line-height: 1.2;
   padding: 0.5em;
@@ -510,7 +510,7 @@ pre {
 pre code {
   background: none;
   color: #ccc;
-  font-size: 0.875em;
+  font-size: 0.975em;
   padding: 0;
   text-shadow: none;
 }
@@ -1030,14 +1030,14 @@ pre .javascript .function {
   color: var(--brand-hover-color);
 }
 .site-title {
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Playpen Sans', 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 1.375em;
   font-weight: normal;
   margin: 0;
 }
 .site-subtitle {
   color: #fff;
-  font-size: 0.8125em;
+  font-size: 0.855em;
   margin: 10px 0;
 }
 .use-motion .brand {
@@ -1108,7 +1108,7 @@ pre .javascript .function {
 .menu-item span.exturl {
   border-bottom: 0;
   display: block;
-  font-size: 0.8125em;
+  font-size: 0.855em;
   transition-property: border-color;
   transition-delay: 0s;
   transition-duration: 0.2s;
@@ -1199,7 +1199,7 @@ pre .javascript .function {
 }
 .site-description {
   color: #999;
-  font-size: 0.8125em;
+  font-size: 0.855em;
   margin-top: 0;
   text-align: center;
 }
@@ -1210,14 +1210,14 @@ pre .javascript .function {
 .links-of-author span.exturl {
   border-bottom-color: #555;
   display: inline-block;
-  font-size: 0.8125em;
+  font-size: 0.855em;
   margin-bottom: 10px;
   margin-right: 10px;
   vertical-align: middle;
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #5effff;
+  background: #ffec9e;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1254,11 +1254,11 @@ pre .javascript .function {
   color: #fff;
 }
 .links-of-blogroll {
-  font-size: 0.8125em;
+  font-size: 0.855em;
   margin-top: 10px;
 }
 .links-of-blogroll-title {
-  font-size: 0.875em;
+  font-size: 0.975em;
   font-weight: 600;
   margin-top: 0;
 }
@@ -1298,7 +1298,7 @@ pre .javascript .function {
   color: var(--text-color);
   cursor: pointer;
   display: inline-block;
-  font-size: 0.875em;
+  font-size: 0.975em;
 }
 .sidebar-nav li.sidebar-nav-overview {
   margin-left: 10px;
@@ -1344,7 +1344,7 @@ pre .javascript .function {
   background: #fc6423;
 }
 .post-toc {
-  font-size: 0.875em;
+  font-size: 0.975em;
 }
 .post-toc ol {
   list-style: none;
@@ -1410,17 +1410,17 @@ pre .javascript .function {
 }
 .site-state-item-count {
   display: block;
-  font-size: 1em;
+  font-size: 1.1em;
   font-weight: 600;
   text-align: center;
 }
 .site-state-item-name {
   color: #999;
-  font-size: 0.8125em;
+  font-size: 0.855em;
 }
 .footer {
   color: #999;
-  font-size: 0.875em;
+  font-size: 0.975em;
   padding: 20px 0;
 }
 .footer.footer-fixed {
@@ -1583,13 +1583,13 @@ pre .javascript .function {
   }
 }
 .post-body .exturl .fa {
-  font-size: 0.875em;
+  font-size: 0.975em;
   margin-left: 4px;
 }
 .post-body .image-caption,
 .post-body .figure .caption {
   color: #999;
-  font-size: 0.875em;
+  font-size: 0.975em;
   font-weight: bold;
   line-height: 1;
   margin: -20px auto 15px;
@@ -1648,7 +1648,7 @@ pre .javascript .function {
   width: 10px;
 }
 .posts-collapse .collection-year {
-  font-size: 1.5em;
+  font-size: 1.725em;
   font-weight: bold;
   margin: 60px 0;
   position: relative;
@@ -1720,7 +1720,7 @@ pre .javascript .function {
   color: var(--link-color);
 }
 .posts-collapse .post-title .fa-external-link-alt {
-  font-size: 0.875em;
+  font-size: 0.975em;
   margin-left: 5px;
 }
 .posts-collapse::before {
@@ -1839,7 +1839,7 @@ pre .javascript .function {
 }
 .posts-expand .post-title {
   color: #7e642f;
-  font-size: 1.5em;
+  font-size: 1.725em;
   font-weight: normal;
   margin: initial;
   text-align: center;
@@ -1872,7 +1872,7 @@ pre .javascript .function {
   visibility: visible;
 }
 .posts-expand .post-title-link .fa-external-link-alt {
-  font-size: 0.875em;
+  font-size: 0.975em;
   margin-left: 5px;
 }
 .posts-expand .post-meta {
@@ -1883,7 +1883,7 @@ pre .javascript .function {
   text-align: center;
 }
 .posts-expand .post-meta .post-description {
-  font-size: 0.875em;
+  font-size: 0.975em;
   margin-top: 2px;
 }
 .posts-expand .post-meta time {
@@ -1923,7 +1923,7 @@ pre .javascript .function {
 .post-nav-item a {
   border-bottom: none;
   display: block;
-  font-size: 0.875em;
+  font-size: 0.975em;
   line-height: 1.6;
   position: relative;
 }
@@ -1969,7 +1969,7 @@ pre .javascript .function {
 }
 .post-tags a {
   display: inline-block;
-  font-size: 0.8125em;
+  font-size: 0.855em;
 }
 .post-tags a:not(:last-child) {
   margin-right: 10px;
@@ -1988,7 +1988,7 @@ pre .javascript .function {
 }
 .social-like {
   display: flex;
-  font-size: 0.875em;
+  font-size: 0.975em;
   justify-content: center;
   text-align: center;
 }
@@ -2653,7 +2653,7 @@ ul.breadcrumb li + li:last-child {
   border-radius: 5px;
 }
 .site-subtitle {
-  font-family: Kosugi Maru;
+  font-family: Playpen Sans;
 }
 .menu-item-active a:after,
 .menu .menu-item a:hover:after,
@@ -2672,4 +2672,41 @@ ul.breadcrumb li + li:last-child {
 .links-of-blogroll-list a:hover {
   letter-spacing: 0.03rem;
   border-bottom: 3px #ffac55 solid;
+}
+body {
+  counter-reset: h2;
+}
+h2 {
+  counter-reset: h3;
+}
+h3 {
+  counter-reset: h4;
+}
+h4 {
+  counter-reset: h5;
+}
+h2:before {
+  counter-increment: h2;
+  content: counter(h2) ". ";
+}
+h3:before {
+  counter-increment: h3;
+  content: counter(h2) "." counter(h3) "- ";
+}
+h4:before {
+  counter-increment: h4;
+  content: counter(h2) "." counter(h3) "." counter(h4) "- ";
+}
+h2.nocount:before,
+h3.nocount:before,
+h4.nocount:before,
+h5.nocount:before,
+h6.nocount:before {
+  content: "";
+  counter-increment: none;
+}
+.index h2:before,
+.collection-title h2:before {
+  counter-increment: h2;
+  content: "";
 }

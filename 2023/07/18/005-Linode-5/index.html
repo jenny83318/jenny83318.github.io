@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Playpen Sans:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://jenny83318.github.io/image/q1.jpg">
 <meta property="og:image" content="https://jenny83318.github.io/image/q2.jpg">
 <meta property="article:published_time" content="2023-07-18T07:23:17.000Z">
-<meta property="article:modified_time" content="2023-10-19T07:06:21.018Z">
+<meta property="article:modified_time" content="2023-10-31T07:11:49.019Z">
 <meta property="article:author" content="Jenny Ou Yang">
 <meta property="article:tag" content="Linode">
 <meta property="article:tag" content="SSL">
@@ -200,7 +200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-19 15:06:21" itemprop="dateModified" datetime="2023-10-19T15:06:21+08:00">2023-10-19</time>
+                <time title="Modified: 2023-10-31 15:11:49" itemprop="dateModified" datetime="2023-10-31T15:11:49+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,14 +229,13 @@
       
         <p>會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~</p>
 <span id="more"></span>
-
-<h3 id="Q1-使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"><a href="#Q1-使用putty和Linode登入server後，游標就鎖住無法輸入任何指令" class="headerlink" title="Q1. 使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"></a>Q1. 使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</h3><p>這個問題真的很少見，也是困擾了我好幾天，記得好像是裝完nginx的時候，登出後進來就這樣了，嘗試了很多方式都無解，後來詢問Linode客服，通信了好幾次，終於在linode lish console上有解決這個問題，先按<span class="mark">ctrl + Z</span>再按<span class="mark">ctrl + C</span>就可以解除鎖定的游標正常輸入了，但是對putty沒用，也有試過x-shell一樣無解，後來我就只能用linode lish console輸入指令。<br><a target="_blank" rel="noopener" href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">Linode客服提供的資料</a></p>
+<h2 id="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"><a href="#使用putty和Linode登入server後，游標就鎖住無法輸入任何指令" class="headerlink" title="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"></a>使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</h2><p>這個問題真的很少見，也是困擾了我好幾天，記得好像是裝完nginx的時候，登出後進來就這樣了，嘗試了很多方式都無解，後來詢問Linode客服，通信了好幾次，終於在linode lish console上有解決這個問題，先按<span class="mark">ctrl + Z</span>再按<span class="mark">ctrl + C</span>就可以解除鎖定的游標正常輸入了，但是對putty沒用，也有試過x-shell一樣無解，後來我就只能用linode lish console輸入指令。<br><a target="_blank" rel="noopener" href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">Linode客服提供的資料</a></p>
 <p><img src="/../image/q1.jpg" alt="question"></p>
 <hr>
-<h3 id="Q2-Lindo-對SMTP的限制"><a href="#Q2-Lindo-對SMTP的限制" class="headerlink" title="Q2. Lindo 對SMTP的限制"></a>Q2. Lindo 對SMTP的限制</h3><p>如果你的專案是會用到SMTP寄送email的功能，就會遇到當你專案佈署上去的時候，要寄出信件時會有連線time out 的問題，這其實是因為linode限制SMTP的功能，要向他們申請才可以使用這項功能，可以聯繫他們的客服申請，他們會請你提供相關的資訊，像是會在什麼情況下寄送email等，審核通過之後他們就會解除對SMTP的限制，就可以使用了，但這塊我後來還沒實際驗證過，不確定是不是這樣就可以寄送email</p>
+<h2 id="Lindo-對SMTP的限制"><a href="#Lindo-對SMTP的限制" class="headerlink" title="Lindo 對SMTP的限制"></a>Lindo 對SMTP的限制</h2><p>如果你的專案是會用到SMTP寄送email的功能，就會遇到當你專案佈署上去的時候，要寄出信件時會有連線time out 的問題，這其實是因為linode限制SMTP的功能，要向他們申請才可以使用這項功能，可以聯繫他們的客服申請，他們會請你提供相關的資訊，像是會在什麼情況下寄送email等，審核通過之後他們就會解除對SMTP的限制，就可以使用了，但這塊我後來還沒實際驗證過，不確定是不是這樣就可以寄送email</p>
 <p><img src="/../image/q2.jpg" alt="question"></p>
 <hr>
-<h3 id="Q3-無法連線上Linode的MySQL"><a href="#Q3-無法連線上Linode的MySQL" class="headerlink" title="Q3. 無法連線上Linode的MySQL"></a>Q3. 無法連線上Linode的MySQL</h3><ol>
+<h2 id="無法連線上Linode的MySQL"><a href="#無法連線上Linode的MySQL" class="headerlink" title="無法連線上Linode的MySQL"></a>無法連線上Linode的MySQL</h2><ol>
 <li>先確認Linode上的Mysql是可以正常運作的</li>
 <li>檢查&#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d目錄下的mysqld.cnf的mysqlx-bind-address是不是還是<span class="markWord">localhost</span>，如果還是要改成<span class="markWord">127.0.0.1</span></li>
 <li>檢查設定的使用者是否有足夠的權限</li>
@@ -269,9 +268,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linode/" rel="tag"># Linode</a>
-              <a href="/tags/SSL/" rel="tag"># SSL</a>
-              <a href="/tags/domain/" rel="tag"># domain</a>
+              <a href="/tags/Linode/" rel="tag"><i class="fa fa-tags"></i> Linode</a>
+              <a href="/tags/SSL/" rel="tag"><i class="fa fa-tags"></i> SSL</a>
+              <a href="/tags/domain/" rel="tag"><i class="fa fa-tags"></i> domain</a>
           </div>
 
         
@@ -352,7 +351,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-%E4%BD%BF%E7%94%A8putty%E5%92%8CLinode%E7%99%BB%E5%85%A5server%E5%BE%8C%EF%BC%8C%E6%B8%B8%E6%A8%99%E5%B0%B1%E9%8E%96%E4%BD%8F%E7%84%A1%E6%B3%95%E8%BC%B8%E5%85%A5%E4%BB%BB%E4%BD%95%E6%8C%87%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">Q1. 使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-Lindo-%E5%B0%8DSMTP%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">Q2. Lindo 對SMTP的限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q3-%E7%84%A1%E6%B3%95%E9%80%A3%E7%B7%9A%E4%B8%8ALinode%E7%9A%84MySQL"><span class="nav-number">3.</span> <span class="nav-text">Q3. 無法連線上Linode的MySQL</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8putty%E5%92%8CLinode%E7%99%BB%E5%85%A5server%E5%BE%8C%EF%BC%8C%E6%B8%B8%E6%A8%99%E5%B0%B1%E9%8E%96%E4%BD%8F%E7%84%A1%E6%B3%95%E8%BC%B8%E5%85%A5%E4%BB%BB%E4%BD%95%E6%8C%87%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lindo-%E5%B0%8DSMTP%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">Lindo 對SMTP的限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%84%A1%E6%B3%95%E9%80%A3%E7%B7%9A%E4%B8%8ALinode%E7%9A%84MySQL"><span class="nav-number">3.</span> <span class="nav-text">無法連線上Linode的MySQL</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

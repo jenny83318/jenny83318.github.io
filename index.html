@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Playpen Sans:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
@@ -186,7 +186,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-10-31 11:38:17 / Modified: 13:12:16" itemprop="dateCreated datePublished" datetime="2023-10-31T11:38:17+08:00">2023-10-31</time>
+              <time title="Created: 2023-10-31 11:38:17 / Modified: 14:32:08" itemprop="dateCreated datePublished" datetime="2023-10-31T11:38:17+08:00">2023-10-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +271,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-27 15:43:12" itemprop="dateModified" datetime="2023-10-27T15:43:12+08:00">2023-10-27</time>
+                <time title="Modified: 2023-10-31 15:33:53" itemprop="dateModified" datetime="2023-10-31T15:33:53+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -356,7 +356,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-17 14:05:53" itemprop="dateModified" datetime="2023-10-17T14:05:53+08:00">2023-10-17</time>
+                <time title="Modified: 2023-10-31 15:56:51" itemprop="dateModified" datetime="2023-10-31T15:56:51+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -384,8 +384,6 @@
 
       
           <p>看到這題覺得蠻有趣，題目看起來描述得很簡單，但實際的邏輯還要想一下，題目是有若干糖果要分給一群小孩，分配糖果需滿足下列兩個條件:<br>a. 每個人至少要有一顆糖<br>b. 評分較高的孩子比隔壁的孩子獲得更多醣果</p>
-<h5 id="解題邏輯"><a href="#解題邏輯" class="headerlink" title="解題邏輯"></a>解題邏輯</h5><ol>
-<li>用一個陣列<span class="mark">candies</span>紀錄要分給<span class="mark">n</span>個小孩的糖果數，先由左到右依序比對評分<span class="mark">ratings</span>，如果第二個小孩比第一個小孩高分<span class="mark">ratings[1] &gt; ratings[0] </span>，糖果卻少於或等於第一個小孩的糖果數<span class="mark">candies[1] &lt;&#x3D; candies[0] </span>，則<span class="markWord">第二個小孩的糖果數為第一個小孩的糖果數+1</span> ➔ <span class="mark">candies[0] + 1</span>，以此類推…
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/10/20/010-LeetCode-135/#more" rel="contents">
@@ -443,7 +441,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-17 13:06:43" itemprop="dateModified" datetime="2023-10-17T13:06:43+08:00">2023-10-17</time>
+                <time title="Modified: 2023-10-31 15:24:57" itemprop="dateModified" datetime="2023-10-31T15:24:57+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -528,7 +526,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-17 13:06:34" itemprop="dateModified" datetime="2023-10-17T13:06:34+08:00">2023-10-17</time>
+                <time title="Modified: 2023-10-31 15:24:10" itemprop="dateModified" datetime="2023-10-31T15:24:10+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -556,12 +554,9 @@
 
       
           <p>在解這題之前可以先稍微了解一下H Index(H指數)，下面是維基百科上的定義:<br>H指數的計算基於其研究者的論文數量及其論文被引用的次數。赫希認為：<span class ="markWord">一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。</span>如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：</p>
-<blockquote>
 <ol>
 <li>將其發表的所有SCI論文來源請求按被引次數從高到低排序；</li>
-<li>從前往後查找排序後的列表，只要當前的引用量大於當前的索引值，則H指數加1，最後得到的結果即為最終的H指數。</li>
-</ol>
-</blockquote>
+<li>從前往後查找排序後的列表，只要當前的引用量大於當前的索引值，則H指數加1，最後得到的結果即為最終的H指數。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/10/12/008-LeetCode-274/#more" rel="contents">
@@ -619,7 +614,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-16 14:40:56" itemprop="dateModified" datetime="2023-10-16T14:40:56+08:00">2023-10-16</time>
+                <time title="Modified: 2023-10-31 15:14:13" itemprop="dateModified" datetime="2023-10-31T15:14:13+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -642,7 +637,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在工作開發的時候，時常需要將一串攏長又複雜Json字串轉成JavaBean傳給前端，使用<span class ="markWord">ObjectMapper</span>來轉換就很方便，如果之後有調整欄位，也很方便修改，下面會分成JSON陣列和非陣列的資料來說明。Jackson ObjectMapper 是 Java 中應用非常廣泛的序列化、反序列化的工具，它可以幫助我們簡單、快速將 Java 物件與 json 之間作轉換，Spring Framework 將它作為預設轉換器。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在工作開發的時候，時常需要將一串攏長又複雜Json字串轉成JavaBean傳給前端，使用<span class ="markWord">ObjectMapper</span>來轉換就很方便，如果之後有調整欄位，也很方便修改，下面會分成JSON陣列和非陣列的資料來說明。Jackson ObjectMapper 是 Java 中應用非常廣泛的序列化、反序列化的工具，它可以幫助我們簡單、快速將 Java 物件與 json 之間作轉換，Spring Framework 將它作為預設轉換器。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/07/28/007-ObjectMapper/#more" rel="contents">
@@ -700,7 +695,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-16 11:32:26" itemprop="dateModified" datetime="2023-10-16T11:32:26+08:00">2023-10-16</time>
+                <time title="Modified: 2023-10-31 15:13:11" itemprop="dateModified" datetime="2023-10-31T15:13:11+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -727,7 +722,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>會開始研究Render也算是誤打誤撞，前一篇分享在Linode遇到的問題有提到我的登入後游標就被鎖住，那時候正好後端都佈署完成就差前端了，這個問題遲遲無法解決卡了一好幾天，那時後就再想也許前端可以佈署再其他雲端平台上，就有了這篇的誕生，會選擇Render是因為Heroku已經沒有提供免費的方案，
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>會開始研究Render也算是誤打誤撞，前一篇分享在Linode遇到的問題有提到我的登入後游標就被鎖住，那時候正好後端都佈署完成就差前端了，這個問題遲遲無法解決卡了一好幾天，那時後就再想也許前端可以佈署再其他雲端平台上，就有了這篇的誕生，會選擇Render是因為Heroku已經沒有提供免費的方案，
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/07/20/006-Render/#more" rel="contents">
@@ -785,7 +780,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-19 15:06:21" itemprop="dateModified" datetime="2023-10-19T15:06:21+08:00">2023-10-19</time>
+                <time title="Modified: 2023-10-31 15:11:49" itemprop="dateModified" datetime="2023-10-31T15:11:49+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -955,7 +950,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-16 11:32:26" itemprop="dateModified" datetime="2023-10-16T11:32:26+08:00">2023-10-16</time>
+                <time title="Modified: 2023-10-31 15:06:41" itemprop="dateModified" datetime="2023-10-31T15:06:41+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
