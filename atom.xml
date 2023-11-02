@@ -287,7 +287,7 @@
     <link href="https://jenny83318.github.io/2023/07/11/001-Linode-1/"/>
     <id>https://jenny83318.github.io/2023/07/11/001-Linode-1/</id>
     <published>2023-07-11T08:41:19.000Z</published>
-    <updated>2023-10-31T06:56:17.566Z</updated>
+    <updated>2023-11-02T09:08:51.545Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;前陣子在做自己的side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過&lt;span class=&quot;markWord&quot;&gt;Linode&lt;/span&gt;來架設網站的，這次架站前端的Web Server是使用Ngnix來部署Angular專案，後端則使用Tomcat部署Java Spring Boot專案，資料庫使用My SQL，最後也會分享這中間遇到的一些問題以及是如何解決的。&lt;/p&gt;</summary>
