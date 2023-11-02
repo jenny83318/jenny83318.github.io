@@ -162,7 +162,7 @@
     <link href="https://jenny83318.github.io/2023/07/20/006-Render/"/>
     <id>https://jenny83318.github.io/2023/07/20/006-Render/</id>
     <published>2023-07-20T02:23:17.000Z</published>
-    <updated>2023-11-01T06:11:49.277Z</updated>
+    <updated>2023-11-02T03:34:23.188Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;會開始研究Render也算是誤打誤撞，前一篇分享在Linode遇到的問題有提到我的登入後游標就被鎖住，那時候正好後端都佈署完成就差前端了，這個問題遲遲無法解決卡了一好幾天，那時後就再想也許前端可以佈署再其他雲端平台上，就有了這篇的誕生，會選擇Render是因為Heroku已經沒有提供免費的方案，</summary>
