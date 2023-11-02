@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://jenny83318.github.io/image/tomcat1.jpg">
 <meta property="og:image" content="https://jenny83318.github.io/image/tomcat2.jpg">
 <meta property="article:published_time" content="2023-07-16T05:23:17.000Z">
-<meta property="article:modified_time" content="2023-10-31T07:06:41.909Z">
+<meta property="article:modified_time" content="2023-11-02T08:49:05.878Z">
 <meta property="article:author" content="Jenny Ou Yang">
 <meta property="article:tag" content="Linode">
 <meta property="article:tag" content="deploy a website">
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-31 15:06:41" itemprop="dateModified" datetime="2023-10-31T15:06:41+08:00">2023-10-31</time>
+                <time title="Modified: 2023-11-02 16:49:05" itemprop="dateModified" datetime="2023-11-02T16:49:05+08:00">2023-11-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,20 +255,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2023/07/16/003-Linode-3/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/07/16/003-Linode-3/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 
         </div>
       </header>
@@ -329,9 +315,8 @@
 
 <h2 id="佈署專案"><a href="#佈署專案" class="headerlink" title="佈署專案"></a>佈署專案</h2><p>打包專案之前，可以先檢查設定檔資料庫的連線設定是否已經改成linode上的資料庫了，檢查完後在本地端使用Maven或Gradle將專案打包好jar或war檔，將打包好的檔案放置tomcat底下的&#x2F;webapps目錄下，這時如果你的tomcat本身已經是開啟的狀態，tomcat通常會自動重啟，並在&#x2F;webapps目錄下自動生成一個以你的jar或war檔檔名命名的目錄，如果沒有看到tomcat自動生成的目錄，可以根據上面的步驟重啟tomcat，看到這個目錄表示專案已經佈署到tomcat了，接著就可以透過postman等工具來測試服務是否正常，路徑為 http:&#x2F;&#x2F;你的ip:8080&#x2F;佈署檔案名稱 ，如果想看log可以到&#x2F;vsr&#x2F;log&#x2F;tomcat9目錄下的catalina.out就可以看到了。</p>
 <p><img src="/../image/tomcat2.jpg" alt="tomcat"></p>
-<h5 id="到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call-http請求的時候直接指向到linode的ip就可以了。"><a href="#到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call-http請求的時候直接指向到linode的ip就可以了。" class="headerlink" title="到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。"></a>到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。</h5><hr>
-<p>參考資料:</p>
-<ul>
+<p>到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料:"></a>參考資料:</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804">How To Install Apache Tomcat 9 on Ubuntu 18.04</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.linode.com/docs/guides/development/frameworks/apache-tomcat/">Linode關於Apache Tomcat</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.linode.com/docs/guides/apache-tomcat-on-ubuntu-18-04/">Linode 在 Ubuntu 18.04 上安裝 Apache Tomcat</a></li>
@@ -367,6 +352,23 @@
               <a href="/tags/tomcat/" rel="tag"><i class="fa fa-tags"></i> tomcat</a>
               <a href="/tags/spring-boot/" rel="tag"><i class="fa fa-tags"></i> spring boot</a>
           </div>
+           
+  <div class="popular-posts-header"><i class="fa fa-thumbtack"></i> 相關文章推薦 </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\11\001-Linode-1\" rel="bookmark">如何使用Linode架設網站 ? (1/5) 創建Linode</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\13\002-Linode-2\" rel="bookmark">如何使用Linode架設網站 ? (2/5) 建置資料庫</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\18\004-Linode-4\" rel="bookmark">如何使用Linode架設網站 ? (4/5) 建置Nginx及SSL憑證申請</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\18\005-Linode-5\" rel="bookmark">如何使用Linode架設網站 ? (5/5) 架站問題分享</a></div>
+    </li>
+  </ul>
+
 
         
 
@@ -378,8 +380,8 @@
       <i class="fa fa-chevron-left"></i> 如何使用Linode架設網站 ? (2/5) 建置資料庫
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/07/18/004-Linode-4/" rel="next" title="如何使用Linode架設網站 ? (4/5) 建置/佈署Nginx及SSL憑證申請">
-      如何使用Linode架設網站 ? (4/5) 建置/佈署Nginx及SSL憑證申請 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/07/18/004-Linode-4/" rel="next" title="如何使用Linode架設網站 ? (4/5) 建置Nginx及SSL憑證申請">
+      如何使用Linode架設網站 ? (4/5) 建置Nginx及SSL憑證申請 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -446,7 +448,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9Dtomcat"><span class="nav-number">1.</span> <span class="nav-text">安裝tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linode-%E5%AE%98%E6%96%B9%E6%8F%90%E4%BE%9B"><span class="nav-number">1.1.</span> <span class="nav-text">Linode 官方提供</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E4%B8%BB%E6%A9%9F%E5%90%8D%E7%A8%B1"><span class="nav-number">1.1.1.</span> <span class="nav-text">設定主機名稱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E5%8F%AF%E7%94%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">安裝可用更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9Dtomcat-1"><span class="nav-number">1.1.3.</span> <span class="nav-text">安裝tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99"><span class="nav-number">1.1.4.</span> <span class="nav-text">啟動服務</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8B%95%E5%AE%89%E8%A3%9D"><span class="nav-number">1.2.</span> <span class="nav-text">手動安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9DJDK"><span class="nav-number">1.2.1.</span> <span class="nav-text">安裝JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E8%BC%89tomcat"><span class="nav-number">1.2.2.</span> <span class="nav-text">下載tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%A3%93%E7%B8%AEtomct"><span class="nav-number">1.2.3.</span> <span class="nav-text">解壓縮tomct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E7%92%B0%E5%A2%83%E8%AE%8A%E6%95%B8"><span class="nav-number">1.2.4.</span> <span class="nav-text">設定環境變數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">啟動服務</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%88%E7%BD%B2%E5%B0%88%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">佈署專案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%B0%E9%80%99%E8%A3%A1%E6%81%AD%E5%96%9C%E4%BD%A0%E5%B7%B2%E7%B6%93%E5%AE%8C%E6%88%90%E5%BB%BA%E7%BD%AEtomcat%E5%92%8C%E4%BD%88%E7%BD%B2%E5%B0%88%E6%A1%88%E4%BA%86%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%83%B3%E8%A6%81%E6%9B%B4%E9%80%B2%E4%B8%80%E6%AD%A5%E6%B8%AC%E8%A9%A6%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BB%A5%E5%B0%87%E8%87%AA%E5%B7%B1%E7%9A%84%E5%89%8D%E7%AB%AF%E7%B6%B2%E9%A0%81call-http%E8%AB%8B%E6%B1%82%E7%9A%84%E6%99%82%E5%80%99%E7%9B%B4%E6%8E%A5%E6%8C%87%E5%90%91%E5%88%B0linode%E7%9A%84ip%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BA%86%E3%80%82"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9Dtomcat"><span class="nav-number">1.</span> <span class="nav-text">安裝tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linode-%E5%AE%98%E6%96%B9%E6%8F%90%E4%BE%9B"><span class="nav-number">1.1.</span> <span class="nav-text">Linode 官方提供</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E4%B8%BB%E6%A9%9F%E5%90%8D%E7%A8%B1"><span class="nav-number">1.1.1.</span> <span class="nav-text">設定主機名稱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D%E5%8F%AF%E7%94%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">安裝可用更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9Dtomcat-1"><span class="nav-number">1.1.3.</span> <span class="nav-text">安裝tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99"><span class="nav-number">1.1.4.</span> <span class="nav-text">啟動服務</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8B%95%E5%AE%89%E8%A3%9D"><span class="nav-number">1.2.</span> <span class="nav-text">手動安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9DJDK"><span class="nav-number">1.2.1.</span> <span class="nav-text">安裝JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E8%BC%89tomcat"><span class="nav-number">1.2.2.</span> <span class="nav-text">下載tomcat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%A3%93%E7%B8%AEtomct"><span class="nav-number">1.2.3.</span> <span class="nav-text">解壓縮tomct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E7%92%B0%E5%A2%83%E8%AE%8A%E6%95%B8"><span class="nav-number">1.2.4.</span> <span class="nav-text">設定環境變數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">啟動服務</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%88%E7%BD%B2%E5%B0%88%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">佈署專案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">參考資料:</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -640,16 +642,6 @@ window.addEventListener('pjax:success', () => {
 
   
 
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://jenny83318.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
 <script>
   var disqus_config = function() {
     this.page.url = "https://jenny83318.github.io/2023/07/16/003-Linode-3/";

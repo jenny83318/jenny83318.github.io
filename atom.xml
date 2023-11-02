@@ -204,11 +204,11 @@
   </entry>
   
   <entry>
-    <title>如何使用Linode架設網站 ? (4/5) 建置/佈署Nginx及SSL憑證申請</title>
+    <title>如何使用Linode架設網站 ? (4/5) 建置Nginx及SSL憑證申請</title>
     <link href="https://jenny83318.github.io/2023/07/18/004-Linode-4/"/>
     <id>https://jenny83318.github.io/2023/07/18/004-Linode-4/</id>
     <published>2023-07-18T05:23:17.000Z</published>
-    <updated>2023-10-19T07:03:37.114Z</updated>
+    <updated>2023-11-02T08:32:01.492Z</updated>
     
     
     <summary type="html">&lt;p&gt;建至完tomcat及佈署專案後，接著就差最後一步就可以擁有自己的網頁了，就是要把前端的專案部署到Nginx就大功告成啦，所以我們趕快開始吧~&lt;/p&gt;</summary>
@@ -235,7 +235,7 @@
     <link href="https://jenny83318.github.io/2023/07/16/003-Linode-3/"/>
     <id>https://jenny83318.github.io/2023/07/16/003-Linode-3/</id>
     <published>2023-07-16T05:23:17.000Z</published>
-    <updated>2023-10-31T07:06:41.909Z</updated>
+    <updated>2023-11-02T08:49:05.878Z</updated>
     
     
     <summary type="html">&lt;p&gt;接續上一篇創建完資料庫接著就可以來安裝web server了，這篇會分享建置tomcat及部署專案，部署專案的方式目前是手動部署，之後會研究用jenkins來自動化部署，到時候再更新文章。&lt;/p&gt;</summary>
