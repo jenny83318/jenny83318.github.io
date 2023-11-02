@@ -33,6 +33,69 @@
       </tags>
   </entry>
   <entry>
+    <title>如何使用Linode架設網站 ? (2/5) 建置資料庫</title>
+    <url>/2023/07/13/002-Linode-2/</url>
+    <content><![CDATA[<p>這篇將分享要如何在Linode的虛擬機上建置MySQL資料庫以及遠端連線資料庫。</p>
+<span id="more"></span>
+<p>首先，使用putty或Linode Lish console 登入系統，先更新一下系統套件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+
+<h2 id="安裝MySQL"><a href="#安裝MySQL" class="headerlink" title="安裝MySQL"></a>安裝MySQL</h2><p>輸入下列指令來安裝MySQL，在安裝的過程中，會被要求要設定root使用者的密碼。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mysql-server</span><br></pre></td></tr></table></figure>
+<h2 id="啟動My-SQL"><a href="#啟動My-SQL" class="headerlink" title="啟動My SQL"></a>啟動My SQL</h2><p>安裝完成後，啟動MySQL服務:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start mysql</span><br></pre></td></tr></table></figure>
+<p>確認MySQL服務是否正常運行:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl status mysql</span><br></pre></td></tr></table></figure>
+<p>如果服務有正常執行，會看到<span class="markWord">active(running)</span>的狀態，如下圖<br><img src="/../image/mysql.jpg" alt="Mysql"></p>
+<p>可選擇加強MySQL安全性，安裝MySQL安全性設定工具，執行安裝後會引導你完成一些安全性的選項設定，例如:刪除匿名使用者、禁止遠端root登入等，可依自己的需求選擇。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql_secure_installation </span><br></pre></td></tr></table></figure>
+
+<h2 id="設定MySQL使用者權限"><a href="#設定MySQL使用者權限" class="headerlink" title="設定MySQL使用者權限"></a>設定MySQL使用者權限</h2><p>以root的身分登入MySQL</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql</span><br></pre></td></tr></table></figure>
+
+<p>進入後會出現Welcome等文字，游標也會顯示mysql&gt;，表示接下來可以輸入SQL指令了~</p>
+<p><img src="/../image/mysql2.jpg" alt="Mysql"></p>
+<p>接下來我們就可以執行下列指令，將使用者root身分認證(IDENTIFIED)的方式改為用密碼驗證(mysql_native_password)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果是使用MySQL 8.0以上的版本，請使用下列指令:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> caching_sha2_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>設定完成後就刷新權限並離開MySQL</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
+
+<p>接著我們就可以以密碼驗證的方式再次進到MySQL</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<p>接下來就是要設定root對資料庫的權限:<br>如果要設定root帳號在所有資料庫上的所有權限:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>若只想在特定的資料庫授予權限:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> 資料庫名稱.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>刷新權限<br>FLUSH PRIVILEGES;</p>
+<h2 id="匯入資料庫"><a href="#匯入資料庫" class="headerlink" title="匯入資料庫"></a>匯入資料庫</h2><p>進入MySQL:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<p>進入MySQL介面後就可以正常的輸入SQL指令，若遇到多行的指令，也可以換行，比較要注意的是，因為這是SQL指令，所以按enter的時候它是會認分號;作為一段指令的終結，若是沒有輸入分號則會視為換行並不會執行SQL指令。<br><img src="/../image/mysql3.jpg" alt="Mysql"></p>
+<p>如果不想用指令的方式操作，也可以使用Workbrench來完成這繁瑣的作業喔，可以直接跳到下一段遠端連線資料庫。</p>
+<p>離開MySQL</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
+
+<h2 id="遠端連線資料庫"><a href="#遠端連線資料庫" class="headerlink" title="遠端連線資料庫"></a>遠端連線資料庫</h2><p>建立完資料庫，我們就可以來遠端連線看看我們建立的資料庫是不是可以正常操作</p>
+<h3 id="使用MySQL-Workbrench連線資料庫"><a href="#使用MySQL-Workbrench連線資料庫" class="headerlink" title="使用MySQL Workbrench連線資料庫"></a>使用MySQL Workbrench連線資料庫</h3><p>這是最簡單的方式啦，開啟MySQL Workbrench，新增一個connection，hostname輸入Linode上的IP，輸入username 及密碼完就可以進入到你的資料庫了，不過可以這樣遠端連線有可能是因為我沒有做禁止遠端登入的設定，所以安全性設定那邊也要考量一下自己的需求。</p>
+<p><img src="/../image/mysql4.jpg" alt="Mysql"></p>
+<h5 id="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔"><a href="#到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔" class="headerlink" title="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~"></a>到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~</h5><hr>
+]]></content>
+      <categories>
+        <category>Server</category>
+        <category>Linode</category>
+      </categories>
+      <tags>
+        <tag>Linode</tag>
+        <tag>deploy a website</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何使用Linode架設網站 ? (3/5) 建置Tomcat及佈署專案</title>
     <url>/2023/07/16/003-Linode-3/</url>
     <content><![CDATA[<p>接續上一篇創建完資料庫接著就可以來安裝web server了，這篇會分享建置tomcat及部署專案，部署專案的方式目前是手動部署，之後會研究用jenkins來自動化部署，到時候再更新文章。</p>
@@ -102,69 +165,6 @@
         <tag>deploy a website</tag>
         <tag>tomcat</tag>
         <tag>spring boot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何使用Linode架設網站 ? (2/5) 建置資料庫</title>
-    <url>/2023/07/13/002-Linode-2/</url>
-    <content><![CDATA[<p>這篇將分享要如何在Linode的虛擬機上建置MySQL資料庫以及遠端連線資料庫。</p>
-<span id="more"></span>
-<p>首先，使用putty或Linode Lish console 登入系統，先更新一下系統套件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-
-<h2 id="安裝MySQL"><a href="#安裝MySQL" class="headerlink" title="安裝MySQL"></a>安裝MySQL</h2><p>輸入下列指令來安裝MySQL，在安裝的過程中，會被要求要設定root使用者的密碼。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mysql-server</span><br></pre></td></tr></table></figure>
-<h2 id="啟動My-SQL"><a href="#啟動My-SQL" class="headerlink" title="啟動My SQL"></a>啟動My SQL</h2><p>安裝完成後，啟動MySQL服務:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start mysql</span><br></pre></td></tr></table></figure>
-<p>確認MySQL服務是否正常運行:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl status mysql</span><br></pre></td></tr></table></figure>
-<p>如果服務有正常執行，會看到<span class="markWord">active(running)</span>的狀態，如下圖<br><img src="/../image/mysql.jpg" alt="Mysql"></p>
-<p>可選擇加強MySQL安全性，安裝MySQL安全性設定工具，執行安裝後會引導你完成一些安全性的選項設定，例如:刪除匿名使用者、禁止遠端root登入等，可依自己的需求選擇。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql_secure_installation </span><br></pre></td></tr></table></figure>
-
-<h2 id="設定MySQL使用者權限"><a href="#設定MySQL使用者權限" class="headerlink" title="設定MySQL使用者權限"></a>設定MySQL使用者權限</h2><p>以root的身分登入MySQL</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql</span><br></pre></td></tr></table></figure>
-
-<p>進入後會出現Welcome等文字，游標也會顯示mysql&gt;，表示接下來可以輸入SQL指令了~</p>
-<p><img src="/../image/mysql2.jpg" alt="Mysql"></p>
-<p>接下來我們就可以執行下列指令，將使用者root身分認證(IDENTIFIED)的方式改為用密碼驗證(mysql_native_password)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>如果是使用MySQL 8.0以上的版本，請使用下列指令:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> caching_sha2_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>設定完成後就刷新權限並離開MySQL</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
-
-<p>接著我們就可以以密碼驗證的方式再次進到MySQL</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-
-<p>接下來就是要設定root對資料庫的權限:<br>如果要設定root帳號在所有資料庫上的所有權限:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<p>若只想在特定的資料庫授予權限:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> 資料庫名稱.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<p>刷新權限<br>FLUSH PRIVILEGES;</p>
-<h2 id="匯入資料庫"><a href="#匯入資料庫" class="headerlink" title="匯入資料庫"></a>匯入資料庫</h2><p>進入MySQL:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-
-<p>進入MySQL介面後就可以正常的輸入SQL指令，若遇到多行的指令，也可以換行，比較要注意的是，因為這是SQL指令，所以按enter的時候它是會認分號;作為一段指令的終結，若是沒有輸入分號則會視為換行並不會執行SQL指令。<br><img src="/../image/mysql3.jpg" alt="Mysql"></p>
-<p>如果不想用指令的方式操作，也可以使用Workbrench來完成這繁瑣的作業喔，可以直接跳到下一段遠端連線資料庫。</p>
-<p>離開MySQL</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
-
-<h2 id="遠端連線資料庫"><a href="#遠端連線資料庫" class="headerlink" title="遠端連線資料庫"></a>遠端連線資料庫</h2><p>建立完資料庫，我們就可以來遠端連線看看我們建立的資料庫是不是可以正常操作</p>
-<h3 id="使用MySQL-Workbrench連線資料庫"><a href="#使用MySQL-Workbrench連線資料庫" class="headerlink" title="使用MySQL Workbrench連線資料庫"></a>使用MySQL Workbrench連線資料庫</h3><p>這是最簡單的方式啦，開啟MySQL Workbrench，新增一個connection，hostname輸入Linode上的IP，輸入username 及密碼完就可以進入到你的資料庫了，不過可以這樣遠端連線有可能是因為我沒有做禁止遠端登入的設定，所以安全性設定那邊也要考量一下自己的需求。</p>
-<p><img src="/../image/mysql4.jpg" alt="Mysql"></p>
-<h5 id="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔"><a href="#到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔" class="headerlink" title="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~"></a>到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~</h5><hr>
-]]></content>
-      <categories>
-        <category>Server</category>
-        <category>Linode</category>
-      </categories>
-      <tags>
-        <tag>Linode</tag>
-        <tag>deploy a website</tag>
-        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -295,6 +295,50 @@
       </tags>
   </entry>
   <entry>
+    <title>LeetCode 274. H-Index</title>
+    <url>/2023/10/12/008-LeetCode-274/</url>
+    <content><![CDATA[<p>在解這題之前可以先稍微了解一下H Index(H指數)，下面是維基百科上的定義:<br>H指數的計算基於其研究者的論文數量及其論文被引用的次數。赫希認為：<span class ="markWord">一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。</span>如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：</p>
+<ol>
+<li>將其發表的所有SCI論文來源請求按被引次數從高到低排序；</li>
+<li>從前往後查找排序後的列表，只要當前的引用量大於當前的索引值，則H指數加1，最後得到的結果即為最終的H指數。<span id="more"></span></li>
+</ol>
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode274.jpg" alt="leetcode"></p>
+<h2 id="Solution-1-Binary-Search"><a href="#Solution-1-Binary-Search" class="headerlink" title="Solution 1- Binary Search"></a>Solution 1- Binary Search</h2><p>從題目的敘述可判斷H index最大值為<span class ="markWord">citations陣列長度</span>，最小值則為0，利用這個範圍用Binary Search找出H index。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hIndex</span><span class="params">(<span class="type">int</span>[] citations)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">low</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">high</span> <span class="operator">=</span> citations.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (low &lt; high) &#123;</span><br><span class="line">            mid = (high + low + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> num : citations) &#123;</span><br><span class="line">                <span class="keyword">if</span> (num &gt;= mid) &#123;</span><br><span class="line">                    count++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (count &gt;= mid) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (count &lt; mid) &#123;</span><br><span class="line">                high = mid - <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                low = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> low;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solution-2-統計個別論文引用數量"><a href="#Solution-2-統計個別論文引用數量" class="headerlink" title="Solution 2- 統計個別論文引用數量"></a>Solution 2- 統計個別論文引用數量</h2><p>先將論文引用次數各別計算統計在一個陣列cal[]中，用citations[i]來當作cal[]陣列的位置，由於H idex最大值為citations陣列長度，因此統計的陣列長度為<span class ="markWord">citations陣列長度+1</span> ，當citations[i]超過陣列長度時，視為<span class ="markWord">等於陣列長度</span>，統計完citations內的數量後在遍歷cal[]的數量算出h idex。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hIndex</span><span class="params">(<span class="type">int</span>[] citations)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> citations.length;</span><br><span class="line">        <span class="type">int</span>[] cal = <span class="keyword">new</span> <span class="title class_">int</span>[n + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : citations) &#123;</span><br><span class="line">            <span class="keyword">if</span> (num &gt; n) &#123;</span><br><span class="line">                cal[n]++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cal[num]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">hIdx</span> <span class="operator">=</span> n;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (hIdx &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            count += cal[hIdx];</span><br><span class="line">            <span class="keyword">if</span> (count &gt;= hIdx) &#123;</span><br><span class="line">                <span class="keyword">return</span> hIdx;</span><br><span class="line">            &#125;</span><br><span class="line">            hIdx--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>LeetCode筆記</category>
+        <category>Array</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 1409. Queries on a Permutation With Key</title>
+    <url>/2023/10/16/009-LeetCode-1409/</url>
+    <content><![CDATA[<p>這題需產生一個陣列<span class="mark">p</span>範圍為{1,2,3,..<span class="mark">m</span>}，再從<span class="mark">queries</span>陣列中各別找出對應到<span class="mark">p</span>陣列值的位置，再將對應到<span class="mark">p</span>的該數值移置陣列首位，繼續比對最後再將每次比對到的索引值存成陣列回傳。</p>
+<span id="more"></span>
+
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode1409.jpg" alt="leetcode"></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ol>
+<li>第一個for迴圈set p的資料</li>
+<li>第二組for迴圈找出所有queries[j]對應到p[]的位置，並逐一改變其位置。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] processQueries(<span class="type">int</span>[] queries, <span class="type">int</span> m) &#123;</span><br><span class="line">        <span class="type">int</span>[] p = <span class="keyword">new</span> <span class="title class_">int</span>[m];</span><br><span class="line">        <span class="type">int</span>[] ans = <span class="keyword">new</span> <span class="title class_">int</span>[queries.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            p[i] = i + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; queries.length; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">                <span class="comment">// 找出queries中對應p[i]的索引，傳入updateIdx()</span></span><br><span class="line">                <span class="keyword">if</span> (queries[j] == p[i]) &#123;</span><br><span class="line">                    p = updateIdx(p, i, queries[j]);</span><br><span class="line">                    ans[j] = i;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] updateIdx(<span class="type">int</span>[] arr, <span class="type">int</span> idx, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">//調整索引值(含)以前的位置</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> idx; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">//往後挪一個位置</span></span><br><span class="line">            arr[i] = arr[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//target移置首位</span></span><br><span class="line">        arr[<span class="number">0</span>] = target;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>LeetCode筆記</category>
+        <category>Array</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用ObjectMapper把Json轉成Java Bean</title>
     <url>/2023/07/28/007-ObjectMapper/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在工作開發的時候，時常需要將一串攏長又複雜Json字串轉成JavaBean傳給前端，使用<span class ="markWord">ObjectMapper</span>來轉換就很方便，如果之後有調整欄位，也很方便修改，下面會分成JSON陣列和非陣列的資料來說明。Jackson ObjectMapper 是 Java 中應用非常廣泛的序列化、反序列化的工具，它可以幫助我們簡單、快速將 Java 物件與 json 之間作轉換，Spring Framework 將它作為預設轉換器。</p>
@@ -322,40 +366,17 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode 1409. Queries on a Permutation With Key</title>
-    <url>/2023/10/16/009-LeetCode-1409/</url>
-    <content><![CDATA[<p>這題需產生一個陣列<span class="mark">p</span>範圍為{1,2,3,..<span class="mark">m</span>}，再從<span class="mark">queries</span>陣列中各別找出對應到<span class="mark">p</span>陣列值的位置，再將對應到<span class="mark">p</span>的該數值移置陣列首位，繼續比對最後再將每次比對到的索引值存成陣列回傳。</p>
+    <title>LeetCode 135. Candy</title>
+    <url>/2023/10/20/010-LeetCode-135/</url>
+    <content><![CDATA[<p>看到這題覺得蠻有趣，題目看起來描述得很簡單，但實際的邏輯還要想一下，題目是有若干糖果要分給一群小孩，分配糖果需滿足下列兩個條件:<br>a. 每個人至少要有一顆糖<br>b. 評分較高的孩子比隔壁的孩子獲得更多醣果</p>
 <span id="more"></span>
-
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode1409.jpg" alt="leetcode"></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ol>
-<li>第一個for迴圈set p的資料</li>
-<li>第二組for迴圈找出所有queries[j]對應到p[]的位置，並逐一改變其位置。</li>
+<h2 id="解題邏輯"><a href="#解題邏輯" class="headerlink" title="解題邏輯"></a>解題邏輯</h2><ol>
+<li>用一個陣列<span class="mark">candies</span>紀錄要分給<span class="mark">n</span>個小孩的糖果數，先由左到右依序比對評分<span class="mark">ratings</span>，如果第二個小孩比第一個小孩高分<span class="mark">ratings[1] &gt; ratings[0] </span>，糖果卻少於或等於第一個小孩的糖果數<span class="mark">candies[1] &lt;&#x3D; candies[0] </span>，則<span class="markWord">第二個小孩的糖果數為第一個小孩的糖果數+1</span> ➔ <span class="mark">candies[0] + 1</span>，以此類推…</li>
+<li>由左到右(0~<span class="mark">n</span>)調整完分配的糖果數後，須再由右到左調整一次糖果數</li>
+<li>加總所有糖果數<span class="mark">candies</span>，並各+1(每人至少要一顆糖)，加總完即為要分配的糖果數</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] processQueries(<span class="type">int</span>[] queries, <span class="type">int</span> m) &#123;</span><br><span class="line">        <span class="type">int</span>[] p = <span class="keyword">new</span> <span class="title class_">int</span>[m];</span><br><span class="line">        <span class="type">int</span>[] ans = <span class="keyword">new</span> <span class="title class_">int</span>[queries.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            p[i] = i + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; queries.length; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">                <span class="comment">// 找出queries中對應p[i]的索引，傳入updateIdx()</span></span><br><span class="line">                <span class="keyword">if</span> (queries[j] == p[i]) &#123;</span><br><span class="line">                    p = updateIdx(p, i, queries[j]);</span><br><span class="line">                    ans[j] = i;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] updateIdx(<span class="type">int</span>[] arr, <span class="type">int</span> idx, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">//調整索引值(含)以前的位置</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> idx; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">//往後挪一個位置</span></span><br><span class="line">            arr[i] = arr[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//target移置首位</span></span><br><span class="line">        arr[<span class="number">0</span>] = target;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>LeetCode筆記</category>
-        <category>Array</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 274. H-Index</title>
-    <url>/2023/10/12/008-LeetCode-274/</url>
-    <content><![CDATA[<p>在解這題之前可以先稍微了解一下H Index(H指數)，下面是維基百科上的定義:<br>H指數的計算基於其研究者的論文數量及其論文被引用的次數。赫希認為：<span class ="markWord">一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。</span>如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：</p>
-<ol>
-<li>將其發表的所有SCI論文來源請求按被引次數從高到低排序；</li>
-<li>從前往後查找排序後的列表，只要當前的引用量大於當前的索引值，則H指數加1，最後得到的結果即為最終的H指數。<span id="more"></span></li>
-</ol>
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode274.jpg" alt="leetcode"></p>
-<h2 id="Solution-1-Binary-Search"><a href="#Solution-1-Binary-Search" class="headerlink" title="Solution 1- Binary Search"></a>Solution 1- Binary Search</h2><p>從題目的敘述可判斷H index最大值為<span class ="markWord">citations陣列長度</span>，最小值則為0，利用這個範圍用Binary Search找出H index。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hIndex</span><span class="params">(<span class="type">int</span>[] citations)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">low</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">high</span> <span class="operator">=</span> citations.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (low &lt; high) &#123;</span><br><span class="line">            mid = (high + low + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> num : citations) &#123;</span><br><span class="line">                <span class="keyword">if</span> (num &gt;= mid) &#123;</span><br><span class="line">                    count++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (count &gt;= mid) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (count &lt; mid) &#123;</span><br><span class="line">                high = mid - <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                low = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> low;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Solution-2-統計個別論文引用數量"><a href="#Solution-2-統計個別論文引用數量" class="headerlink" title="Solution 2- 統計個別論文引用數量"></a>Solution 2- 統計個別論文引用數量</h2><p>先將論文引用次數各別計算統計在一個陣列cal[]中，用citations[i]來當作cal[]陣列的位置，由於H idex最大值為citations陣列長度，因此統計的陣列長度為<span class ="markWord">citations陣列長度+1</span> ，當citations[i]超過陣列長度時，視為<span class ="markWord">等於陣列長度</span>，統計完citations內的數量後在遍歷cal[]的數量算出h idex。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hIndex</span><span class="params">(<span class="type">int</span>[] citations)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> citations.length;</span><br><span class="line">        <span class="type">int</span>[] cal = <span class="keyword">new</span> <span class="title class_">int</span>[n + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : citations) &#123;</span><br><span class="line">            <span class="keyword">if</span> (num &gt; n) &#123;</span><br><span class="line">                cal[n]++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cal[num]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">hIdx</span> <span class="operator">=</span> n;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (hIdx &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            count += cal[hIdx];</span><br><span class="line">            <span class="keyword">if</span> (count &gt;= hIdx) &#123;</span><br><span class="line">                <span class="keyword">return</span> hIdx;</span><br><span class="line">            &#125;</span><br><span class="line">            hIdx--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode135.jpg" alt="leetcode"></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">candy</span><span class="params">(<span class="type">int</span>[] ratings)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> ratings.length; </span><br><span class="line">        <span class="type">int</span>[] candies = <span class="keyword">new</span> <span class="title class_">int</span>[n]; </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (ratings[i - <span class="number">1</span>] &lt; ratings[i] &amp;&amp; candies[i - <span class="number">1</span>] &gt;= candies[i]) &#123;</span><br><span class="line">                candies[i] = candies[i - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> n - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (ratings[i + <span class="number">1</span>] &lt; ratings[i] &amp;&amp; candies[i + <span class="number">1</span>] &gt;= candies[i]) &#123;</span><br><span class="line">                candies[i] = candies[i + <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">totalCandies</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            totalCandies += candies[i] + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> totalCandies;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>LeetCode筆記</category>
         <category>Array</category>
@@ -387,27 +408,6 @@
 
 <h2 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution 3"></a>Solution 3</h2><p>這題解法是來自<a href="https://leetcode.com/problems/zigzag-conversion/solutions/3489525/c-java-python-javascript-easy-to-understand-solution-with-explanation/">LeetCode</a>上的大神，內有詳細的解題說明，這個解法截至目前的為止Runtime和Memory都Beats 99%以上。</p>
 <h3 id="解題步驟-2"><a href="#解題步驟-2" class="headerlink" title="解題步驟"></a>解題步驟</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">        <span class="type">int</span> <span class="variable">cycleLen</span> <span class="operator">=</span> <span class="number">2</span> * numRows - <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j + i &lt; n; j += cycleLen) &#123;</span><br><span class="line">                result.append(s.charAt(j + i));</span><br><span class="line">                <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; i != numRows - <span class="number">1</span> &amp;&amp; j + cycleLen - i &lt; n) &#123;</span><br><span class="line">                    result.append(s.charAt(j + cycleLen - i));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>LeetCode筆記</category>
-        <category>Array</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 135. Candy</title>
-    <url>/2023/10/20/010-LeetCode-135/</url>
-    <content><![CDATA[<p>看到這題覺得蠻有趣，題目看起來描述得很簡單，但實際的邏輯還要想一下，題目是有若干糖果要分給一群小孩，分配糖果需滿足下列兩個條件:<br>a. 每個人至少要有一顆糖<br>b. 評分較高的孩子比隔壁的孩子獲得更多醣果</p>
-<span id="more"></span>
-<h2 id="解題邏輯"><a href="#解題邏輯" class="headerlink" title="解題邏輯"></a>解題邏輯</h2><ol>
-<li>用一個陣列<span class="mark">candies</span>紀錄要分給<span class="mark">n</span>個小孩的糖果數，先由左到右依序比對評分<span class="mark">ratings</span>，如果第二個小孩比第一個小孩高分<span class="mark">ratings[1] &gt; ratings[0] </span>，糖果卻少於或等於第一個小孩的糖果數<span class="mark">candies[1] &lt;&#x3D; candies[0] </span>，則<span class="markWord">第二個小孩的糖果數為第一個小孩的糖果數+1</span> ➔ <span class="mark">candies[0] + 1</span>，以此類推…</li>
-<li>由左到右(0~<span class="mark">n</span>)調整完分配的糖果數後，須再由右到左調整一次糖果數</li>
-<li>加總所有糖果數<span class="mark">candies</span>，並各+1(每人至少要一顆糖)，加總完即為要分配的糖果數</li>
-</ol>
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode135.jpg" alt="leetcode"></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">candy</span><span class="params">(<span class="type">int</span>[] ratings)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> ratings.length; </span><br><span class="line">        <span class="type">int</span>[] candies = <span class="keyword">new</span> <span class="title class_">int</span>[n]; </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (ratings[i - <span class="number">1</span>] &lt; ratings[i] &amp;&amp; candies[i - <span class="number">1</span>] &gt;= candies[i]) &#123;</span><br><span class="line">                candies[i] = candies[i - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> n - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (ratings[i + <span class="number">1</span>] &lt; ratings[i] &amp;&amp; candies[i + <span class="number">1</span>] &gt;= candies[i]) &#123;</span><br><span class="line">                candies[i] = candies[i + <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">totalCandies</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            totalCandies += candies[i] + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> totalCandies;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>LeetCode筆記</category>
         <category>Array</category>
