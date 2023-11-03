@@ -33,6 +33,69 @@
       </tags>
   </entry>
   <entry>
+    <title>如何使用Linode架設網站 ? (2/5) 建置資料庫</title>
+    <url>/2023/07/13/002-Linode-2/</url>
+    <content><![CDATA[<p>這篇將分享要如何在Linode的虛擬機上建置MySQL資料庫以及遠端連線資料庫。</p>
+<span id="more"></span>
+<p>首先，使用putty或Linode Lish console 登入系統，先更新一下系統套件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+
+<h2 id="安裝MySQL"><a href="#安裝MySQL" class="headerlink" title="安裝MySQL"></a>安裝MySQL</h2><p>輸入下列指令來安裝MySQL，在安裝的過程中，會被要求要設定root使用者的密碼。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mysql-server</span><br></pre></td></tr></table></figure>
+<h2 id="啟動My-SQL"><a href="#啟動My-SQL" class="headerlink" title="啟動My SQL"></a>啟動My SQL</h2><p>安裝完成後，啟動MySQL服務:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start mysql</span><br></pre></td></tr></table></figure>
+<p>確認MySQL服務是否正常運行:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl status mysql</span><br></pre></td></tr></table></figure>
+<p>如果服務有正常執行，會看到<span class="markWord">active(running)</span>的狀態，如下圖<br><img src="/../image/mysql.jpg" alt="Mysql"></p>
+<p>可選擇加強MySQL安全性，安裝MySQL安全性設定工具，執行安裝後會引導你完成一些安全性的選項設定，例如:刪除匿名使用者、禁止遠端root登入等，可依自己的需求選擇。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql_secure_installation </span><br></pre></td></tr></table></figure>
+
+<h2 id="設定MySQL使用者權限"><a href="#設定MySQL使用者權限" class="headerlink" title="設定MySQL使用者權限"></a>設定MySQL使用者權限</h2><p>以root的身分登入MySQL</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql</span><br></pre></td></tr></table></figure>
+
+<p>進入後會出現Welcome等文字，游標也會顯示mysql&gt;，表示接下來可以輸入SQL指令了~</p>
+<p><img src="/../image/mysql2.jpg" alt="Mysql"></p>
+<p>接下來我們就可以執行下列指令，將使用者root身分認證(IDENTIFIED)的方式改為用密碼驗證(mysql_native_password)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果是使用MySQL 8.0以上的版本，請使用下列指令:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> caching_sha2_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>設定完成後就刷新權限並離開MySQL</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
+
+<p>接著我們就可以以密碼驗證的方式再次進到MySQL</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<p>接下來就是要設定root對資料庫的權限:<br>如果要設定root帳號在所有資料庫上的所有權限:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>若只想在特定的資料庫授予權限:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> 資料庫名稱.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>刷新權限<br>FLUSH PRIVILEGES;</p>
+<h2 id="匯入資料庫"><a href="#匯入資料庫" class="headerlink" title="匯入資料庫"></a>匯入資料庫</h2><p>進入MySQL:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<p>進入MySQL介面後就可以正常的輸入SQL指令，若遇到多行的指令，也可以換行，比較要注意的是，因為這是SQL指令，所以按enter的時候它是會認分號;作為一段指令的終結，若是沒有輸入分號則會視為換行並不會執行SQL指令。<br><img src="/../image/mysql3.jpg" alt="Mysql"></p>
+<p>如果不想用指令的方式操作，也可以使用Workbrench來完成這繁瑣的作業喔，可以直接跳到下一段遠端連線資料庫。</p>
+<p>離開MySQL</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
+
+<h2 id="遠端連線資料庫"><a href="#遠端連線資料庫" class="headerlink" title="遠端連線資料庫"></a>遠端連線資料庫</h2><p>建立完資料庫，我們就可以來遠端連線看看我們建立的資料庫是不是可以正常操作</p>
+<h3 id="使用MySQL-Workbrench連線資料庫"><a href="#使用MySQL-Workbrench連線資料庫" class="headerlink" title="使用MySQL Workbrench連線資料庫"></a>使用MySQL Workbrench連線資料庫</h3><p>這是最簡單的方式啦，開啟MySQL Workbrench，新增一個connection，hostname輸入Linode上的IP，輸入username 及密碼完就可以進入到你的資料庫了，不過可以這樣遠端連線有可能是因為我沒有做禁止遠端登入的設定，所以安全性設定那邊也要考量一下自己的需求。</p>
+<p><img src="/../image/mysql4.jpg" alt="Mysql"></p>
+<h5 id="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔"><a href="#到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔" class="headerlink" title="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~"></a>到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~</h5><hr>
+]]></content>
+      <categories>
+        <category>Server</category>
+        <category>Linode</category>
+      </categories>
+      <tags>
+        <tag>Linode</tag>
+        <tag>deploy a website</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何使用Linode架設網站 ? (3/5) 建置Tomcat及佈署專案</title>
     <url>/2023/07/16/003-Linode-3/</url>
     <content><![CDATA[<p>接續上一篇創建完資料庫接著就可以來安裝web server了，這篇會分享建置tomcat及部署專案，部署專案的方式目前是手動部署，之後會研究用jenkins來自動化部署，到時候再更新文章。</p>
@@ -101,98 +164,6 @@
         <tag>deploy a website</tag>
         <tag>tomcat</tag>
         <tag>spring boot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何使用Linode架設網站 ? (5/5) 架站問題分享</title>
-    <url>/2023/07/18/005-Linode-5/</url>
-    <content><![CDATA[<p>會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~</p>
-<span id="more"></span>
-<h2 id="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"><a href="#使用putty和Linode登入server後，游標就鎖住無法輸入任何指令" class="headerlink" title="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"></a>使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</h2><p>這個問題真的很少見，也是困擾了我好幾天，記得好像是裝完nginx的時候，登出後進來就這樣了，嘗試了很多方式都無解，後來詢問Linode客服，通信了好幾次，終於在linode lish console上有解決這個問題，先按<span class="mark">ctrl + Z</span>再按<span class="mark">ctrl + C</span>就可以解除鎖定的游標正常輸入了，但是對putty沒用，也有試過x-shell一樣無解，後來我就只能用linode lish console輸入指令。<br><a href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">Linode客服提供的資料</a></p>
-<p><img src="/../image/q1.jpg" alt="question"></p>
-<hr>
-<h2 id="Linode-對SMTP的限制"><a href="#Linode-對SMTP的限制" class="headerlink" title="Linode 對SMTP的限制"></a>Linode 對SMTP的限制</h2><p>如果你的專案是會用到SMTP寄送email的功能，就會遇到當你專案佈署上去的時候，要寄出信件時會有連線time out 的問題，這其實是因為linode限制SMTP的功能，要向他們申請才可以使用這項功能，可以聯繫他們的客服申請，他們會請你提供相關的資訊，像是會在什麼情況下寄送email等，審核通過之後他們就會解除對SMTP的限制，就可以使用了，但這塊我後來還沒實際驗證過，不確定是不是這樣就可以寄送email</p>
-<p><img src="/../image/q2.jpg" alt="question"></p>
-<hr>
-<h2 id="無法連線上Linode的MySQL"><a href="#無法連線上Linode的MySQL" class="headerlink" title="無法連線上Linode的MySQL"></a>無法連線上Linode的MySQL</h2><ol>
-<li>先確認Linode上的Mysql是可以正常運作的</li>
-<li>檢查&#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d目錄下的mysqld.cnf的mysqlx-bind-address是不是還是<span class="markWord">localhost</span>，如果還是要改成<span class="markWord">127.0.0.1</span></li>
-<li>檢查設定的使用者是否有足夠的權限</li>
-<li>檢查防火牆設定允許從外部連線到Mysql伺服器的port(預設3306)</li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>Server</category>
-        <category>Linode</category>
-      </categories>
-      <tags>
-        <tag>Linode</tag>
-        <tag>SSL</tag>
-        <tag>domain</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何使用Linode架設網站 ? (2/5) 建置資料庫</title>
-    <url>/2023/07/13/002-Linode-2/</url>
-    <content><![CDATA[<p>這篇將分享要如何在Linode的虛擬機上建置MySQL資料庫以及遠端連線資料庫。</p>
-<span id="more"></span>
-<p>首先，使用putty或Linode Lish console 登入系統，先更新一下系統套件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-
-<h2 id="安裝MySQL"><a href="#安裝MySQL" class="headerlink" title="安裝MySQL"></a>安裝MySQL</h2><p>輸入下列指令來安裝MySQL，在安裝的過程中，會被要求要設定root使用者的密碼。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mysql-server</span><br></pre></td></tr></table></figure>
-<h2 id="啟動My-SQL"><a href="#啟動My-SQL" class="headerlink" title="啟動My SQL"></a>啟動My SQL</h2><p>安裝完成後，啟動MySQL服務:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start mysql</span><br></pre></td></tr></table></figure>
-<p>確認MySQL服務是否正常運行:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl status mysql</span><br></pre></td></tr></table></figure>
-<p>如果服務有正常執行，會看到<span class="markWord">active(running)</span>的狀態，如下圖<br><img src="/../image/mysql.jpg" alt="Mysql"></p>
-<p>可選擇加強MySQL安全性，安裝MySQL安全性設定工具，執行安裝後會引導你完成一些安全性的選項設定，例如:刪除匿名使用者、禁止遠端root登入等，可依自己的需求選擇。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql_secure_installation </span><br></pre></td></tr></table></figure>
-
-<h2 id="設定MySQL使用者權限"><a href="#設定MySQL使用者權限" class="headerlink" title="設定MySQL使用者權限"></a>設定MySQL使用者權限</h2><p>以root的身分登入MySQL</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql</span><br></pre></td></tr></table></figure>
-
-<p>進入後會出現Welcome等文字，游標也會顯示mysql&gt;，表示接下來可以輸入SQL指令了~</p>
-<p><img src="/../image/mysql2.jpg" alt="Mysql"></p>
-<p>接下來我們就可以執行下列指令，將使用者root身分認證(IDENTIFIED)的方式改為用密碼驗證(mysql_native_password)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>如果是使用MySQL 8.0以上的版本，請使用下列指令:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> caching_sha2_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>設定完成後就刷新權限並離開MySQL</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
-
-<p>接著我們就可以以密碼驗證的方式再次進到MySQL</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-
-<p>接下來就是要設定root對資料庫的權限:<br>如果要設定root帳號在所有資料庫上的所有權限:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<p>若只想在特定的資料庫授予權限:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> 資料庫名稱.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<p>刷新權限<br>FLUSH PRIVILEGES;</p>
-<h2 id="匯入資料庫"><a href="#匯入資料庫" class="headerlink" title="匯入資料庫"></a>匯入資料庫</h2><p>進入MySQL:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-
-<p>進入MySQL介面後就可以正常的輸入SQL指令，若遇到多行的指令，也可以換行，比較要注意的是，因為這是SQL指令，所以按enter的時候它是會認分號;作為一段指令的終結，若是沒有輸入分號則會視為換行並不會執行SQL指令。<br><img src="/../image/mysql3.jpg" alt="Mysql"></p>
-<p>如果不想用指令的方式操作，也可以使用Workbrench來完成這繁瑣的作業喔，可以直接跳到下一段遠端連線資料庫。</p>
-<p>離開MySQL</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
-
-<h2 id="遠端連線資料庫"><a href="#遠端連線資料庫" class="headerlink" title="遠端連線資料庫"></a>遠端連線資料庫</h2><p>建立完資料庫，我們就可以來遠端連線看看我們建立的資料庫是不是可以正常操作</p>
-<h3 id="使用MySQL-Workbrench連線資料庫"><a href="#使用MySQL-Workbrench連線資料庫" class="headerlink" title="使用MySQL Workbrench連線資料庫"></a>使用MySQL Workbrench連線資料庫</h3><p>這是最簡單的方式啦，開啟MySQL Workbrench，新增一個connection，hostname輸入Linode上的IP，輸入username 及密碼完就可以進入到你的資料庫了，不過可以這樣遠端連線有可能是因為我沒有做禁止遠端登入的設定，所以安全性設定那邊也要考量一下自己的需求。</p>
-<p><img src="/../image/mysql4.jpg" alt="Mysql"></p>
-<h5 id="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔"><a href="#到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔" class="headerlink" title="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~"></a>到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~</h5><hr>
-]]></content>
-      <categories>
-        <category>Server</category>
-        <category>Linode</category>
-      </categories>
-      <tags>
-        <tag>Linode</tag>
-        <tag>deploy a website</tag>
-        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -291,6 +262,35 @@
       </categories>
       <tags>
         <tag>Render</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何使用Linode架設網站 ? (5/5) 架站問題分享</title>
+    <url>/2023/07/18/005-Linode-5/</url>
+    <content><![CDATA[<p>會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~</p>
+<span id="more"></span>
+<h2 id="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"><a href="#使用putty和Linode登入server後，游標就鎖住無法輸入任何指令" class="headerlink" title="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"></a>使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</h2><p>這個問題真的很少見，也是困擾了我好幾天，記得好像是裝完nginx的時候，登出後進來就這樣了，嘗試了很多方式都無解，後來詢問Linode客服，通信了好幾次，終於在linode lish console上有解決這個問題，先按<span class="mark">ctrl + Z</span>再按<span class="mark">ctrl + C</span>就可以解除鎖定的游標正常輸入了，但是對putty沒用，也有試過x-shell一樣無解，後來我就只能用linode lish console輸入指令。<br><a href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">Linode客服提供的資料</a></p>
+<p><img src="/../image/q1.jpg" alt="question"></p>
+<hr>
+<h2 id="Linode-對SMTP的限制"><a href="#Linode-對SMTP的限制" class="headerlink" title="Linode 對SMTP的限制"></a>Linode 對SMTP的限制</h2><p>如果你的專案是會用到SMTP寄送email的功能，就會遇到當你專案佈署上去的時候，要寄出信件時會有連線time out 的問題，這其實是因為linode限制SMTP的功能，要向他們申請才可以使用這項功能，可以聯繫他們的客服申請，他們會請你提供相關的資訊，像是會在什麼情況下寄送email等，審核通過之後他們就會解除對SMTP的限制，就可以使用了，但這塊我後來還沒實際驗證過，不確定是不是這樣就可以寄送email</p>
+<p><img src="/../image/q2.jpg" alt="question"></p>
+<hr>
+<h2 id="無法連線上Linode的MySQL"><a href="#無法連線上Linode的MySQL" class="headerlink" title="無法連線上Linode的MySQL"></a>無法連線上Linode的MySQL</h2><ol>
+<li>先確認Linode上的Mysql是可以正常運作的</li>
+<li>檢查&#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d目錄下的mysqld.cnf的mysqlx-bind-address是不是還是<span class="markWord">localhost</span>，如果還是要改成<span class="markWord">127.0.0.1</span></li>
+<li>檢查設定的使用者是否有足夠的權限</li>
+<li>檢查防火牆設定允許從外部連線到Mysql伺服器的port(預設3306)</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Server</category>
+        <category>Linode</category>
+      </categories>
+      <tags>
+        <tag>Linode</tag>
+        <tag>SSL</tag>
+        <tag>domain</tag>
       </tags>
   </entry>
   <entry>
