@@ -30,12 +30,12 @@
     }
 </style>
 
-  <meta name="description" content="前言前陣子在做自己的side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過Linode來架設網站的，這次架站前端的Web Server是使用Ngnix來部署Angular專案，後端則使用Tomcat部署Java Spring Boot專案，資料庫使用My SQL，最後也">
+  <meta name="description" content="前言前陣子在做自己的 side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署 project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過Linode來架設網站的，這次架站前端的 Web Server 是使用 Ngnix 來部署 Angular 專案，後端則使用 Tomcat 部署 Java Spring Boot 專案，資料庫">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何使用Linode架設網站 ? (1&#x2F;5) 創建Linode">
 <meta property="og:url" content="https://jenny83318.github.io/2023/07/11/001-Linode-1/index.html">
 <meta property="og:site_name" content="Jenny&#39;s Blog">
-<meta property="og:description" content="前言前陣子在做自己的side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過Linode來架設網站的，這次架站前端的Web Server是使用Ngnix來部署Angular專案，後端則使用Tomcat部署Java Spring Boot專案，資料庫使用My SQL，最後也">
+<meta property="og:description" content="前言前陣子在做自己的 side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署 project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過Linode來架設網站的，這次架站前端的 Web Server 是使用 Ngnix 來部署 Angular 專案，後端則使用 Tomcat 部署 Java Spring Boot 專案，資料庫">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://jenny83318.github.io/image/signUp.jpg">
 <meta property="og:image" content="https://jenny83318.github.io/image/linodeServer.jpg">
@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://jenny83318.github.io/image/linodeServer3.jpg">
 <meta property="og:image" content="https://jenny83318.github.io/image/linodeLish.jpg">
 <meta property="article:published_time" content="2023-07-11T08:41:19.000Z">
-<meta property="article:modified_time" content="2023-11-02T09:08:51.545Z">
+<meta property="article:modified_time" content="2023-11-03T06:58:37.377Z">
 <meta property="article:author" content="Jenny Ou Yang">
 <meta property="article:tag" content="Linode">
 <meta property="article:tag" content="deploy a website">
@@ -239,7 +239,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-02 17:08:51" itemprop="dateModified" datetime="2023-11-02T17:08:51+08:00">2023-11-02</time>
+                <time title="Modified: 2023-11-03 14:58:37" itemprop="dateModified" datetime="2023-11-03T14:58:37+08:00">2023-11-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,17 +266,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前陣子在做自己的side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過<span class="markWord">Linode</span>來架設網站的，這次架站前端的Web Server是使用Ngnix來部署Angular專案，後端則使用Tomcat部署Java Spring Boot專案，資料庫使用My SQL，最後也會分享這中間遇到的一些問題以及是如何解決的。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前陣子在做自己的 side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署 project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過<span class="markWord">Linode</span>來架設網站的，這次架站前端的 Web Server 是使用 Ngnix 來部署 Angular 專案，後端則使用 Tomcat 部署 Java Spring Boot 專案，資料庫使用 My SQL，最後也會分享這中間遇到的一些問題以及是如何解決的。</p>
 <span id="more"></span>
-<h2 id="Linode-是什麼"><a href="#Linode-是什麼" class="headerlink" title="Linode 是什麼?"></a>Linode 是什麼?</h2><p>   Linode是一個總部建立於美國紐澤西州加洛偉市的虛擬專用伺服器提供商。它的名字是由英文中Linux中的Li和node構成的混成詞。如同它的名字一樣，Linode 只提供執行 Linux 的伺服器，而不提供執行 Windows Server或其他作業系統的伺服器。它的服務一向以穩定著稱。</p>
-<h2 id="創建一個Linode-Server"><a href="#創建一個Linode-Server" class="headerlink" title="創建一個Linode Server"></a>創建一個Linode Server</h2><h3 id="註冊Linode帳號"><a href="#註冊Linode帳號" class="headerlink" title="註冊Linode帳號"></a>註冊Linode帳號</h3><p>  到<a target="_blank" rel="noopener" href="https://www.linode.com/"><strong>Linode官網</strong></a>註冊一個帳號， 這邊可以使用Google或github帳號來註冊。他會需要輸入要拿來扣款的信用卡資訊及帳單資訊，註冊成功就可以進到Linode的管理頁面。</p>
+
+<h2 id="Linode-是什麼"><a href="#Linode-是什麼" class="headerlink" title="Linode 是什麼?"></a>Linode 是什麼?</h2><p>Linode 是一個總部建立於美國紐澤西州加洛偉市的虛擬專用伺服器提供商。它的名字是由英文中 Linux 中的 Li 和 node 構成的混成詞。如同它的名字一樣，Linode 只提供執行 Linux 的伺服器，而不提供執行 Windows Server 或其他作業系統的伺服器。它的服務一向以穩定著稱。</p>
+<h2 id="創建一個-Linode-Server"><a href="#創建一個-Linode-Server" class="headerlink" title="創建一個 Linode Server"></a>創建一個 Linode Server</h2><h3 id="註冊-Linode-帳號"><a href="#註冊-Linode-帳號" class="headerlink" title="註冊 Linode 帳號"></a>註冊 Linode 帳號</h3><p>到<a target="_blank" rel="noopener" href="https://www.linode.com/"><strong>Linode 官網</strong></a>註冊一個帳號， 這邊可以使用 Google 或 github 帳號來註冊。他會需要輸入要拿來扣款的信用卡資訊及帳單資訊，註冊成功就可以進到 Linode 的管理頁面。</p>
 <p><img src="/../image/signUp.jpg" alt="註冊表單"></p>
-<h3 id="建立虛擬機"><a href="#建立虛擬機" class="headerlink" title="建立虛擬機"></a>建立虛擬機</h3><p>進到Linode的管理頁面後，點選create linode進入設定畫面，Images可以選擇要使用的作業系統，我是使用Ubuntu 20.04 LTS，<span class="markWord">Ubuntu是著名的Linux發行版之一</span>，也是目前最多使用者的Linux版本。Region可以選擇Server的所在地，離我們比較近的可以考慮日本、新加坡，CPU則是選擇最便宜的Shared CPU的Nanode 1GB，每個月1GB的RAM及25G的容量，目前覺得還蠻夠用的。<br><img src="/../image/linodeServer.jpg" alt="Linode Server"></p>
-<p>在『Linode Label』和『Add Tags』兩個欄位區塊，可以分別輸入一個主機識別名稱，另一個為分類標籤，如想要將此次的VPS主機用在網頁伺服器，那可以將此主機分類為『Web』標籤。接著需要為此VPS主機的系統設定一個『Root Password』root密碼（密碼等下登入主機會用到，請務必記住好），另外你也可以為你的Linux主機設定SSH金鑰，設定SSH金鑰好處就是可以讓你的主機在登入時更加安全與方便，一般來說如果你登入Linux主機，都是使用username+密碼方式登入Linux主機，現在如果你為你的主機設定SSH金鑰認證的話，是可以不用輸入密碼就可以直接登入Linux主機了，這樣的登入方式會比輸入密碼的方式來的安全與也更加方便，當然如果你不知道要怎麼產生SSH金鑰，Linode也有提供 <a target="_blank" rel="noopener" href="https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh"><strong>在不同作業系統上產生SSH金鑰的方法</strong></a>。若要為此部VPS主機新增SSH金鑰，可點選SSH Keys區塊的『Add an SSH Key』按鈕來新增新的SSH公開金鑰。</p>
+<h3 id="建立虛擬機"><a href="#建立虛擬機" class="headerlink" title="建立虛擬機"></a>建立虛擬機</h3><p>進到 Linode 的管理頁面後，點選 create linode 進入設定畫面，Images 可以選擇要使用的作業系統，我是使用 Ubuntu 20.04 LTS，<span class="markWord">Ubuntu 是著名的 Linux 發行版之一</span>，也是目前最多使用者的 Linux 版本。Region 可以選擇 Server 的所在地，離我們比較近的可以考慮日本、新加坡，CPU 則是選擇最便宜的 Shared CPU 的 Nanode 1GB，每個月 1GB 的 RAM 及 25G 的容量，目前覺得還蠻夠用的。<br><img src="/../image/linodeServer.jpg" alt="Linode Server"></p>
+<p>在『Linode Label』和『Add Tags』兩個欄位區塊，可以分別輸入一個主機識別名稱，另一個為分類標籤，如想要將此次的 VPS 主機用在網頁伺服器，那可以將此主機分類為『Web』標籤。接著需要為此 VPS 主機的系統設定一個『Root Password』root 密碼（密碼等下登入主機會用到，請務必記住好），另外你也可以為你的 Linux 主機設定 SSH 金鑰，設定 SSH 金鑰好處就是可以讓你的主機在登入時更加安全與方便，一般來說如果你登入 Linux 主機，都是使用 username+密碼方式登入 Linux 主機，現在如果你為你的主機設定 SSH 金鑰認證的話，是可以不用輸入密碼就可以直接登入 Linux 主機了，這樣的登入方式會比輸入密碼的方式來的安全與也更加方便，當然如果你不知道要怎麼產生 SSH 金鑰，Linode 也有提供 <a target="_blank" rel="noopener" href="https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh"><strong>在不同作業系統上產生 SSH 金鑰的方法</strong></a>。若要為此部 VPS 主機新增 SSH 金鑰，可點選 SSH Keys 區塊的『Add an SSH Key』按鈕來新增新的 SSH 公開金鑰。</p>
 <p><img src="/../image/linodeServer2.jpg" alt="Linode Server"></p>
-<p>點選Create Linode之後Server就會開始部署，如下圖所示就可以看到虛擬機目前的狀態已切換成『Running』執行中，接著就能開始管理你的主機了。之後如果要重新啟動主機可以點『Reboot』或將主機關機『Power Off』。</p>
+<p>點選 Create Linode 之後 Server 就會開始部署，如下圖所示就可以看到虛擬機目前的狀態已切換成『Running』執行中，接著就能開始管理你的主機了。之後如果要重新啟動主機可以點『Reboot』或將主機關機『Power Off』。</p>
 <h3 id="查看虛擬機"><a href="#查看虛擬機" class="headerlink" title="查看虛擬機"></a>查看虛擬機</h3><p><img src="/../image/linodeServer3.jpg" alt="Linode Server"></p>
-<p>如果你沒有要使用SSH協定的終端機程式，那Linode有提供一個不需要安裝任何的瀏覽器擴充套件，就可以很方便的使用瀏覽器來直接遠端存取主機的功能，如下圖所示你可以使用Linode的<span class="markWord">『Linose Console』</span>，這功能是可以直接在瀏覽器使用虛擬Console來遠端主機，Linode有提供兩種模式，分別為『Weblish』和『Glish』，前者Weblish類似終端機，只能輸入指令控制主機，後者Glish為假如你主機的作業系統有提供GUI介面，比如有些人會裝Windows系統或Linux發行版的Desktop版本，那就可以使用Glish來進行控制你的主機，如果有使用SSH則可以使用有支援SSH協定的終端機程式來連線至你剛剛建立好的VPS主機，例如putty、x-shell等，主機SSH預設Port為22。</p>
+<p>如果你沒有要使用 SSH 協定的終端機程式，那 Linode 有提供一個不需要安裝任何的瀏覽器擴充套件，就可以很方便的使用瀏覽器來直接遠端存取主機的功能，如下圖所示你可以使用 Linode 的<span class="markWord">『Linose Console』</span>，這功能是可以直接在瀏覽器使用虛擬 Console 來遠端主機，Linode 有提供兩種模式，分別為『Weblish』和『Glish』，前者 Weblish 類似終端機，只能輸入指令控制主機，後者 Glish 為假如你主機的作業系統有提供 GUI 介面，比如有些人會裝 Windows 系統或 Linux 發行版的 Desktop 版本，那就可以使用 Glish 來進行控制你的主機，如果有使用 SSH 則可以使用有支援 SSH 協定的終端機程式來連線至你剛剛建立好的 VPS 主機，例如 putty、x-shell 等，主機 SSH 預設 Port 為 22。</p>
 <p><img src="/../image/linodeLish.jpg" alt="Linode Server"></p>
 <p>到這裡恭喜你已經完成了建置屬於自己的虛擬機啦，是不是很簡單呢? 下一篇則是要說明如何建置資料庫。</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料:"></a>參考資料:</h2><ul>
@@ -314,7 +315,7 @@
               <a href="/tags/deploy-a-website/" rel="tag"><i class="fa fa-tags"></i> deploy a website</a>
           </div>
            
-  <div class="popular-posts-header"><i class="fa fa-thumbtack"></i> 相關文章推薦 </div>
+  <div class="popular-posts-header">  相關文章推薦 <i class="fa fa-comment"></i></div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2023\07\13\002-Linode-2\" rel="bookmark">如何使用Linode架設網站 ? (2/5) 建置資料庫</a></div>
@@ -406,7 +407,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linode-%E6%98%AF%E4%BB%80%E9%BA%BC"><span class="nav-number">2.</span> <span class="nav-text">Linode 是什麼?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%B5%E5%BB%BA%E4%B8%80%E5%80%8BLinode-Server"><span class="nav-number">3.</span> <span class="nav-text">創建一個Linode Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%BB%E5%86%8ALinode%E5%B8%B3%E8%99%9F"><span class="nav-number">3.1.</span> <span class="nav-text">註冊Linode帳號</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%99%9B%E6%93%AC%E6%A9%9F"><span class="nav-number">3.2.</span> <span class="nav-text">建立虛擬機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%99%9B%E6%93%AC%E6%A9%9F"><span class="nav-number">3.3.</span> <span class="nav-text">查看虛擬機</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">參考資料:</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linode-%E6%98%AF%E4%BB%80%E9%BA%BC"><span class="nav-number">2.</span> <span class="nav-text">Linode 是什麼?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%B5%E5%BB%BA%E4%B8%80%E5%80%8B-Linode-Server"><span class="nav-number">3.</span> <span class="nav-text">創建一個 Linode Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%BB%E5%86%8A-Linode-%E5%B8%B3%E8%99%9F"><span class="nav-number">3.1.</span> <span class="nav-text">註冊 Linode 帳號</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%99%9B%E6%93%AC%E6%A9%9F"><span class="nav-number">3.2.</span> <span class="nav-text">建立虛擬機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%99%9B%E6%93%AC%E6%A9%9F"><span class="nav-number">3.3.</span> <span class="nav-text">查看虛擬機</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">參考資料:</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

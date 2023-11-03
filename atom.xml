@@ -183,7 +183,7 @@
     <link href="https://jenny83318.github.io/2023/07/18/005-Linode-5/"/>
     <id>https://jenny83318.github.io/2023/07/18/005-Linode-5/</id>
     <published>2023-07-18T07:23:17.000Z</published>
-    <updated>2023-10-31T07:11:49.019Z</updated>
+    <updated>2023-11-03T07:27:48.793Z</updated>
     
     
     <summary type="html">&lt;p&gt;會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~&lt;/p&gt;</summary>
@@ -287,10 +287,10 @@
     <link href="https://jenny83318.github.io/2023/07/11/001-Linode-1/"/>
     <id>https://jenny83318.github.io/2023/07/11/001-Linode-1/</id>
     <published>2023-07-11T08:41:19.000Z</published>
-    <updated>2023-11-02T09:08:51.545Z</updated>
+    <updated>2023-11-03T06:58:37.377Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;前陣子在做自己的side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過&lt;span class=&quot;markWord&quot;&gt;Linode&lt;/span&gt;來架設網站的，這次架站前端的Web Server是使用Ngnix來部署Angular專案，後端則使用Tomcat部署Java Spring Boot專案，資料庫使用My SQL，最後也會分享這中間遇到的一些問題以及是如何解決的。&lt;/p&gt;</summary>
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;前陣子在做自己的 side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署 project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過&lt;span class=&quot;markWord&quot;&gt;Linode&lt;/span&gt;來架設網站的，這次架站前端的 Web Server 是使用 Ngnix 來部署 Angular 專案，後端則使用 Tomcat 部署 Java Spring Boot 專案，資料庫使用 My SQL，最後也會分享這中間遇到的一些問題以及是如何解決的。&lt;/p&gt;</summary>
     
     
     
