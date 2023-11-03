@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/image_123650291.JPG">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/iconBig.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/iconSmall.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Playpen Sans:300,300italic,400,400italic,700,700italic|Caveat:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jenny83318.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#b79c8c","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<style>
+    .pace .pace-progress {
+         background:rgb(226, 157, 130);
+        height:5px
+    }
+</style>
+
+  <meta name="description" content="前言在工作開發的時候，時常需要將一串攏長又複雜Json字串轉成JavaBean傳給前端，使用ObjectMapper來轉換就很方便，如果之後有調整欄位，也很方便修改，下面會分成JSON陣列和非陣列的資料來說明。Jackson ObjectMapper 是 Java 中應用非常廣泛的序列化、反序列化的工具，它可以幫助我們簡單、快速將 Java 物件與 json 之間作轉換，Spring Framew">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用ObjectMapper把Json轉成Java Bean">
+<meta property="og:url" content="https://jenny83318.github.io/2023/07/28/007-ObjectMapper/index.html">
+<meta property="og:site_name" content="Jenny&#39;s Blog">
+<meta property="og:description" content="前言在工作開發的時候，時常需要將一串攏長又複雜Json字串轉成JavaBean傳給前端，使用ObjectMapper來轉換就很方便，如果之後有調整欄位，也很方便修改，下面會分成JSON陣列和非陣列的資料來說明。Jackson ObjectMapper 是 Java 中應用非常廣泛的序列化、反序列化的工具，它可以幫助我們簡單、快速將 Java 物件與 json 之間作轉換，Spring Framew">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-07-28T10:23:17.000Z">
+<meta property="article:modified_time" content="2023-11-03T13:51:00.847Z">
+<meta property="article:author" content="Jenny Ou Yang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JSON">
+<meta property="article:tag" content="parser">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jenny83318.github.io/2023/07/28/007-ObjectMapper/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>使用ObjectMapper把Json轉成Java Bean | Jenny's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Jenny's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jenny's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Make a little progress each day</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jenny83318.github.io/2023/07/28/007-ObjectMapper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jenny Ou Yang">
+      <meta itemprop="description" content="Jave Software Engineer">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jenny's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用ObjectMapper把Json轉成Java Bean
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-28 18:23:17" itemprop="dateCreated datePublished" datetime="2023-07-28T18:23:17+08:00">2023-07-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-03 21:51:00" itemprop="dateModified" datetime="2023-11-03T21:51:00+08:00">2023-11-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在工作開發的時候，時常需要將一串攏長又複雜Json字串轉成JavaBean傳給前端，使用<span class ="markWord">ObjectMapper</span>來轉換就很方便，如果之後有調整欄位，也很方便修改，下面會分成JSON陣列和非陣列的資料來說明。Jackson ObjectMapper 是 Java 中應用非常廣泛的序列化、反序列化的工具，它可以幫助我們簡單、快速將 Java 物件與 json 之間作轉換，Spring Framework 將它作為預設轉換器。</p>
+<span id="more"></span>
+
+<h2 id="非JSON陣列"><a href="#非JSON陣列" class="headerlink" title="非JSON陣列"></a>非JSON陣列</h2><figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;custId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;186750&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;custName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AKEKR&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;A&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;date&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2023/07/11&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;orderNo&quot;</span><span class="punctuation">:</span> <span class="string">&quot;01235&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="number">2250</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;totAmt&quot;</span><span class="punctuation">:</span> <span class="number">1401500</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ordList&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;prodId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;02&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="string">&quot;300&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;qty&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>設定對應的Java Bean，<span class ="markWord">@JsonProperty內設定的欄位名稱必須和json的key值一模一樣</span></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">OUT</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String custId;</span><br><span class="line">    <span class="keyword">private</span> String type;</span><br><span class="line">    <span class="keyword">private</span> String category;</span><br><span class="line">    <span class="keyword">private</span> String date;</span><br><span class="line">    <span class="keyword">private</span> String orderNo;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> price;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> totAmt;</span><br><span class="line">    <span class="keyword">private</span> List&lt;ORDER&gt; ordList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;ORDER&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">OUT</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">OUT</span><span class="params">(<span class="meta">@JsonProperty(&quot;custId&quot;)</span> String custId, <span class="meta">@JsonProperty(&quot;type&quot;)</span> String type,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;category&quot;)</span> String category, <span class="meta">@JsonProperty(&quot;date&quot;)</span> String date,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;orderNo&quot;)</span> String orderNo,<span class="meta">@JsonProperty(&quot;price&quot;)</span> <span class="type">int</span> price,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;totAmt&quot;)</span> <span class="type">int</span> totAmt, <span class="meta">@JsonProperty(&quot;ordList&quot;)</span> ArrayList&lt;OrdPrice&gt; ordList)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.custId = custId;</span><br><span class="line">        <span class="built_in">this</span>.type = type;</span><br><span class="line">        <span class="built_in">this</span>.category = category;</span><br><span class="line">        <span class="built_in">this</span>.date = date;</span><br><span class="line">        <span class="built_in">this</span>.orderNo = orderNo;</span><br><span class="line">        <span class="built_in">this</span>.price = price;</span><br><span class="line">        <span class="built_in">this</span>.totQty = totQty;</span><br><span class="line">        <span class="built_in">this</span>.totAmt = totAmt;</span><br><span class="line">        <span class="built_in">this</span>.ordList = ordList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ORDER</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String prodId;</span><br><span class="line">    <span class="keyword">private</span> String price;</span><br><span class="line">    <span class="keyword">private</span> String qty;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ORDER</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ORDER</span><span class="params">(<span class="meta">@JsonProperty(&quot;prodId&quot;)</span> String prodId, <span class="meta">@JsonProperty(&quot;price&quot;)</span> <span class="type">int</span> price,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;qty&quot;)</span> <span class="type">int</span> qty)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.prodId = prodId;</span><br><span class="line">        <span class="built_in">this</span>.price = price;</span><br><span class="line">        <span class="built_in">this</span>.qty = qty;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接著就可以使用ObjectMapper的readFor()方法來讀取Json字串並轉呈Java物件，這邊要注意的是，若之後Json有多加欄位，Bean沒有同步調整則會報錯，因此可以多加下面這一行來忽略未知欄位。這邊盡量避免每次都執行 new ObjectMapper() ，在系統遭遇高併發（High Concurrency）情況下，這種寫法很容易出現效能瓶頸。若每次序列化&#x2F;反序列化都使用 new ObjectMapper，比起共用一個 ObjectMapper，執行時間至少相差五倍</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QueryNewProjectCCT</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ObjectMapper</span> <span class="variable">mapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">    <span class="keyword">public</span> OUT <span class="title function_">doProcess</span><span class="params">(IN in)</span> <span class="keyword">throws</span> CodeException &#123;</span><br><span class="line">     <span class="comment">// 忽略未知的欄位</span></span><br><span class="line">        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, <span class="literal">false</span>);</span><br><span class="line">        <span class="type">OUT</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OUT</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            out = mapper.readerFor(Result.class).readValue(jsonStr);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (JsonProcessingException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CodeException</span>(NDPServerCodes.CCT_CALL_ERROR, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="JSON陣列"><a href="#JSON陣列" class="headerlink" title="JSON陣列"></a>JSON陣列</h2><p>與非JSON陣列不同的地方是無法使用readFor().readValue()</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QueryNewProjectCCT</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ObjectMapper</span> <span class="variable">mapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">    <span class="keyword">public</span> OUT <span class="title function_">doProcess</span><span class="params">(IN in)</span> <span class="keyword">throws</span> CodeException &#123;</span><br><span class="line">     <span class="comment">// 忽略未知的欄位</span></span><br><span class="line">        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, <span class="literal">false</span>);</span><br><span class="line">        <span class="type">OUT</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">OUT</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            outList = mapper.readValue(jsonStr, <span class="keyword">new</span> <span class="title class_">TypeReference</span>&lt;List&lt;OUT&gt;&gt;() &#123;</span><br><span class="line">        &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (JsonProcessingException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CodeException</span>(NDPServerCodes.CCT_CALL_ERROR, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="JSON-Property檢查"><a href="#JSON-Property檢查" class="headerlink" title="JSON Property檢查"></a>JSON Property檢查</h2><p>如果要檢查JSON字串內的欄位和JavaBean是否一致，可以將Java Bean和JSON字串分別轉成JsonNode，再逐一比對。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">checkOrderJson</span><span class="params">(String plainString)</span> <span class="keyword">throws</span> CodeException &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        plainString = plainString.substring(plainString.indexOf(<span class="string">&quot;,&quot;</span>) + <span class="number">1</span>);</span><br><span class="line">        log.info(<span class="string">&quot;plainString:&#123;&#125;&quot;</span>, plainString);</span><br><span class="line">        <span class="type">DATA</span> <span class="variable">data</span> <span class="operator">=</span> mapper.readValue(plainString, DATA.class);</span><br><span class="line">        <span class="type">JsonNode</span> <span class="variable">jsonNode</span> <span class="operator">=</span> mapper.readTree(plainString);</span><br><span class="line">        List&lt;String&gt; missingFields = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="type">JsonNode</span> <span class="variable">beanNode</span> <span class="operator">=</span> mapper.valueToTree(data);</span><br><span class="line">        compareFields(jsonNode, beanNode, <span class="string">&quot;&quot;</span>, missingFields);</span><br><span class="line">        <span class="keyword">if</span>(! missingFields.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CodeException</span>(ISPServerCodes.JSON_KEY_NOT_FOUND, missingFields);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (JsonProcessingException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CodeException</span>(ISPServerCodes.JSON_PROCESS_ERROR, e.getMessage());</span><br><span class="line">    &#125;        </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">compareFields</span><span class="params">(JsonNode jsonNode, JsonNode beanNode, String currentPath, List&lt;String&gt; missingFields)</span> &#123;</span><br><span class="line">    Iterator&lt;String&gt; fieldNames = beanNode.fieldNames();</span><br><span class="line">    <span class="keyword">while</span> (fieldNames.hasNext()) &#123;</span><br><span class="line">        <span class="comment">//property name</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">fieldName</span> <span class="operator">=</span> fieldNames.next().toString();</span><br><span class="line">        <span class="comment">//property path</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">fieldPath</span> <span class="operator">=</span> currentPath.isEmpty() ? fieldName : currentPath + <span class="string">&quot;.&quot;</span> + fieldName;</span><br><span class="line">        <span class="keyword">if</span> (!jsonNode.has(fieldName)) &#123;</span><br><span class="line">            missingFields.add(fieldPath);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="type">JsonNode</span> <span class="variable">subJsonNode</span> <span class="operator">=</span> jsonNode.get(fieldName);</span><br><span class="line">            <span class="type">JsonNode</span> <span class="variable">subBeanNode</span> <span class="operator">=</span> beanNode.get(fieldName);</span><br><span class="line">            <span class="keyword">if</span> (subJsonNode.isObject() &amp;&amp; subBeanNode.isObject()) &#123;</span><br><span class="line">                compareFields(subJsonNode, subBeanNode, fieldPath, missingFields);</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="comment">//第一層List檢查</span></span><br><span class="line">            <span class="keyword">if</span> (subBeanNode.isArray() &amp;&amp; subJsonNode.isArray()) &#123;</span><br><span class="line">                <span class="keyword">if</span>(subBeanNode.size() &gt; subJsonNode.size()) &#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; subJsonNode.size(); i++) &#123;</span><br><span class="line">                        missingFields.add(fieldPath + <span class="string">&quot;[&quot;</span> + i + <span class="string">&quot;]&quot;</span>); </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//第二層List</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; subBeanNode.size(); i++) &#123;</span><br><span class="line">                    <span class="type">JsonNode</span> <span class="variable">sndJsonNode</span> <span class="operator">=</span> subJsonNode.get(i);</span><br><span class="line">                    <span class="type">JsonNode</span> <span class="variable">sndBeanNode</span> <span class="operator">=</span> subBeanNode.get(i);</span><br><span class="line">                    <span class="keyword">if</span>(sndJsonNode.isObject() &amp;&amp; sndBeanNode.isObject()) &#123;</span><br><span class="line">                        compareFields(sndJsonNode, sndBeanNode, fieldPath + <span class="string">&quot;[&quot;</span> + i + <span class="string">&quot;]&quot;</span>, missingFields);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">DATA</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String condiType;</span><br><span class="line">    <span class="keyword">private</span> String act;        </span><br><span class="line">    <span class="keyword">private</span> String userId;</span><br><span class="line">    <span class="keyword">private</span> String ts;</span><br><span class="line">    <span class="keyword">private</span> List &lt;RECS&gt; recs;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DATA</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DATA</span><span class="params">(<span class="meta">@JsonProperty(&quot;condiType&quot;)</span> String condiType, <span class="meta">@JsonProperty(&quot;act&quot;)</span> String act, </span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;userId&quot;)</span> String userId, <span class="meta">@JsonProperty(&quot;ts&quot;)</span> String ts, </span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;recs&quot;)</span>  ArrayList&lt;RECS&gt; recs)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.condiType = condiType;</span><br><span class="line">        <span class="built_in">this</span>.act = act;</span><br><span class="line">        <span class="built_in">this</span>.userId = userId;</span><br><span class="line">        <span class="built_in">this</span>.ts = ts;</span><br><span class="line">        <span class="built_in">this</span>.recs = recs;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">RECS</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String stryCode;</span><br><span class="line">    <span class="keyword">private</span> String con_subtype;</span><br><span class="line">    <span class="keyword">private</span> String washKind;</span><br><span class="line">    <span class="keyword">private</span> String action;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    <span class="keyword">private</span> String sym;</span><br><span class="line">    <span class="keyword">private</span> String mkt;</span><br><span class="line">    <span class="keyword">private</span> String mktSub;</span><br><span class="line">    <span class="keyword">private</span> String custNo;</span><br><span class="line">    <span class="keyword">private</span> String acctNo;</span><br><span class="line">    <span class="keyword">private</span> String conditions_relation;</span><br><span class="line">    <span class="keyword">private</span> List&lt;ORDER&gt; orders;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RECS</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RECS</span><span class="params">(<span class="meta">@JsonProperty(&quot;condiType&quot;)</span> String stryCode, <span class="meta">@JsonProperty(&quot;con_subtype&quot;)</span> String con_subtype,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;washKind&quot;)</span> String washKind, <span class="meta">@JsonProperty(&quot;action&quot;)</span> String action,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;email&quot;)</span> String email, <span class="meta">@JsonProperty(&quot;sym&quot;)</span> String sym,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;mkt&quot;)</span> String mkt, <span class="meta">@JsonProperty(&quot;mktSub&quot;)</span> String mktSub,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;custNo&quot;)</span> String custNo, <span class="meta">@JsonProperty(&quot;acctNo&quot;)</span>  String acctNo,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;conditions_relation&quot;)</span> String conditions_relation, <span class="meta">@JsonProperty(&quot;conditions&quot;)</span>  ArrayList&lt;CONDITION&gt; conditions,</span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;orders&quot;)</span>  ArrayList&lt;ORDER&gt; orders)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.stryCode = stryCode;</span><br><span class="line">        <span class="built_in">this</span>.con_subtype = con_subtype;</span><br><span class="line">        <span class="built_in">this</span>.washKind = washKind;</span><br><span class="line">        <span class="built_in">this</span>.action = action;</span><br><span class="line">        <span class="built_in">this</span>.email = email;</span><br><span class="line">        <span class="built_in">this</span>.sym = sym;</span><br><span class="line">        <span class="built_in">this</span>.mkt = mkt;</span><br><span class="line">        <span class="built_in">this</span>.mktSub = mktSub;</span><br><span class="line">        <span class="built_in">this</span>.custNo = custNo;</span><br><span class="line">        <span class="built_in">this</span>.acctNo = acctNo;</span><br><span class="line">        <span class="built_in">this</span>.conditions_relation = conditions_relation;</span><br><span class="line">        <span class="built_in">this</span>.conditions = conditions;</span><br><span class="line">        <span class="built_in">this</span>.orders = orders;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ORDER</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String belongTo;</span><br><span class="line">    <span class="keyword">private</span> String odrPrcType;</span><br><span class="line">    <span class="keyword">private</span> String orderPrice;</span><br><span class="line">    <span class="keyword">private</span> String priceFlag;</span><br><span class="line">    <span class="keyword">private</span> String orderFlag;</span><br><span class="line">    <span class="keyword">private</span> String bs;</span><br><span class="line">    <span class="keyword">private</span> String orderVol;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ORDER</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ORDER</span><span class="params">(<span class="meta">@JsonProperty(&quot;belongTo&quot;)</span> String belongTo, <span class="meta">@JsonProperty(&quot;odrPrcType&quot;)</span> String odrPrcType, </span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;orderPrice&quot;)</span> String orderPrice, <span class="meta">@JsonProperty(&quot;priceFlag&quot;)</span> String priceFlag, </span></span><br><span class="line"><span class="params">        <span class="meta">@JsonProperty(&quot;orderFlag&quot;)</span> String orderFlag,<span class="meta">@JsonProperty(&quot;bs&quot;)</span> String bs, <span class="meta">@JsonProperty(&quot;orderVol&quot;)</span> String orderVol)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.belongTo = belongTo;</span><br><span class="line">        <span class="built_in">this</span>.odrPrcType = odrPrcType;</span><br><span class="line">        <span class="built_in">this</span>.orderPrice = orderPrice;</span><br><span class="line">        <span class="built_in">this</span>.priceFlag = priceFlag;</span><br><span class="line">        <span class="built_in">this</span>.orderFlag = orderFlag;</span><br><span class="line">        <span class="built_in">this</span>.bs = bs;</span><br><span class="line">        <span class="built_in">this</span>.orderVol = orderVol;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者:  </strong>Jenny Ou Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文連結: </strong>
+    <a href="https://jenny83318.github.io/2023/07/28/007-ObjectMapper/" title="使用ObjectMapper把Json轉成Java Bean">https://jenny83318.github.io/2023/07/28/007-ObjectMapper/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明:  </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tags"></i> Java</a>
+              <a href="/tags/JSON/" rel="tag"><i class="fa fa-tags"></i> JSON</a>
+              <a href="/tags/parser/" rel="tag"><i class="fa fa-tags"></i> parser</a>
+          </div>
+           
+  <div class="popular-posts-header">  相關文章推薦 <i class="fa fa-comment"></i></div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\10\12\008-LeetCode-274\" rel="bookmark">LeetCode 274. H-Index</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\10\16\009-LeetCode-1409\" rel="bookmark">LeetCode 1409. Queries on a Permutation With Key</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\10\20\010-LeetCode-135\" rel="bookmark">LeetCode 135. Candy</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\10\26\011-LeetCode-6\" rel="bookmark">LeetCode 6. Zigzag Conversion</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\10\31\012-LeetCode-68\" rel="bookmark">LeetCode 68. Text Justification</a></div>
+    </li>
+  </ul>
+
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/20/006-Render/" rel="prev" title="如何佈署前端專案到Render">
+      <i class="fa fa-chevron-left"></i> 如何佈署前端專案到Render
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/12/008-LeetCode-274/" rel="next" title="LeetCode 274. H-Index">
+      LeetCode 274. H-Index <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9EJSON%E9%99%A3%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">非JSON陣列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON%E9%99%A3%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">JSON陣列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-Property%E6%AA%A2%E6%9F%A5"><span class="nav-number">4.</span> <span class="nav-text">JSON Property檢查</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jenny Ou Yang</p>
+  <div class="site-description" itemprop="description">Jave Software Engineer</div>
+  
+   <div class="feed-link motion-element">
+      <a href="/atom.xml" rel="alternate">
+         <i class="fa fa-rss"></i>
+           RSS
+      </a>
+   </div>
+
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jenny83318" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jenny83318" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/jenny-ou-yang-70584283" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;jenny-ou-yang-70584283" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user-circle"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jenny Ou Yang</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="[object Object]"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://jenny83318.github.io/2023/07/28/007-ObjectMapper/";
+    this.page.identifier = "2023/07/28/007-ObjectMapper/";
+    this.page.title = "使用ObjectMapper把Json轉成Java Bean";
+    this.language = "zh_TW"; 
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://jenny83318.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

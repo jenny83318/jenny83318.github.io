@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/image_123650291.JPG">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/iconBig.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/iconSmall.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Playpen Sans:300,300italic,400,400italic,700,700italic|Caveat:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jenny83318.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#b79c8c","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<style>
+    .pace .pace-progress {
+         background:rgb(226, 157, 130);
+        height:5px
+    }
+</style>
+
+  <meta name="description" content="前言前陣子在做自己的 side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署 project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過Linode來架設網站的，這次架站前端的 Web Server 是使用 Ngnix 來部署 Angular 專案，後端則使用 Tomcat 部署 Java Spring Boot 專案，資料庫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用Linode架設網站 ? (1&#x2F;5) 創建Linode">
+<meta property="og:url" content="https://jenny83318.github.io/2023/07/11/001-Linode-1/index.html">
+<meta property="og:site_name" content="Jenny&#39;s Blog">
+<meta property="og:description" content="前言前陣子在做自己的 side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署 project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過Linode來架設網站的，這次架站前端的 Web Server 是使用 Ngnix 來部署 Angular 專案，後端則使用 Tomcat 部署 Java Spring Boot 專案，資料庫">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jenny83318.github.io/image/signUp.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/linodeServer.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/linodeServer2.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/linodeServer3.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/linodeLish.jpg">
+<meta property="article:published_time" content="2023-07-11T08:41:19.000Z">
+<meta property="article:modified_time" content="2023-11-03T13:51:00.845Z">
+<meta property="article:author" content="Jenny Ou Yang">
+<meta property="article:tag" content="Linode">
+<meta property="article:tag" content="deploy a website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jenny83318.github.io/image/signUp.jpg">
+
+<link rel="canonical" href="https://jenny83318.github.io/2023/07/11/001-Linode-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>如何使用Linode架設網站 ? (1/5) 創建Linode | Jenny's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Jenny's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jenny's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Make a little progress each day</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jenny83318.github.io/2023/07/11/001-Linode-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jenny Ou Yang">
+      <meta itemprop="description" content="Jave Software Engineer">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jenny's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何使用Linode架設網站 ? (1/5) 創建Linode
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-11 16:41:19" itemprop="dateCreated datePublished" datetime="2023-07-11T16:41:19+08:00">2023-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-03 21:51:00" itemprop="dateModified" datetime="2023-11-03T21:51:00+08:00">2023-11-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Server/" itemprop="url" rel="index"><span itemprop="name">Server</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Server/Linode/" itemprop="url" rel="index"><span itemprop="name">Linode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前陣子在做自己的 side project，完成之後想說可以試著架站看看，研究了一陣子終於成功把環境架好並佈署 project，因此想趁記憶還猶新的時候，把架站的過程紀錄下來，所以這系列文章想分享如何透過<span class="markWord">Linode</span>來架設網站的，這次架站前端的 Web Server 是使用 Ngnix 來部署 Angular 專案，後端則使用 Tomcat 部署 Java Spring Boot 專案，資料庫使用 My SQL，最後也會分享這中間遇到的一些問題以及是如何解決的。</p>
+<span id="more"></span>
+
+<h2 id="Linode-是什麼"><a href="#Linode-是什麼" class="headerlink" title="Linode 是什麼?"></a>Linode 是什麼?</h2><p>Linode 是一個總部建立於美國紐澤西州加洛偉市的虛擬專用伺服器提供商。它的名字是由英文中 Linux 中的 Li 和 node 構成的混成詞。如同它的名字一樣，Linode 只提供執行 Linux 的伺服器，而不提供執行 Windows Server 或其他作業系統的伺服器。它的服務一向以穩定著稱。</p>
+<h2 id="創建一個-Linode-Server"><a href="#創建一個-Linode-Server" class="headerlink" title="創建一個 Linode Server"></a>創建一個 Linode Server</h2><h3 id="註冊-Linode-帳號"><a href="#註冊-Linode-帳號" class="headerlink" title="註冊 Linode 帳號"></a>註冊 Linode 帳號</h3><p>到<a target="_blank" rel="noopener" href="https://www.linode.com/"><strong>Linode 官網</strong></a>註冊一個帳號， 這邊可以使用 Google 或 github 帳號來註冊。他會需要輸入要拿來扣款的信用卡資訊及帳單資訊，註冊成功就可以進到 Linode 的管理頁面。</p>
+<p><img src="/../image/signUp.jpg" alt="註冊表單"></p>
+<h3 id="建立虛擬機"><a href="#建立虛擬機" class="headerlink" title="建立虛擬機"></a>建立虛擬機</h3><p>進到 Linode 的管理頁面後，點選 create linode 進入設定畫面，Images 可以選擇要使用的作業系統，我是使用 Ubuntu 20.04 LTS，<span class="markWord">Ubuntu 是著名的 Linux 發行版之一</span>，也是目前最多使用者的 Linux 版本。Region 可以選擇 Server 的所在地，離我們比較近的可以考慮日本、新加坡，CPU 則是選擇最便宜的 Shared CPU 的 Nanode 1GB，每個月 1GB 的 RAM 及 25G 的容量，目前覺得還蠻夠用的。<br><img src="/../image/linodeServer.jpg" alt="Linode Server"></p>
+<p>在『Linode Label』和『Add Tags』兩個欄位區塊，可以分別輸入一個主機識別名稱，另一個為分類標籤，如想要將此次的 VPS 主機用在網頁伺服器，那可以將此主機分類為『Web』標籤。接著需要為此 VPS 主機的系統設定一個『Root Password』root 密碼（密碼等下登入主機會用到，請務必記住好），另外你也可以為你的 Linux 主機設定 SSH 金鑰，設定 SSH 金鑰好處就是可以讓你的主機在登入時更加安全與方便，一般來說如果你登入 Linux 主機，都是使用 username+密碼方式登入 Linux 主機，現在如果你為你的主機設定 SSH 金鑰認證的話，是可以不用輸入密碼就可以直接登入 Linux 主機了，這樣的登入方式會比輸入密碼的方式來的安全與也更加方便，當然如果你不知道要怎麼產生 SSH 金鑰，Linode 也有提供 <a target="_blank" rel="noopener" href="https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh"><strong>在不同作業系統上產生 SSH 金鑰的方法</strong></a>。若要為此部 VPS 主機新增 SSH 金鑰，可點選 SSH Keys 區塊的『Add an SSH Key』按鈕來新增新的 SSH 公開金鑰。</p>
+<p><img src="/../image/linodeServer2.jpg" alt="Linode Server"></p>
+<p>點選 Create Linode 之後 Server 就會開始部署，如下圖所示就可以看到虛擬機目前的狀態已切換成『Running』執行中，接著就能開始管理你的主機了。之後如果要重新啟動主機可以點『Reboot』或將主機關機『Power Off』。</p>
+<h3 id="查看虛擬機"><a href="#查看虛擬機" class="headerlink" title="查看虛擬機"></a>查看虛擬機</h3><p><img src="/../image/linodeServer3.jpg" alt="Linode Server"></p>
+<p>如果你沒有要使用 SSH 協定的終端機程式，那 Linode 有提供一個不需要安裝任何的瀏覽器擴充套件，就可以很方便的使用瀏覽器來直接遠端存取主機的功能，如下圖所示你可以使用 Linode 的<span class="markWord">『Linose Console』</span>，這功能是可以直接在瀏覽器使用虛擬 Console 來遠端主機，Linode 有提供兩種模式，分別為『Weblish』和『Glish』，前者 Weblish 類似終端機，只能輸入指令控制主機，後者 Glish 為假如你主機的作業系統有提供 GUI 介面，比如有些人會裝 Windows 系統或 Linux 發行版的 Desktop 版本，那就可以使用 Glish 來進行控制你的主機，如果有使用 SSH 則可以使用有支援 SSH 協定的終端機程式來連線至你剛剛建立好的 VPS 主機，例如 putty、x-shell 等，主機 SSH 預設 Port 為 22。</p>
+<p><img src="/../image/linodeLish.jpg" alt="Linode Server"></p>
+<p>到這裡恭喜你已經完成了建置屬於自己的虛擬機啦，是不是很簡單呢? 下一篇則是要說明如何建置資料庫。</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料:"></a>參考資料:</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.kjnotes.com/other/106">Linode VPS 主機帳號申請與伺服器架設使用設定教學</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.linode.com/docs/guides/set-up-web-server-host-website/">Set up a Web Server and Host a Website on Linode</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh/">Use SSH Public Key Authentication on Linux, macOS, and Windows</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者:  </strong>Jenny Ou Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文連結: </strong>
+    <a href="https://jenny83318.github.io/2023/07/11/001-Linode-1/" title="如何使用Linode架設網站 ? (1&#x2F;5) 創建Linode">https://jenny83318.github.io/2023/07/11/001-Linode-1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明:  </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linode/" rel="tag"><i class="fa fa-tags"></i> Linode</a>
+              <a href="/tags/deploy-a-website/" rel="tag"><i class="fa fa-tags"></i> deploy a website</a>
+          </div>
+           
+  <div class="popular-posts-header">  相關文章推薦 <i class="fa fa-comment"></i></div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\13\002-Linode-2\" rel="bookmark">如何使用Linode架設網站 ? (2/5) 建置資料庫</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\16\003-Linode-3\" rel="bookmark">如何使用Linode架設網站 ? (3/5) 建置Tomcat及佈署專案</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\18\004-Linode-4\" rel="bookmark">如何使用Linode架設網站 ? (4/5) 建置Nginx及SSL憑證申請</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2023\07\18\005-Linode-5\" rel="bookmark">如何使用Linode架設網站 ? (5/5) 架站問題分享</a></div>
+    </li>
+  </ul>
+
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/13/002-Linode-2/" rel="next" title="如何使用Linode架設網站 ? (2/5) 建置資料庫">
+      如何使用Linode架設網站 ? (2/5) 建置資料庫 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linode-%E6%98%AF%E4%BB%80%E9%BA%BC"><span class="nav-number">2.</span> <span class="nav-text">Linode 是什麼?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%B5%E5%BB%BA%E4%B8%80%E5%80%8B-Linode-Server"><span class="nav-number">3.</span> <span class="nav-text">創建一個 Linode Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%BB%E5%86%8A-Linode-%E5%B8%B3%E8%99%9F"><span class="nav-number">3.1.</span> <span class="nav-text">註冊 Linode 帳號</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%99%9B%E6%93%AC%E6%A9%9F"><span class="nav-number">3.2.</span> <span class="nav-text">建立虛擬機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%99%9B%E6%93%AC%E6%A9%9F"><span class="nav-number">3.3.</span> <span class="nav-text">查看虛擬機</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">參考資料:</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jenny Ou Yang</p>
+  <div class="site-description" itemprop="description">Jave Software Engineer</div>
+  
+   <div class="feed-link motion-element">
+      <a href="/atom.xml" rel="alternate">
+         <i class="fa fa-rss"></i>
+           RSS
+      </a>
+   </div>
+
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jenny83318" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jenny83318" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/jenny-ou-yang-70584283" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;jenny-ou-yang-70584283" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user-circle"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jenny Ou Yang</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="[object Object]"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://jenny83318.github.io/2023/07/11/001-Linode-1/";
+    this.page.identifier = "2023/07/11/001-Linode-1/";
+    this.page.title = "如何使用Linode架設網站 ? (1/5) 創建Linode";
+    this.language = "zh_TW"; 
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://jenny83318.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>
