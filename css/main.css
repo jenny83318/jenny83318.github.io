@@ -1227,7 +1227,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b594ac;
+  background: #8a7309;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1575,7 +1575,7 @@ pre .javascript .function {
 .reading-progress-bar {
   background: #5e9f75;
   display: block;
-  height: 4px;
+  height: 2px;
   left: 0;
   position: fixed;
   width: 0;
@@ -1974,7 +1974,7 @@ pre .javascript .function {
   font-family: UKIJ Ekran;
 }
 .post-tags {
-  margin-top: 40px;
+  margin-top: 20px;
   text-align: center;
 }
 .post-tags a {
@@ -2331,7 +2331,7 @@ ul.breadcrumb li + li:last-child {
   font-size: 1.125em;
   font-weight: bolder;
   margin-bottom: 10px;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .popular-posts {
   padding: 0;
