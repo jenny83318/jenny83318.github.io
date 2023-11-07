@@ -6,7 +6,7 @@
   <link href="https://jenny83318.github.io/atom.xml" rel="self"/>
   
   <link href="https://jenny83318.github.io/"/>
-  <updated>2023-11-07T08:31:42.067Z</updated>
+  <updated>2023-11-07T08:41:21.395Z</updated>
   <id>https://jenny83318.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://jenny83318.github.io/2023/11/07/013-LeetCode-36/"/>
     <id>https://jenny83318.github.io/2023/11/07/013-LeetCode-36/</id>
     <published>2023-11-07T08:38:17.000Z</published>
-    <updated>2023-11-07T08:31:42.067Z</updated>
+    <updated>2023-11-07T08:41:21.395Z</updated>
     
     
     <summary type="html">&lt;p&gt;這題出自於Leetcode的&lt;span class=&quot;markWord&quot;&gt;Top Interview 150&lt;/span&gt;裡的&lt;span class=&quot;mark&quot;&gt;Matrix&lt;/span&gt;類別，再解這題的時候，一開始我是分成三個function分別檢核，但後來看到其他人的code發現這樣寫更精簡，所以就用這樣方式自己再寫一次，題目要我們檢核一個二維陣列是否符合數獨的規範，因此我們可以透過下列步驟來一一檢核:&lt;/p&gt;
