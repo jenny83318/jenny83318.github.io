@@ -6,7 +6,7 @@
   <link href="https://jenny83318.github.io/atom.xml" rel="self"/>
   
   <link href="https://jenny83318.github.io/"/>
-  <updated>2023-11-10T01:43:58.955Z</updated>
+  <updated>2023-11-10T01:53:08.223Z</updated>
   <id>https://jenny83318.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://jenny83318.github.io/2023/11/09/013-LeetCode-48/"/>
     <id>https://jenny83318.github.io/2023/11/09/013-LeetCode-48/</id>
     <published>2023-11-09T11:30:17.000Z</published>
-    <updated>2023-11-10T01:43:58.955Z</updated>
+    <updated>2023-11-10T01:53:08.223Z</updated>
     
     
-    <summary type="html">&lt;p&gt;這題出自於Leetcode的&lt;span class=&quot;markWord&quot;&gt;Top Interview 150&lt;/span&gt;裡的&lt;span class=&quot;mark&quot;&gt;Matrix&lt;/span&gt;類別，這題也是我這三個多月在LeetCcde刷的第100題~剛好也把Matrix系列刷到一個段落，這題看起來很簡單，但也是需要想一下，我的作法是顯反轉matrix陣列的順序，在將陣列位置對調就可以了，要注意的是在對調的時候要做判斷，不然就會重複對調最後的結果還是跟原本一樣，例如跑迴圈將matrix[0][1]改成matrix[1][0]，迴圈跑到matrix[1][0]的時候又會將matrix[1][0]改回matrix[0][1]。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;這題出自於Leetcode的&lt;span class=&quot;markWord&quot;&gt;Top Interview 150&lt;/span&gt;裡的&lt;span class=&quot;mark&quot;&gt;Matrix&lt;/span&gt;類別，這題也是我這三個多月在LeetCcde刷的第100題~剛好也把Matrix系列刷到一個段落，這題看起來很簡單，但也是需要想一下，我的作法是顯反轉matrix陣列的順序，在將陣列內位置水平垂直對調就可以了，要注意的是在對調的時候要做判斷，不然就會重複對調最後的結果還是跟原本一樣，例如跑迴圈將matrix[0][1]改成matrix[1][0]，迴圈跑到matrix[1][0]的時候又會將matrix[1][0]改回matrix[0][1]。&lt;/p&gt;</summary>
     
     
     
