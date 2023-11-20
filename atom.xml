@@ -190,7 +190,7 @@
     <link href="https://jenny83318.github.io/2023/07/28/007-ObjectMapper/"/>
     <id>https://jenny83318.github.io/2023/07/28/007-ObjectMapper/</id>
     <published>2023-07-28T10:23:17.000Z</published>
-    <updated>2023-10-31T07:14:13.727Z</updated>
+    <updated>2023-11-20T07:12:13.575Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在工作開發的時候，時常需要將一串攏長又複雜Json字串轉成JavaBean傳給前端，使用&lt;span class =&quot;markWord&quot;&gt;ObjectMapper&lt;/span&gt;來轉換就很方便，如果之後有調整欄位，也很方便修改，下面會分成JSON陣列和非陣列的資料來說明。Jackson ObjectMapper 是 Java 中應用非常廣泛的序列化、反序列化的工具，它可以幫助我們簡單、快速將 Java 物件與 json 之間作轉換，Spring Framework 將它作為預設轉換器。&lt;/p&gt;</summary>
