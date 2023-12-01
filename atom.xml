@@ -6,7 +6,7 @@
   <link href="https://jenny83318.github.io/atom.xml" rel="self"/>
   
   <link href="https://jenny83318.github.io/"/>
-  <updated>2023-11-14T02:13:01.587Z</updated>
+  <updated>2023-12-01T07:50:18.889Z</updated>
   <id>https://jenny83318.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java Collections筆記 (1/2)</title>
+    <link href="https://jenny83318.github.io/2023/11/27/014-Java%20Collections/"/>
+    <id>https://jenny83318.github.io/2023/11/27/014-Java%20Collections/</id>
+    <published>2023-11-27T11:30:17.000Z</published>
+    <updated>2023-12-01T07:50:18.889Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在準備面試時常會遇到考各種Java Collections的題目，例如什麼情境適合使用哪個collection或是他們個別的特色是什麼之類的，因此想專門整理關於Java Collections的筆記，會分成幾個類別，這篇會介紹Set和Map類的常用集合，下一篇則是List和、Queue。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Java" scheme="https://jenny83318.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://jenny83318.github.io/tags/Java/"/>
+    
+    <category term="Collections" scheme="https://jenny83318.github.io/tags/Collections/"/>
+    
+  </entry>
   
   <entry>
     <title>LeetCode 48. Rotate Image</title>
