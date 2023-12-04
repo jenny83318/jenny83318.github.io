@@ -6,7 +6,7 @@
   <link href="https://jenny83318.github.io/atom.xml" rel="self"/>
   
   <link href="https://jenny83318.github.io/"/>
-  <updated>2023-12-01T10:34:02.548Z</updated>
+  <updated>2023-12-04T09:16:23.492Z</updated>
   <id>https://jenny83318.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://jenny83318.github.io/2023/12/01/015-Java%20Collections-2/"/>
     <id>https://jenny83318.github.io/2023/12/01/015-Java%20Collections-2/</id>
     <published>2023-12-01T11:30:17.000Z</published>
-    <updated>2023-12-01T10:34:02.548Z</updated>
+    <updated>2023-12-04T09:16:23.492Z</updated>
     
     
-    <summary type="html">&lt;p&gt;上一篇介紹完map和set類別後這篇要把剩下的常用Java Collections整理完，那就開始吧~&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;上一篇介紹完map、set和List類別後，這篇要繼續把剩下的常用Java Collections整理完，那就開始吧~&lt;/p&gt;</summary>
     
     
     
@@ -42,10 +42,10 @@
     <link href="https://jenny83318.github.io/2023/11/27/014-Java%20Collections-1/"/>
     <id>https://jenny83318.github.io/2023/11/27/014-Java%20Collections-1/</id>
     <published>2023-11-27T11:30:17.000Z</published>
-    <updated>2023-12-01T10:04:14.993Z</updated>
+    <updated>2023-12-04T09:19:18.857Z</updated>
     
     
-    <summary type="html">&lt;p&gt;在準備面試時常會遇到考各種Java Collections的題目，例如什麼情境適合使用哪個collection或是他們個別的特色是什麼之類的，因此想專門整理關於Java Collections的筆記，會分成幾個類別，這篇會介紹Set和Map類的常用集合，下一篇則是List、Queue和Deque。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;在準備面試時常會遇到考各種Java Collections的題目，例如什麼情境適合使用哪個collection或是他們個別的特色是什麼之類的，因此想專門整理關於Java Collections的筆記，會分成幾個類別，這篇會介紹Set、Map和List類的常用集合，下一篇則是Queue、Deque、Stack和Vector以及最後總整理。&lt;/p&gt;</summary>
     
     
     
