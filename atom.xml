@@ -42,10 +42,10 @@
     <link href="https://jenny83318.github.io/2023/11/27/014-Java%20Collections-1/"/>
     <id>https://jenny83318.github.io/2023/11/27/014-Java%20Collections-1/</id>
     <published>2023-11-27T11:30:17.000Z</published>
-    <updated>2023-12-04T09:19:18.857Z</updated>
+    <updated>2023-12-19T08:32:50.617Z</updated>
     
     
-    <summary type="html">&lt;p&gt;在準備面試時常會遇到考各種Java Collections的題目，例如什麼情境適合使用哪個collection或是他們個別的特色是什麼之類的，因此想專門整理關於Java Collections的筆記，會分成幾個類別，這篇會介紹Set、Map和List類的常用集合，下一篇則是Queue、Deque、Stack和Vector以及最後總整理。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;準備面試常會遇到考各種Java Collections的題目，例如什麼情境適合使用哪個collection或是他們個別的特色是什麼之類的，因此想專門整理關於Java Collections的筆記，會分成幾個類別，這篇會介紹Set、Map和List類的常用集合，下一篇則是Queue、Deque、Stack和Vector以及最後總整理。&lt;/p&gt;</summary>
     
     
     
@@ -276,7 +276,7 @@
     <link href="https://jenny83318.github.io/2023/07/18/005-Linode-5/"/>
     <id>https://jenny83318.github.io/2023/07/18/005-Linode-5/</id>
     <published>2023-07-18T07:23:17.000Z</published>
-    <updated>2023-11-03T07:27:48.793Z</updated>
+    <updated>2024-01-29T08:41:22.466Z</updated>
     
     
     <summary type="html">&lt;p&gt;會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~&lt;/p&gt;</summary>
@@ -355,7 +355,7 @@
     <link href="https://jenny83318.github.io/2023/07/13/002-Linode-2/"/>
     <id>https://jenny83318.github.io/2023/07/13/002-Linode-2/</id>
     <published>2023-07-13T05:29:03.000Z</published>
-    <updated>2023-10-31T07:02:50.188Z</updated>
+    <updated>2024-01-29T09:30:52.890Z</updated>
     
     
     <summary type="html">&lt;p&gt;這篇將分享要如何在Linode的虛擬機上建置MySQL資料庫以及遠端連線資料庫。&lt;/p&gt;</summary>

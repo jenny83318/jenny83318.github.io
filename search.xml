@@ -54,23 +54,27 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mysql</span><br></pre></td></tr></table></figure>
 
 <p>進入後會出現Welcome等文字，游標也會顯示mysql&gt;，表示接下來可以輸入SQL指令了~</p>
-<p><img src="/../image/mysql2.jpg" alt="Mysql"></p>
+<p><img src="/../image/mysql2.jpg"></p>
 <p>接下來我們就可以執行下列指令，將使用者root身分認證(IDENTIFIED)的方式改為用密碼驗證(mysql_native_password)</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
 <p>如果是使用MySQL 8.0以上的版本，請使用下列指令:</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> caching_sha2_password <span class="keyword">BY</span> <span class="string">&#x27;你設定root的密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
+<p>root帳號設定在localhost表示只能在本地主機連接到MySQL，如果要能從遠端連接，可以再新增一個user</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">CREATE USER <span class="string">&#x27;使用者名稱&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED BY <span class="string">&#x27;要設定的密碼&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>設定完成後就刷新權限並離開MySQL</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">EXIT;</span><br></pre></td></tr></table></figure>
 
 <p>接著我們就可以以密碼驗證的方式再次進到MySQL</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<p>接下來就是要設定使用者對資料庫的權限:<br>如果要設定root帳號在所有資料庫上的所有權限:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
-<p>接下來就是要設定root對資料庫的權限:<br>如果要設定root帳號在所有資料庫上的所有權限:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
 <p>若只想在特定的資料庫授予權限:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> 資料庫名稱.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span> @ <span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> 資料庫名稱.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;使用者名稱&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
 <p>刷新權限<br>FLUSH PRIVILEGES;</p>
 <h2 id="匯入資料庫"><a href="#匯入資料庫" class="headerlink" title="匯入資料庫"></a>匯入資料庫</h2><p>進入MySQL:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
@@ -83,6 +87,17 @@
 <h2 id="遠端連線資料庫"><a href="#遠端連線資料庫" class="headerlink" title="遠端連線資料庫"></a>遠端連線資料庫</h2><p>建立完資料庫，我們就可以來遠端連線看看我們建立的資料庫是不是可以正常操作</p>
 <h3 id="使用MySQL-Workbrench連線資料庫"><a href="#使用MySQL-Workbrench連線資料庫" class="headerlink" title="使用MySQL Workbrench連線資料庫"></a>使用MySQL Workbrench連線資料庫</h3><p>這是最簡單的方式啦，開啟MySQL Workbrench，新增一個connection，hostname輸入Linode上的IP，輸入username 及密碼完就可以進入到你的資料庫了，不過可以這樣遠端連線有可能是因為我沒有做禁止遠端登入的設定，所以安全性設定那邊也要考量一下自己的需求。</p>
 <p><img src="/../image/mysql4.jpg" alt="Mysql"></p>
+<h2 id="初始化MySQL"><a href="#初始化MySQL" class="headerlink" title="初始化MySQL"></a>初始化MySQL</h2><p>我在創建的過程中不小心誤刪了MySQL內的某一個目錄，導致MySQL無法正常啟動的情況下，可以考慮這個方式來解決，不過要使用這個方式等於砍掉重練，原本建的db、使用者都要重新設定，建議平常就要備份重要資料。<br>首先，要先刪除&#x2F;var&#x2F;lib&#x2F;mysql 路徑下的所有資料，在執行下列指令</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysqld <span class="comment">--initialize --datadir=/var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+<p>初始化完成後啟動MySQL</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start mysql</span><br></pre></td></tr></table></figure>
+<p>執行應該會顯示啟動失敗，這時可以去看error log，會看到有一行note，是root的帳號的暫用密碼，要把那段密碼記下來，之後第一次要用這個密碼登入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">tail</span> -n 50 /var/log/mysql/error.log</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../image/mysql5.jpg" alt="Mysql"></p>
+<p>登入MySQL後就可以修改密碼</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ALTER USER <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED BY <span class="string">&#x27;新密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
 <h5 id="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔"><a href="#到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web-Server的部分，加油不要放棄喔" class="headerlink" title="到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~"></a>到這裡恭喜你已經完成了在Linode上建置資料庫，接下來我們就要進入安裝Web Server的部分，加油不要放棄喔~</h5><hr>
 ]]></content>
       <categories>
@@ -439,6 +454,23 @@
       </tags>
   </entry>
   <entry>
+    <title>LeetCode 48. Rotate Image</title>
+    <url>/2023/11/09/013-LeetCode-48/</url>
+    <content><![CDATA[<p>這題出自於Leetcode的<span class="markWord">Top Interview 150</span>裡的<span class="mark">Matrix</span>類別，這題也是我這三個多月在LeetCcde刷的第100題~剛好也把Matrix系列刷到一個段落，這題看起來很簡單，但也是需要想一下，我的作法是先反轉matrix陣列的順序，在將陣列內位置水平垂直對調就可以了，要注意的是在對調的時候要做判斷，不然就會重複對調最後的結果還是跟原本一樣，例如跑迴圈將matrix[0][1]改成matrix[1][0]，迴圈跑到matrix[1][0]的時候又會將matrix[1][0]改回matrix[0][1]。</p>
+<span id="more"></span>
+<p><img src="/../image/leetode48-2.jpg"></p>
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><a href="https://leetcode.com/problems/rotate-image/">LeetCode-48</a><br><img src="/../image/leetcode48.jpg" alt="leetcode-48"></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[][] matrix)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> n-<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//反轉matrix內陣列的順序</span></span><br><span class="line">        <span class="keyword">while</span>(i &gt;= n / <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="type">int</span>[] temp = matrix[j];</span><br><span class="line">            matrix[j++] = matrix[i];</span><br><span class="line">            matrix[i--] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//水平垂直位置對調</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">                <span class="comment">//需判斷不會重複對調</span></span><br><span class="line">                <span class="keyword">if</span> (j &lt; i)</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> matrix[j][i];</span><br><span class="line">                matrix[j][i] = matrix[i][j];</span><br><span class="line">                matrix[i][j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>LeetCode筆記</category>
+        <category>Matrix</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeetCode 36. Valid Sudoku</title>
     <url>/2023/11/07/013-LeetCode-36/</url>
     <content><![CDATA[<p>這題出自於Leetcode的<span class="markWord">Top Interview 150</span>裡的<span class="mark">Matrix</span>類別，再解這題的時候，一開始我是分成三個function分別檢核，但後來看到其他人的code發現這樣寫更精簡，所以就用這樣方式自己再寫一次，題目要我們檢核一個二維陣列是否符合數獨的規範，因此我們可以透過下列步驟來一一檢核:</p>
@@ -462,7 +494,7 @@
   <entry>
     <title>Java Collections筆記 (1/2)</title>
     <url>/2023/11/27/014-Java%20Collections-1/</url>
-    <content><![CDATA[<p>在準備面試時常會遇到考各種Java Collections的題目，例如什麼情境適合使用哪個collection或是他們個別的特色是什麼之類的，因此想專門整理關於Java Collections的筆記，會分成幾個類別，這篇會介紹Set、Map和List類的常用集合，下一篇則是Queue、Deque、Stack和Vector以及最後總整理。</p>
+    <content><![CDATA[<p>準備面試常會遇到考各種Java Collections的題目，例如什麼情境適合使用哪個collection或是他們個別的特色是什麼之類的，因此想專門整理關於Java Collections的筆記，會分成幾個類別，這篇會介紹Set、Map和List類的常用集合，下一篇則是Queue、Deque、Stack和Vector以及最後總整理。</p>
 <span id="more"></span>
 <p><img src="/../image/Collections.png"></p>
 <h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><h3 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h3><p>HashSet用來儲存<span class="markWord">唯一的元素並忽略重複值</span>，HashSet 使用hash code來確保元素的唯一性，並且查詢元素的時間複雜度為 O(1)。</p>
@@ -495,23 +527,6 @@
       <tags>
         <tag>Java</tag>
         <tag>Collections</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 48. Rotate Image</title>
-    <url>/2023/11/09/013-LeetCode-48/</url>
-    <content><![CDATA[<p>這題出自於Leetcode的<span class="markWord">Top Interview 150</span>裡的<span class="mark">Matrix</span>類別，這題也是我這三個多月在LeetCcde刷的第100題~剛好也把Matrix系列刷到一個段落，這題看起來很簡單，但也是需要想一下，我的作法是先反轉matrix陣列的順序，在將陣列內位置水平垂直對調就可以了，要注意的是在對調的時候要做判斷，不然就會重複對調最後的結果還是跟原本一樣，例如跑迴圈將matrix[0][1]改成matrix[1][0]，迴圈跑到matrix[1][0]的時候又會將matrix[1][0]改回matrix[0][1]。</p>
-<span id="more"></span>
-<p><img src="/../image/leetode48-2.jpg"></p>
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><a href="https://leetcode.com/problems/rotate-image/">LeetCode-48</a><br><img src="/../image/leetcode48.jpg" alt="leetcode-48"></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[][] matrix)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> n-<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//反轉matrix內陣列的順序</span></span><br><span class="line">        <span class="keyword">while</span>(i &gt;= n / <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="type">int</span>[] temp = matrix[j];</span><br><span class="line">            matrix[j++] = matrix[i];</span><br><span class="line">            matrix[i--] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//水平垂直位置對調</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">                <span class="comment">//需判斷不會重複對調</span></span><br><span class="line">                <span class="keyword">if</span> (j &lt; i)</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> matrix[j][i];</span><br><span class="line">                matrix[j][i] = matrix[i][j];</span><br><span class="line">                matrix[i][j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>LeetCode筆記</category>
-        <category>Matrix</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
