@@ -30,23 +30,26 @@
     }
 </style>
 
-  <meta name="description" content="在解這題之前可以先稍微了解一下H Index(H指數)，下面是維基百科上的定義:H指數的計算基於其研究者的論文數量及其論文被引用的次數。赫希認為：一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：  將其發表的所有SCI論文來源請求按">
+  <meta name="description" content="前言上一篇分享在Render上建置資料庫，並做好相關的連線設定，接著我們就要把後端專案部署到Render上，來完成Render前後端部署啦">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode 274. H-Index">
-<meta property="og:url" content="https://jenny83318.github.io/2023/10/12/008-LeetCode-274/index.html">
+<meta property="og:title" content="如何使用Render免費部署網頁? (3&#x2F;3)部署後端專案">
+<meta property="og:url" content="https://jenny83318.github.io/2024/06/01/017-Render-3%20copy/index.html">
 <meta property="og:site_name" content="Jenny&#39;s Blog">
-<meta property="og:description" content="在解這題之前可以先稍微了解一下H Index(H指數)，下面是維基百科上的定義:H指數的計算基於其研究者的論文數量及其論文被引用的次數。赫希認為：一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：  將其發表的所有SCI論文來源請求按">
+<meta property="og:description" content="前言上一篇分享在Render上建置資料庫，並做好相關的連線設定，接著我們就要把後端專案部署到Render上，來完成Render前後端部署啦">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://jenny83318.github.io/image/leecode274.jpg">
-<meta property="article:published_time" content="2023-10-12T03:23:17.000Z">
-<meta property="article:modified_time" content="2023-11-03T13:51:00.848Z">
+<meta property="og:image" content="https://jenny83318.github.io/image/render2.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/render3.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/render4.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/render9.jpg">
+<meta property="og:image" content="https://jenny83318.github.io/image/render10.jpg">
+<meta property="article:published_time" content="2024-06-01T02:23:17.000Z">
+<meta property="article:modified_time" content="2024-06-01T10:52:40.279Z">
 <meta property="article:author" content="Jenny Ou Yang">
-<meta property="article:tag" content="Java">
-<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="Render">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jenny83318.github.io/image/leecode274.jpg">
+<meta name="twitter:image" content="https://jenny83318.github.io/image/render2.jpg">
 
-<link rel="canonical" href="https://jenny83318.github.io/2023/10/12/008-LeetCode-274/">
+<link rel="canonical" href="https://jenny83318.github.io/2024/06/01/017-Render-3%20copy/">
 
 
 <script id="page-configurations">
@@ -59,7 +62,7 @@
   };
 </script>
 
-  <title>LeetCode 274. H-Index | Jenny's Blog</title>
+  <title>如何使用Render免費部署網頁? (3/3)部署後端專案 | Jenny's Blog</title>
   
 
 
@@ -205,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jenny83318.github.io/2023/10/12/008-LeetCode-274/">
+    <link itemprop="mainEntityOfPage" href="https://jenny83318.github.io/2024/06/01/017-Render-3%20copy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -218,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          LeetCode 274. H-Index
+          如何使用Render免費部署網頁? (3/3)部署後端專案
         </h1>
 
         <div class="post-meta">
@@ -227,27 +230,21 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2023-10-12 11:23:17" itemprop="dateCreated datePublished" datetime="2023-10-12T11:23:17+08:00">2023-10-12</time>
+              <time title="Created: 2024-06-01 10:23:17 / Modified: 18:52:40" itemprop="dateCreated datePublished" datetime="2024-06-01T10:23:17+08:00">2024-06-01</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-03 21:51:00" itemprop="dateModified" datetime="2023-11-03T21:51:00+08:00">2023-11-03</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">LeetCode筆記</span></a>
+                  <a href="/categories/Server/" itemprop="url" rel="index"><span itemprop="name">Server</span></a>
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode%E7%AD%86%E8%A8%98/Array/" itemprop="url" rel="index"><span itemprop="name">Array</span></a>
+                  <a href="/categories/Server/Render/" itemprop="url" rel="index"><span itemprop="name">Render</span></a>
                 </span>
             </span>
 
@@ -262,17 +259,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在解這題之前可以先稍微了解一下H Index(H指數)，下面是維基百科上的定義:<br>H指數的計算基於其研究者的論文數量及其論文被引用的次數。赫希認為：<span class ="markWord">一個人在其所有學術文章中有N篇論文分別被引用了至少N次，他的H指數就是N。</span>如美國耶魯大學免疫學家理察·弗來沃發表的900篇文章中，有107篇被引用了107次以上，他的H指數是107。可以按照如下方法確定某人的H指數：</p>
-<ol>
-<li>將其發表的所有SCI論文來源請求按被引次數從高到低排序；</li>
-<li>從前往後查找排序後的列表，只要當前的引用量大於當前的索引值，則H指數加1，最後得到的結果即為最終的H指數。<span id="more"></span></li>
-</ol>
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode274.jpg" alt="leetcode"></p>
-<h2 id="Solution-1-Binary-Search"><a href="#Solution-1-Binary-Search" class="headerlink" title="Solution 1- Binary Search"></a>Solution 1- Binary Search</h2><p>從題目的敘述可判斷H index最大值為<span class ="markWord">citations陣列長度</span>，最小值則為0，利用這個範圍用Binary Search找出H index。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hIndex</span><span class="params">(<span class="type">int</span>[] citations)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">low</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">high</span> <span class="operator">=</span> citations.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (low &lt; high) &#123;</span><br><span class="line">            mid = (high + low + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> num : citations) &#123;</span><br><span class="line">                <span class="keyword">if</span> (num &gt;= mid) &#123;</span><br><span class="line">                    count++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (count &gt;= mid) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (count &lt; mid) &#123;</span><br><span class="line">                high = mid - <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                low = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> low;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇分享在Render上建置資料庫，並做好相關的連線設定，接著我們就要把後端專案部署到Render上，來完成Render前後端部署啦</p>
+<span id="more"></span>
+<h2 id="設置DockerFile"><a href="#設置DockerFile" class="headerlink" title="設置DockerFile"></a>設置DockerFile</h2><p>和建置前端專案一樣，須將專案先傳到github上，由於我們後端專案使用Docker部署，因此需在專案根目錄下建立Dockerfile，到時候Render就會根據這個檔案來自動建置及部署，下面是我Dockerfile的設定，須根據專案的不同自行調整。</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> gradle:jdk11-jammy AS builder</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /home/gradle/project</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> gradle build --no-daemon</span></span><br><span class="line"><span class="keyword">FROM</span> tomcat:<span class="number">9</span>-jdk11-openjdk-slim AS tomcat</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">rm</span> -rf /usr/local/tomcat/webapps/*</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /home/gradle/project/build/libs/JOLServer-1.1.1-plain.war /usr/local/tomcat/webapps/jolserver.war</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;catalina.sh&quot;</span>, <span class="string">&quot;run&quot;</span>]</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Solution-2-統計個別論文引用數量"><a href="#Solution-2-統計個別論文引用數量" class="headerlink" title="Solution 2- 統計個別論文引用數量"></a>Solution 2- 統計個別論文引用數量</h2><p>先將論文引用次數各別計算統計在一個陣列cal[]中，用citations[i]來當作cal[]陣列的位置，由於H idex最大值為citations陣列長度，因此統計的陣列長度為<span class ="markWord">citations陣列長度+1</span> ，當citations[i]超過陣列長度時，視為<span class ="markWord">等於陣列長度</span>，統計完citations內的數量後在遍歷cal[]的數量算出h idex。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hIndex</span><span class="params">(<span class="type">int</span>[] citations)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> citations.length;</span><br><span class="line">        <span class="type">int</span>[] cal = <span class="keyword">new</span> <span class="title class_">int</span>[n + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : citations) &#123;</span><br><span class="line">            <span class="keyword">if</span> (num &gt; n) &#123;</span><br><span class="line">                cal[n]++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cal[num]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">hIdx</span> <span class="operator">=</span> n;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (hIdx &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            count += cal[hIdx];</span><br><span class="line">            <span class="keyword">if</span> (count &gt;= hIdx) &#123;</span><br><span class="line">                <span class="keyword">return</span> hIdx;</span><br><span class="line">            &#125;</span><br><span class="line">            hIdx--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="創建Web-Service"><a href="#創建Web-Service" class="headerlink" title="創建Web Service"></a>創建Web Service</h2><p>註冊完登入進去後就可以進到render的dashborad，點選&gt; New+ &gt; Web Service<br><img src="/../image/render2.jpg" alt="render"></p>
+<p>這邊它會幫你直接把你有的repository列出來，選擇一個你要佈署的repository點選connect<br><img src="/../image/render3.jpg" alt="render"></p>
+<p>如果你的repository沒有出現在列表上，可以點旁邊的「Configure account」進入到 GitHub 頁面調整一下權限，可能是你的GitHub 帳號在註冊時沒有給予 Render 權限，因此你可以在這邊重新給予權限。到 GitHub 之後，你就可以在底下選擇你要「All repositories」還是「Only select repositories」，而這邊我是選擇「Only select repositories」，選好你要部署的儲存庫後，按下 Save 按鈕，就會被自動回到 Render 頁面就可以看到它出現在你的列表上了<br><img src="/../image/render4.jpg" alt="render"></p>
+<p>點選connect之後就可以會進入到伺服器設定畫面<br><img src="/../image/render9.jpg" alt="render"><br>Runtime這邊選Docker</p>
+<p>接著就可以點Create Web Service來開始佈署專案啦，然後就可以看到佈署過程的log<br>最後看到<span class="markWord"> Your service is live</span>或是Dashboard狀態顯示<span class="markWord">Deployed</span>就代表已經佈署完成了，就可以點選左上方的網址來查看佈署好的網頁，如果發現狀態是Fail，可以查看log看有沒有什麼錯誤訊息，如果想要手動再次部署，可以點右上角的<span class="markWord">Manual Deploy</span>，可以選擇部署上一次的commit或是特定一次的commit。<br><img src="/../image/render10.jpg" alt="render"></p>
+<p>另外，如果你也是想用Render部署的前端專案去連後端專案，須加上<span class="markWord">@CrossOrigin</span>的Annotation來處理跨域請求</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@CrossOrigin(origins = &quot;http://frontend.com&quot;)</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/data&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getData</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Some data&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這樣我們就完成在Render的前後端網頁部署啦，我們使用免費的方案，因此也有個小缺點，如果我們部署的Server 15分鐘內沒有活動的話，Server就會自動Shut Down，下次再進到網頁的時候就會需要等個幾分鐘Server啟動的時間，如果是前後端+資料庫就會需要大概5分鐘的啟動時間，不是網頁壞掉只需要耐心等待囉。</p>
+<p><a target="_blank" rel="noopener" href="https://jol-boutique.onrender.com/">查看我部署的網頁</a></p>
+<hr>
+
     </div>
 
     
@@ -287,7 +290,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文連結: </strong>
-    <a href="https://jenny83318.github.io/2023/10/12/008-LeetCode-274/" title="LeetCode 274. H-Index">https://jenny83318.github.io/2023/10/12/008-LeetCode-274/</a>
+    <a href="https://jenny83318.github.io/2024/06/01/017-Render-3%20copy/" title="如何使用Render免費部署網頁? (3&#x2F;3)部署後端專案">https://jenny83318.github.io/2024/06/01/017-Render-3 copy/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明:  </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -298,26 +301,16 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Java/" rel="tag"><i class="fa fa-tags"></i> Java</a>
-              <a href="/tags/LeetCode/" rel="tag"><i class="fa fa-tags"></i> LeetCode</a>
+              <a href="/tags/Render/" rel="tag"><i class="fa fa-tags"></i> Render</a>
           </div>
            
   <div class="popular-posts-header">  相關文章推薦 <i class="fa fa-comment"></i></div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2023\10\16\009-LeetCode-1409\" rel="bookmark">LeetCode 1409. Queries on a Permutation With Key</a></div>
+      <div class="popular-posts-title"><a href="\2023\07\20\006-Render-1\" rel="bookmark">如何使用Render免費部署網頁? (1/3)部署前端專案</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2023\10\20\010-LeetCode-135\" rel="bookmark">LeetCode 135. Candy</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2023\10\26\011-LeetCode-6\" rel="bookmark">LeetCode 6. Zigzag Conversion</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2023\10\31\012-LeetCode-68\" rel="bookmark">LeetCode 68. Text Justification</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2023\11\07\013-LeetCode-36\" rel="bookmark">LeetCode 36. Valid Sudoku</a></div>
+      <div class="popular-posts-title"><a href="\2024\06\01\016-Render-2\" rel="bookmark">如何使用Render免費部署網頁? (2/3)建置PostgresSQL資料庫</a></div>
     </li>
   </ul>
 
@@ -328,12 +321,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/07/28/007-ObjectMapper/" rel="prev" title="使用ObjectMapper把Json轉成Java Bean">
-      <i class="fa fa-chevron-left"></i> 使用ObjectMapper把Json轉成Java Bean
+    <a href="/2023/12/01/015-Java%20Collections-2/" rel="prev" title="Java Collections筆記 (2/2)">
+      <i class="fa fa-chevron-left"></i> Java Collections筆記 (2/2)
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/10/16/009-LeetCode-1409/" rel="next" title="LeetCode 1409. Queries on a Permutation With Key">
-      LeetCode 1409. Queries on a Permutation With Key <i class="fa fa-chevron-right"></i>
+    <a href="/2024/06/01/016-Render-2/" rel="next" title="如何使用Render免費部署網頁? (2/3)建置PostgresSQL資料庫">
+      如何使用Render免費部署網頁? (2/3)建置PostgresSQL資料庫 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -400,7 +393,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Question"><span class="nav-number">1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution-1-Binary-Search"><span class="nav-number">2.</span> <span class="nav-text">Solution 1- Binary Search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution-2-%E7%B5%B1%E8%A8%88%E5%80%8B%E5%88%A5%E8%AB%96%E6%96%87%E5%BC%95%E7%94%A8%E6%95%B8%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">Solution 2- 統計個別論文引用數量</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E7%BD%AEDockerFile"><span class="nav-number">2.</span> <span class="nav-text">設置DockerFile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%B5%E5%BB%BAWeb-Service"><span class="nav-number">3.</span> <span class="nav-text">創建Web Service</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -596,9 +589,9 @@ window.addEventListener('pjax:success', () => {
 
 <script>
   var disqus_config = function() {
-    this.page.url = "https://jenny83318.github.io/2023/10/12/008-LeetCode-274/";
-    this.page.identifier = "2023/10/12/008-LeetCode-274/";
-    this.page.title = "LeetCode 274. H-Index";
+    this.page.url = "https://jenny83318.github.io/2024/06/01/017-Render-3%20copy/";
+    this.page.identifier = "2024/06/01/017-Render-3 copy/";
+    this.page.title = "如何使用Render免費部署網頁? (3/3)部署後端專案";
     this.language = "zh_TW"; 
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
