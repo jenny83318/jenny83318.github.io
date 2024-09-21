@@ -33,134 +33,6 @@
       </tags>
   </entry>
   <entry>
-    <title>如何使用Linode架設網站 ? (3/5) 建置Tomcat及佈署專案</title>
-    <url>/2023/07/16/003-Linode-3/</url>
-    <content><![CDATA[<p>接續上一篇創建完資料庫接著就可以來安裝web server了，這篇會分享建置tomcat及部署專案，部署專案的方式目前是手動部署，之後會研究用jenkins來自動化部署，到時候再更新文章。</p>
-<span id="more"></span>
-
-<h2 id="安裝tomcat"><a href="#安裝tomcat" class="headerlink" title="安裝tomcat"></a>安裝tomcat</h2><p>以下整理了兩種安裝tomcat的方式，建議可以先使用linode官方提供的方式來安裝tomcat，不行的話在使用第二種方式手動安裝，我自己是使用官方的方式就可以安裝了。</p>
-<h3 id="Linode-官方提供"><a href="#Linode-官方提供" class="headerlink" title="Linode 官方提供"></a>Linode 官方提供</h3><h4 id="設定主機名稱"><a href="#設定主機名稱" class="headerlink" title="設定主機名稱"></a>設定主機名稱</h4><p>這邊我是沒有在另外設定，hostname -f 指令會返回當前主機的主機名+域名，hostname預設應該是localhost，這邊我是使用預設的沒有特別設定。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hostname</span><br><span class="line">hostname -f</span><br></pre></td></tr></table></figure>
-
-<h4 id="安裝可用更新"><a href="#安裝可用更新" class="headerlink" title="安裝可用更新"></a>安裝可用更新</h4><p>確保當前系統是最新的狀態</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get upgrade</span><br></pre></td></tr></table></figure>
-
-<h4 id="安裝tomcat-1"><a href="#安裝tomcat-1" class="headerlink" title="安裝tomcat"></a>安裝tomcat</h4><p>從 Ubuntu 安裝 Tomcat</p>
-<blockquote>
-<p>這邊要注意的是，在安裝tomcat9的時候，會一起安裝open jdk11，所以不用在自行安裝jdk</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install tomcat9</span><br></pre></td></tr></table></figure>
-<p>另外，可以依自行需求選擇是否要安裝tomcat9-docs、tomcat9-examples和tomcat9-admin</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install tomcat9-docs tomcat9-examples tomcat9-admin</span><br></pre></td></tr></table></figure>
-
-<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>安裝完成後我們就可以啟動tomcat服務啦</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start tomcat9</span><br></pre></td></tr></table></figure>
-
-<p>另外如果要停止或重啟服務可以執行下列指令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop tomcat9</span><br><span class="line">sudo systemctl restart tomcat9</span><br></pre></td></tr></table></figure>
-
-<h3 id="手動安裝"><a href="#手動安裝" class="headerlink" title="手動安裝"></a>手動安裝</h3><h4 id="安裝JDK"><a href="#安裝JDK" class="headerlink" title="安裝JDK"></a>安裝JDK</h4><p>執行以下指令安裝OpenJDK，記得要把jdk11&#x2F;11.0.12換成自己要安裝的版本。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo wget https://download.java.net/java/GA/jdk11/11.0.12/GPL/openjdk-11.0.12_linux-x64_bin.tar.gz</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="下載tomcat"><a href="#下載tomcat" class="headerlink" title="下載tomcat"></a>下載tomcat</h4><p>可以到<a href="https://archive.apache.org/dist/tomcat"><strong>Apache官網</strong></a>複製要下載的版本網址，執行下列指令，即可安裝</p>
-<p><img src="/../image/tomcat1.jpg" alt="tomcat"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.0.8/bin/apache-tomcat-10.0.8.tar.gz</span><br></pre></td></tr></table></figure>
-
-<h4 id="解壓縮tomct"><a href="#解壓縮tomct" class="headerlink" title="解壓縮tomct"></a>解壓縮tomct</h4><p>使用tar指令來解壓縮下載的tomcat檔案</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo tar xvf apache-tomcat-10.0.8.tar.gz /opt/tomcat</span><br></pre></td></tr></table></figure>
-
-<p>將解壓縮好的tomcat目錄移動適當的目錄(建議&#x2F;opt底下)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">mv</span> apache-tomcat-10.0.8 /opt/tomcat</span><br></pre></td></tr></table></figure>
-
-<h4 id="設定環境變數"><a href="#設定環境變數" class="headerlink" title="設定環境變數"></a>設定環境變數</h4><p>回到根目錄，編輯根目錄的.bashrc，新增下列指令至.bashrc檔案</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> CATALINA_HOME=<span class="string">&quot;/opt/tomcat&quot;</span></span><br><span class="line"><span class="built_in">export</span> PATH= <span class="string">&quot;<span class="variable">$CATALINA_HOME</span>/bin:<span class="variable">$PATH</span>&quot;</span></span><br></pre></td></tr></table></figure>
-<p>執行下列指令使變更的內容生效</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-
-<h4 id="啟動服務-1"><a href="#啟動服務-1" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>啟動tomcat服務</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">catalina.sh.start</span><br></pre></td></tr></table></figure>
-<p>然後就可以輸入http:&#x2F;&#x2F;你的ip:8080，這時候應該會看到tomcat預設的畫面就完成啦</p>
-<p>如果想停止服務</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">catalina.sh.stop</span><br></pre></td></tr></table></figure>
-
-<h2 id="佈署專案"><a href="#佈署專案" class="headerlink" title="佈署專案"></a>佈署專案</h2><p>打包專案之前，可以先檢查設定檔資料庫的連線設定是否已經改成linode上的資料庫了，檢查完後在本地端使用Maven或Gradle將專案打包好jar或war檔，將打包好的檔案放置tomcat底下的&#x2F;webapps目錄下，這時如果你的tomcat本身已經是開啟的狀態，tomcat通常會自動重啟，並在&#x2F;webapps目錄下自動生成一個以你的jar或war檔檔名命名的目錄，如果沒有看到tomcat自動生成的目錄，可以根據上面的步驟重啟tomcat，看到這個目錄表示專案已經佈署到tomcat了，接著就可以透過postman等工具來測試服務是否正常，路徑為 http:&#x2F;&#x2F;你的ip:8080&#x2F;佈署檔案名稱 ，如果想看log可以到&#x2F;vsr&#x2F;log&#x2F;tomcat9目錄下的catalina.out就可以看到了。</p>
-<p><img src="/../image/tomcat2.jpg" alt="tomcat"></p>
-<p>到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。</p>
-<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料:"></a>參考資料:</h2><ul>
-<li><a href="https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804">How To Install Apache Tomcat 9 on Ubuntu 18.04</a></li>
-<li><a href="https://www.linode.com/docs/guides/development/frameworks/apache-tomcat/">Linode關於Apache Tomcat</a></li>
-<li><a href="https://www.linode.com/docs/guides/apache-tomcat-on-ubuntu-18-04/">Linode 在 Ubuntu 18.04 上安裝 Apache Tomcat</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Server</category>
-        <category>Linode</category>
-      </categories>
-      <tags>
-        <tag>Linode</tag>
-        <tag>deploy a website</tag>
-        <tag>tomcat</tag>
-        <tag>spring boot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何使用Linode架設網站 ? (4/5) 建置Nginx及SSL憑證申請</title>
-    <url>/2023/07/18/004-Linode-4/</url>
-    <content><![CDATA[<p>建至完tomcat及佈署專案後，接著就差最後一步就可以擁有自己的網頁了，就是要把前端的專案部署到Nginx就大功告成啦，所以我們趕快開始吧~</p>
-<span id="more"></span>
-
-<h2 id="安裝Nginx"><a href="#安裝Nginx" class="headerlink" title="安裝Nginx"></a>安裝Nginx</h2><p>確保當前系統是最新的狀態</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br></pre></td></tr></table></figure>
-
-<p>安裝Nginx</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install nginx </span><br></pre></td></tr></table></figure>
-
-<p>配置防火牆，如果在linode上啟用了防火牆，要確保允許HTTP可以通過</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ufw allow <span class="string">&#x27;Nginx HTTP&#x27;</span> </span><br></pre></td></tr></table></figure>
-
-<p>如果之後想啟用HTTPS，可執行以下指令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ufw allow <span class="string">&#x27;Nginx HTTPS&#x27;</span> </span><br></pre></td></tr></table></figure>
-
-<p>安裝完成後，Nginx會自動啟動，可以執行下列指令來查看Nginx的服務狀態</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl status nginx</span><br></pre></td></tr></table></figure>
-<p>如果nginx服務正常運作會看到以下畫面</p>
-<p><img src="/../image/nginx1.jpg" alt="nginx"></p>
-<p>驗證安裝可以輸入http:&#x2F;&#x2F;你的ip 看看是不是有出現nginx的預設畫面</p>
-<h2 id="佈署Angular專案"><a href="#佈署Angular專案" class="headerlink" title="佈署Angular專案"></a>佈署Angular專案</h2><p>在Angular專案上執行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ng build --prod</span><br></pre></td></tr></table></figure>
-<p>執行後會發現Angular專案目錄下多了&#x2F;dist目錄，裡面會有將專案生成的js及其他靜態資源，將dist內的文件透過WinSCP或下指令的方式傳送到linode的 &#x2F;var&#x2F;www底下</p>
-<p><img src="/../image/nginx2.jpg" alt="nginx"></p>
-<h2 id="設定nginx配置"><a href="#設定nginx配置" class="headerlink" title="設定nginx配置"></a>設定nginx配置</h2><p>到&#x2F;etc&#x2F;nginx&#x2F;sites-available目錄下，應該會看到一個叫default的檔案，然後開啟編輯模式添加以下配置:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    <span class="comment">#預設Port</span></span><br><span class="line">    listen 80 default_server;</span><br><span class="line">    listen [::]:80 default_server;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#你的Angular專案路徑</span></span><br><span class="line">    root /var/www/jolui;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#默認首頁為angular 的index.html</span></span><br><span class="line">    index index.html;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#你的Server IP</span></span><br><span class="line">    server_name 139.XXX.XX.XX;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#設定專案的請求路徑URL，找不到該路徑則會返回index.html</span></span><br><span class="line">    location /product&#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     location /orderlist &#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line">    location /cartitem&#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">#設定後端專案路徑，這邊的路徑要跟當初設定的專案路徑一樣</span></span><br><span class="line">     location /jolserver&#123;</span><br><span class="line">        proxy_pass http://localhost:8080;</span><br><span class="line">        proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>配置設定完成後，要重啟nginx服務才會生效</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
-<p>重啟後，就可以輸入 http:&#x2F;&#x2F;你的ip 來驗證是否佈署成功<br><img src="/../image/index.gif" alt="index and product"></p>
-<h2 id="申請SSL憑證"><a href="#申請SSL憑證" class="headerlink" title="申請SSL憑證"></a>申請SSL憑證</h2><p>雖然我們已經成功架站，但是少了https安全協定，就變成不安全的網頁，因此可以透過ZeroSSL申請免費的憑證來使用，不過免費版的憑證只有90天的效期。申請ZeroSSL憑證的流程，可以參考下面的網站我覺得說明得很清楚，只是裡面提到的電子郵件的驗證方式現在已經沒有了，只能使用HTTP文件上傳的驗證方式。</p>
-<p><a href="https://www.mytechgirl.com/tw/how-to/add-ssl-to-website-free-mtg6688.html">ZeroSSL憑證申請教學</a></p>
-<p>申請完憑證後會有certificate.crt 和 private.key兩個檔案，分別放到&#x2F;etc&#x2F;ssl&#x2F;certs和&#x2F;etc&#x2F;ssl&#x2F;private目錄下，再到Nginx的defult配置檔進行設定:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line"><span class="comment"># SSL configuration</span></span><br><span class="line">     listen 443 ssl default_server;</span><br><span class="line">     listen [::]:443 ssl default_server;</span><br><span class="line">     <span class="comment">#憑證的檔案路徑</span></span><br><span class="line">     ssl_certificate /etc/ssl/certs/certificate.crt;</span><br><span class="line">        ssl_certificate_key /etc/ssl/private/private.key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>配置設定完成後，重啟nginx服務</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
-
-<p>然後就可以透過https:&#x2F;&#x2F;來訪問你的網頁了，可以考慮申請一個domain就更完整囉，下面提供一個免費domain的影片教學，有需要的可以參考看看囉~</p>
-<p><a href="https://www.youtube.com/watch?v=s5f3Rdl5r5I&vl=zh-TW">免費域名教學</a></p>
-<p><a href="https://ocean-hcz.com/">我佈署的Linode</a></p>
-<p><a href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/</a></p>
-<h5 id="到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了-下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享"><a href="#到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了-下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享" class="headerlink" title="到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了~ 下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享"></a>到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了~ 下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享</h5><hr>
-]]></content>
-      <categories>
-        <category>Server</category>
-        <category>Linode</category>
-      </categories>
-      <tags>
-        <tag>Linode</tag>
-        <tag>deploy a website</tag>
-        <tag>Nginx</tag>
-        <tag>Angular</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>如何使用Linode架設網站 ? (2/5) 建置資料庫</title>
     <url>/2023/07/13/002-Linode-2/</url>
     <content><![CDATA[<p>這篇將分享要如何在Linode的虛擬機上建置MySQL資料庫以及遠端連線資料庫。</p>
@@ -239,6 +111,163 @@
       </tags>
   </entry>
   <entry>
+    <title>如何使用Linode架設網站 ? (3/5) 建置Tomcat及佈署專案</title>
+    <url>/2023/07/16/003-Linode-3/</url>
+    <content><![CDATA[<p>接續上一篇創建完資料庫接著就可以來安裝web server了，這篇會分享建置tomcat及部署專案，部署專案的方式目前是手動部署，之後會研究用jenkins來自動化部署，到時候再更新文章。</p>
+<span id="more"></span>
+
+<h2 id="安裝tomcat"><a href="#安裝tomcat" class="headerlink" title="安裝tomcat"></a>安裝tomcat</h2><p>以下整理了兩種安裝tomcat的方式，建議可以先使用linode官方提供的方式來安裝tomcat，不行的話在使用第二種方式手動安裝，我自己是使用官方的方式就可以安裝了。</p>
+<h3 id="Linode-官方提供"><a href="#Linode-官方提供" class="headerlink" title="Linode 官方提供"></a>Linode 官方提供</h3><h4 id="設定主機名稱"><a href="#設定主機名稱" class="headerlink" title="設定主機名稱"></a>設定主機名稱</h4><p>這邊我是沒有在另外設定，hostname -f 指令會返回當前主機的主機名+域名，hostname預設應該是localhost，這邊我是使用預設的沒有特別設定。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hostname</span><br><span class="line">hostname -f</span><br></pre></td></tr></table></figure>
+
+<h4 id="安裝可用更新"><a href="#安裝可用更新" class="headerlink" title="安裝可用更新"></a>安裝可用更新</h4><p>確保當前系統是最新的狀態</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get upgrade</span><br></pre></td></tr></table></figure>
+
+<h4 id="安裝tomcat-1"><a href="#安裝tomcat-1" class="headerlink" title="安裝tomcat"></a>安裝tomcat</h4><p>從 Ubuntu 安裝 Tomcat</p>
+<blockquote>
+<p>這邊要注意的是，在安裝tomcat9的時候，會一起安裝open jdk11，所以不用在自行安裝jdk</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install tomcat9</span><br></pre></td></tr></table></figure>
+<p>另外，可以依自行需求選擇是否要安裝tomcat9-docs、tomcat9-examples和tomcat9-admin</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install tomcat9-docs tomcat9-examples tomcat9-admin</span><br></pre></td></tr></table></figure>
+
+<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>安裝完成後我們就可以啟動tomcat服務啦</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl start tomcat9</span><br></pre></td></tr></table></figure>
+
+<p>另外如果要停止或重啟服務可以執行下列指令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop tomcat9</span><br><span class="line">sudo systemctl restart tomcat9</span><br></pre></td></tr></table></figure>
+
+<h3 id="手動安裝"><a href="#手動安裝" class="headerlink" title="手動安裝"></a>手動安裝</h3><h4 id="安裝JDK"><a href="#安裝JDK" class="headerlink" title="安裝JDK"></a>安裝JDK</h4><p>執行以下指令安裝OpenJDK，記得要把jdk11&#x2F;11.0.12換成自己要安裝的版本。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo wget https://download.java.net/java/GA/jdk11/11.0.12/GPL/openjdk-11.0.12_linux-x64_bin.tar.gz</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="下載tomcat"><a href="#下載tomcat" class="headerlink" title="下載tomcat"></a>下載tomcat</h4><p>可以到<a href="https://archive.apache.org/dist/tomcat"><strong>Apache官網</strong></a>複製要下載的版本網址，執行下列指令，即可安裝</p>
+<p><img src="/../image/tomcat1.jpg" alt="tomcat"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.0.8/bin/apache-tomcat-10.0.8.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h4 id="解壓縮tomct"><a href="#解壓縮tomct" class="headerlink" title="解壓縮tomct"></a>解壓縮tomct</h4><p>使用tar指令來解壓縮下載的tomcat檔案</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo tar xvf apache-tomcat-10.0.8.tar.gz /opt/tomcat</span><br></pre></td></tr></table></figure>
+
+<p>將解壓縮好的tomcat目錄移動適當的目錄(建議&#x2F;opt底下)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">mv</span> apache-tomcat-10.0.8 /opt/tomcat</span><br></pre></td></tr></table></figure>
+
+<h4 id="設定環境變數"><a href="#設定環境變數" class="headerlink" title="設定環境變數"></a>設定環境變數</h4><p>回到根目錄，編輯根目錄的.bashrc，新增下列指令至.bashrc檔案</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> CATALINA_HOME=<span class="string">&quot;/opt/tomcat&quot;</span></span><br><span class="line"><span class="built_in">export</span> PATH= <span class="string">&quot;<span class="variable">$CATALINA_HOME</span>/bin:<span class="variable">$PATH</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<p>執行下列指令使變更的內容生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h4 id="啟動服務-1"><a href="#啟動服務-1" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>啟動tomcat服務</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">catalina.sh.start</span><br></pre></td></tr></table></figure>
+<p>然後就可以輸入http:&#x2F;&#x2F;你的ip:8080，這時候應該會看到tomcat預設的畫面就完成啦</p>
+<p>如果想停止服務</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">catalina.sh.stop</span><br></pre></td></tr></table></figure>
+
+<h2 id="佈署專案"><a href="#佈署專案" class="headerlink" title="佈署專案"></a>佈署專案</h2><p>打包專案之前，可以先檢查設定檔資料庫的連線設定是否已經改成linode上的資料庫了，檢查完後在本地端使用Maven或Gradle將專案打包好jar或war檔，將打包好的檔案放置tomcat底下的&#x2F;webapps目錄下，這時如果你的tomcat本身已經是開啟的狀態，tomcat通常會自動重啟，並在&#x2F;webapps目錄下自動生成一個以你的jar或war檔檔名命名的目錄，如果沒有看到tomcat自動生成的目錄，可以根據上面的步驟重啟tomcat，看到這個目錄表示專案已經佈署到tomcat了，接著就可以透過postman等工具來測試服務是否正常，路徑為 http:&#x2F;&#x2F;你的ip:8080&#x2F;佈署檔案名稱 ，如果想看log可以到&#x2F;vsr&#x2F;log&#x2F;tomcat9目錄下的catalina.out就可以看到了。</p>
+<p><img src="/../image/tomcat2.jpg" alt="tomcat"></p>
+<p>到這裡恭喜你已經完成建置tomcat和佈署專案了，如果想要更進一步測試功能可以將自己的前端網頁call http請求的時候直接指向到linode的ip就可以了。</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料:"></a>參考資料:</h2><ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804">How To Install Apache Tomcat 9 on Ubuntu 18.04</a></li>
+<li><a href="https://www.linode.com/docs/guides/development/frameworks/apache-tomcat/">Linode關於Apache Tomcat</a></li>
+<li><a href="https://www.linode.com/docs/guides/apache-tomcat-on-ubuntu-18-04/">Linode 在 Ubuntu 18.04 上安裝 Apache Tomcat</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Server</category>
+        <category>Linode</category>
+      </categories>
+      <tags>
+        <tag>Linode</tag>
+        <tag>deploy a website</tag>
+        <tag>tomcat</tag>
+        <tag>spring boot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何使用Linode架設網站 ? (5/5) 架站問題分享</title>
+    <url>/2023/07/18/005-Linode-5/</url>
+    <content><![CDATA[<p>會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~</p>
+<span id="more"></span>
+<h2 id="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"><a href="#使用putty和Linode登入server後，游標就鎖住無法輸入任何指令" class="headerlink" title="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"></a>使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</h2><p>這個問題真的很少見，也是困擾了我好幾天，記得好像是裝完nginx的時候，登出後進來就這樣了，嘗試了很多方式都無解，後來詢問Linode客服，通信了好幾次，終於在linode lish console上有解決這個問題，先按<span class="mark">ctrl + Z</span>再按<span class="mark">ctrl + C</span>就可以解除鎖定的游標正常輸入了，但是對putty沒用，也有試過x-shell一樣無解，後來我就只能用linode lish console輸入指令。<br><a href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">Linode客服提供的資料</a></p>
+<p><img src="/../image/q1.jpg" alt="question"></p>
+<hr>
+<h2 id="Linode-對SMTP的限制"><a href="#Linode-對SMTP的限制" class="headerlink" title="Linode 對SMTP的限制"></a>Linode 對SMTP的限制</h2><p>如果你的專案是會用到SMTP寄送email的功能，就會遇到當你專案佈署上去的時候，要寄出信件時會有連線time out 的問題，這其實是因為linode限制SMTP的功能，要向他們申請才可以使用這項功能，可以聯繫他們的客服申請，他們會請你提供相關的資訊，像是會在什麼情況下寄送email等，審核通過之後他們就會解除對SMTP的限制，就可以使用了，但這塊我後來還沒實際驗證過，不確定是不是這樣就可以寄送email</p>
+<p><img src="/../image/q2.jpg" alt="question"></p>
+<hr>
+<h2 id="無法連線上Linode的MySQL"><a href="#無法連線上Linode的MySQL" class="headerlink" title="無法連線上Linode的MySQL"></a>無法連線上Linode的MySQL</h2><ol>
+<li>先確認Linode上的Mysql是可以正常運作的</li>
+<li>檢查&#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d目錄下的mysqld.cnf的mysqlx-bind-address是不是還是<span class="markWord">localhost</span>，如果還是要改成<span class="markWord">127.0.0.1</span></li>
+<li>檢查設定的使用者是否有足夠的權限</li>
+<li>檢查防火牆設定允許從外部連線到Mysql伺服器的port(預設3306)</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Server</category>
+        <category>Linode</category>
+      </categories>
+      <tags>
+        <tag>Linode</tag>
+        <tag>SSL</tag>
+        <tag>domain</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何使用Linode架設網站 ? (4/5) 建置Nginx及SSL憑證申請</title>
+    <url>/2023/07/18/004-Linode-4/</url>
+    <content><![CDATA[<p>建至完tomcat及佈署專案後，接著就差最後一步就可以擁有自己的網頁了，就是要把前端的專案部署到Nginx就大功告成啦，所以我們趕快開始吧~</p>
+<span id="more"></span>
+
+<h2 id="安裝Nginx"><a href="#安裝Nginx" class="headerlink" title="安裝Nginx"></a>安裝Nginx</h2><p>確保當前系統是最新的狀態</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br></pre></td></tr></table></figure>
+
+<p>安裝Nginx</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install nginx </span><br></pre></td></tr></table></figure>
+
+<p>配置防火牆，如果在linode上啟用了防火牆，要確保允許HTTP可以通過</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ufw allow <span class="string">&#x27;Nginx HTTP&#x27;</span> </span><br></pre></td></tr></table></figure>
+
+<p>如果之後想啟用HTTPS，可執行以下指令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ufw allow <span class="string">&#x27;Nginx HTTPS&#x27;</span> </span><br></pre></td></tr></table></figure>
+
+<p>安裝完成後，Nginx會自動啟動，可以執行下列指令來查看Nginx的服務狀態</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl status nginx</span><br></pre></td></tr></table></figure>
+<p>如果nginx服務正常運作會看到以下畫面</p>
+<p><img src="/../image/nginx1.jpg" alt="nginx"></p>
+<p>驗證安裝可以輸入http:&#x2F;&#x2F;你的ip 看看是不是有出現nginx的預設畫面</p>
+<h2 id="佈署Angular專案"><a href="#佈署Angular專案" class="headerlink" title="佈署Angular專案"></a>佈署Angular專案</h2><p>在Angular專案上執行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ng build --prod</span><br></pre></td></tr></table></figure>
+<p>執行後會發現Angular專案目錄下多了&#x2F;dist目錄，裡面會有將專案生成的js及其他靜態資源，將dist內的文件透過WinSCP或下指令的方式傳送到linode的 &#x2F;var&#x2F;www底下</p>
+<p><img src="/../image/nginx2.jpg" alt="nginx"></p>
+<h2 id="設定nginx配置"><a href="#設定nginx配置" class="headerlink" title="設定nginx配置"></a>設定nginx配置</h2><p>到&#x2F;etc&#x2F;nginx&#x2F;sites-available目錄下，應該會看到一個叫default的檔案，然後開啟編輯模式添加以下配置:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    <span class="comment">#預設Port</span></span><br><span class="line">    listen 80 default_server;</span><br><span class="line">    listen [::]:80 default_server;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#你的Angular專案路徑</span></span><br><span class="line">    root /var/www/jolui;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#默認首頁為angular 的index.html</span></span><br><span class="line">    index index.html;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#你的Server IP</span></span><br><span class="line">    server_name 139.XXX.XX.XX;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#設定專案的請求路徑URL，找不到該路徑則會返回index.html</span></span><br><span class="line">    location /product&#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     location /orderlist &#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line">    location /cartitem&#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">#設定後端專案路徑，這邊的路徑要跟當初設定的專案路徑一樣</span></span><br><span class="line">     location /jolserver&#123;</span><br><span class="line">        proxy_pass http://localhost:8080;</span><br><span class="line">        proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置設定完成後，要重啟nginx服務才會生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<p>重啟後，就可以輸入 http:&#x2F;&#x2F;你的ip 來驗證是否佈署成功<br><img src="/../image/index.gif" alt="index and product"></p>
+<h2 id="申請SSL憑證"><a href="#申請SSL憑證" class="headerlink" title="申請SSL憑證"></a>申請SSL憑證</h2><p>雖然我們已經成功架站，但是少了https安全協定，就變成不安全的網頁，因此可以透過ZeroSSL申請免費的憑證來使用，不過免費版的憑證只有90天的效期。申請ZeroSSL憑證的流程，可以參考下面的網站我覺得說明得很清楚，只是裡面提到的電子郵件的驗證方式現在已經沒有了，只能使用HTTP文件上傳的驗證方式。</p>
+<p><a href="https://www.mytechgirl.com/tw/how-to/add-ssl-to-website-free-mtg6688.html">ZeroSSL憑證申請教學</a></p>
+<p>申請完憑證後會有certificate.crt 和 private.key兩個檔案，分別放到&#x2F;etc&#x2F;ssl&#x2F;certs和&#x2F;etc&#x2F;ssl&#x2F;private目錄下，再到Nginx的defult配置檔進行設定:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line"><span class="comment"># SSL configuration</span></span><br><span class="line">     listen 443 ssl default_server;</span><br><span class="line">     listen [::]:443 ssl default_server;</span><br><span class="line">     <span class="comment">#憑證的檔案路徑</span></span><br><span class="line">     ssl_certificate /etc/ssl/certs/certificate.crt;</span><br><span class="line">        ssl_certificate_key /etc/ssl/private/private.key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置設定完成後，重啟nginx服務</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+<p>然後就可以透過https:&#x2F;&#x2F;來訪問你的網頁了，可以考慮申請一個domain就更完整囉，下面提供一個免費domain的影片教學，有需要的可以參考看看囉~</p>
+<p><a href="https://www.youtube.com/watch?v=s5f3Rdl5r5I&vl=zh-TW">免費域名教學</a></p>
+<p><a href="https://ocean-hcz.com/">我佈署的Linode</a></p>
+<p><a href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/</a></p>
+<h5 id="到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了-下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享"><a href="#到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了-下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享" class="headerlink" title="到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了~ 下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享"></a>到這裡恭喜你已經成功在linode上建置自己的網站啦，到這裡linode架站的步驟就全部結束了~ 下一篇要分享我在使用linode建置網頁的過程遇到的一些問題分享</h5><hr>
+]]></content>
+      <categories>
+        <category>Server</category>
+        <category>Linode</category>
+      </categories>
+      <tags>
+        <tag>Linode</tag>
+        <tag>deploy a website</tag>
+        <tag>Nginx</tag>
+        <tag>Angular</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何使用Render免費部署網頁? (1/3)部署前端專案</title>
     <url>/2023/07/20/006-Render-1/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>會開始研究Render也算是誤打誤撞，前一篇分享在Linode遇到的問題有提到我的登入後游標就被鎖住，那時候正好後端都佈署完成就差前端了，這個問題遲遲無法解決卡了一好幾天，那時後就再想也許前端可以佈署再其他雲端平台上，就有了這篇的誕生，會選擇Render是因為Heroku已經沒有提供免費的方案，<span id="more"></span>而且支援非常多種語言的建構服務，基本上前後端都可以再這裡佈署，但因為我後端有linode了就沒有再研究後端的部分，這篇主要是針對前端部署來分享。</p>
@@ -277,35 +306,6 @@
       </categories>
       <tags>
         <tag>Render</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何使用Linode架設網站 ? (5/5) 架站問題分享</title>
-    <url>/2023/07/18/005-Linode-5/</url>
-    <content><![CDATA[<p>會想寫Linode系列的分享，主要是因為這是我第一次自己架站，發現網路上的資訊很多比較零碎或是已經是幾年前的資訊了，希望可以將整個過程紀錄下來，雖然可能會依使用的作業系統、程式語言不同而有所差異，但還是多少可以參考，接下來就想分享一下我在架站過程中遇到的一些問題，說不定也有人會遇到，雖然有些已經忘了但就盡量紀錄囉~</p>
-<span id="more"></span>
-<h2 id="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"><a href="#使用putty和Linode登入server後，游標就鎖住無法輸入任何指令" class="headerlink" title="使用putty和Linode登入server後，游標就鎖住無法輸入任何指令"></a>使用putty和Linode登入server後，游標就鎖住無法輸入任何指令</h2><p>這個問題真的很少見，也是困擾了我好幾天，記得好像是裝完nginx的時候，登出後進來就這樣了，嘗試了很多方式都無解，後來詢問Linode客服，通信了好幾次，終於在linode lish console上有解決這個問題，先按<span class="mark">ctrl + Z</span>再按<span class="mark">ctrl + C</span>就可以解除鎖定的游標正常輸入了，但是對putty沒用，也有試過x-shell一樣無解，後來我就只能用linode lish console輸入指令。<br><a href="https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/">Linode客服提供的資料</a></p>
-<p><img src="/../image/q1.jpg" alt="question"></p>
-<hr>
-<h2 id="Linode-對SMTP的限制"><a href="#Linode-對SMTP的限制" class="headerlink" title="Linode 對SMTP的限制"></a>Linode 對SMTP的限制</h2><p>如果你的專案是會用到SMTP寄送email的功能，就會遇到當你專案佈署上去的時候，要寄出信件時會有連線time out 的問題，這其實是因為linode限制SMTP的功能，要向他們申請才可以使用這項功能，可以聯繫他們的客服申請，他們會請你提供相關的資訊，像是會在什麼情況下寄送email等，審核通過之後他們就會解除對SMTP的限制，就可以使用了，但這塊我後來還沒實際驗證過，不確定是不是這樣就可以寄送email</p>
-<p><img src="/../image/q2.jpg" alt="question"></p>
-<hr>
-<h2 id="無法連線上Linode的MySQL"><a href="#無法連線上Linode的MySQL" class="headerlink" title="無法連線上Linode的MySQL"></a>無法連線上Linode的MySQL</h2><ol>
-<li>先確認Linode上的Mysql是可以正常運作的</li>
-<li>檢查&#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d目錄下的mysqld.cnf的mysqlx-bind-address是不是還是<span class="markWord">localhost</span>，如果還是要改成<span class="markWord">127.0.0.1</span></li>
-<li>檢查設定的使用者是否有足夠的權限</li>
-<li>檢查防火牆設定允許從外部連線到Mysql伺服器的port(預設3306)</li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>Server</category>
-        <category>Linode</category>
-      </categories>
-      <tags>
-        <tag>Linode</tag>
-        <tag>SSL</tag>
-        <tag>domain</tag>
       </tags>
   </entry>
   <entry>
@@ -359,17 +359,28 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode 1409. Queries on a Permutation With Key</title>
-    <url>/2023/10/16/009-LeetCode-1409/</url>
-    <content><![CDATA[<p>這題需產生一個陣列<span class="mark">p</span>範圍為{1,2,3,..<span class="mark">m</span>}，再從<span class="mark">queries</span>陣列中各別找出對應到<span class="mark">p</span>陣列值的位置，再將對應到<span class="mark">p</span>的該數值移置陣列首位，繼續比對最後再將每次比對到的索引值存成陣列回傳。</p>
+    <title>LeetCode 6. Zigzag Conversion</title>
+    <url>/2023/10/26/011-LeetCode-6/</url>
+    <content><![CDATA[<p>這題題目挺有趣的，花了一點時間才看懂題目範例的Z字排列方式，因為怎麼看都更像N字型😃，文字須按Z對角線排列如下圖，嘗試了許多方法，最後寫了兩種解法，最後一個則是在Leetcode上看到其他人精簡又兼具效能的寫法。</p>
 <span id="more"></span>
-
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode1409.jpg" alt="leetcode"></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ol>
-<li>第一個for迴圈set p的資料</li>
-<li>第二組for迴圈找出所有queries[j]對應到p[]的位置，並逐一改變其位置。</li>
+<p><img src="/../image/leetcode6-1.png" alt="leetcode"></p>
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leetcode6.jpg" alt="leetcode"></p>
+<h2 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution 1"></a>Solution 1</h2><h3 id="解題步驟"><a href="#解題步驟" class="headerlink" title="解題步驟"></a>解題步驟</h3><ol>
+<li>初始化一個大小為<span class="mark">numRows</span>的StringBuilder陣列來存放每一列的結果</li>
+<li>依序遍歷每個字元存放到對應的StringBuilder陣列，直線表示陣列索引位置遞增，對角線表示遞減，用<span class="mark">flag </span>來控制走直線或對角線</li>
+<li>在將StringBuilder陣列依序加總即可</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] processQueries(<span class="type">int</span>[] queries, <span class="type">int</span> m) &#123;</span><br><span class="line">        <span class="type">int</span>[] p = <span class="keyword">new</span> <span class="title class_">int</span>[m];</span><br><span class="line">        <span class="type">int</span>[] ans = <span class="keyword">new</span> <span class="title class_">int</span>[queries.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            p[i] = i + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; queries.length; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">                <span class="comment">// 找出queries中對應p[i]的索引，傳入updateIdx()</span></span><br><span class="line">                <span class="keyword">if</span> (queries[j] == p[i]) &#123;</span><br><span class="line">                    p = updateIdx(p, i, queries[j]);</span><br><span class="line">                    ans[j] = i;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] updateIdx(<span class="type">int</span>[] arr, <span class="type">int</span> idx, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">//調整索引值(含)以前的位置</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> idx; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">//往後挪一個位置</span></span><br><span class="line">            arr[i] = arr[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//target移置首位</span></span><br><span class="line">        arr[<span class="number">0</span>] = target;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        StringBuilder[] strArr = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>[numRows];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            strArr[i] = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> ch : s.toCharArray()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (idx &lt;= numRows &amp;&amp; flag) &#123;</span><br><span class="line">                strArr[idx++].append(ch);</span><br><span class="line">                <span class="keyword">if</span> (idx == numRows) &#123;</span><br><span class="line">                    <span class="comment">//當索引值++至numRows表示直線走到盡頭，flag設成false轉至對角線</span></span><br><span class="line">                    flag = <span class="literal">false</span>;</span><br><span class="line">                    <span class="comment">//numRows - 2 表示從對角線第二個元素開始算起，因為第一個為直線和對角線的交會點，在直線的時候已經存過了</span></span><br><span class="line">                    idx = numRows - <span class="number">2</span> ;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (!flag &amp;&amp; idx &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                strArr[idx--].append(ch);</span><br><span class="line">                <span class="keyword">if</span> (idx &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">//須針對只有兩列的狀況做處理</span></span><br><span class="line">                    idx = numRows == <span class="number">2</span> ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">                    flag = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (StringBuilder str : strArr) &#123;</span><br><span class="line">            sb.append(str.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Solution-2"><a href="#Solution-2" class="headerlink" title="Solution 2"></a>Solution 2</h2><p>方法一的方式須用flag來判斷直線或對角線，還要針對只有兩列的狀況作處理，後來想到可以一組直線到對角線為單位去存每個字元到對應的陣列索引，這樣不用針對2列的情況處理，code也簡單很多，只是與方法一的執行效能和記憶體是差不多的。</p>
+<h3 id="解題步驟-1"><a href="#解題步驟-1" class="headerlink" title="解題步驟"></a>解題步驟</h3><ol>
+<li>步驟一同上</li>
+<li>起始索引為<span class="mark">0</span>，<span class="mark">0</span>至<span class="mark">numRows-1</span>為直線索引遞增，再將索引位置調整成<span class="mark">numRows - 2</span>，進入對角線迴圈索引遞減。</li>
+<li>步驟三同上</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        StringBuilder[] strArr = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>[numRows];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            strArr[i] = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">            row = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//遍歷直線</span></span><br><span class="line">            <span class="keyword">while</span> (row &lt; numRows &amp;&amp; i &lt; n) &#123;</span><br><span class="line">                strArr[row++].append(s.charAt(i++));</span><br><span class="line">            &#125;</span><br><span class="line">            row = numRows - <span class="number">2</span>;</span><br><span class="line">            <span class="comment">//遍歷對角線</span></span><br><span class="line">            <span class="keyword">while</span> (row &gt; <span class="number">0</span> &amp;&amp; i &lt; n) &#123;</span><br><span class="line">                strArr[row--].append(s.charAt(i++));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="keyword">for</span> (StringBuilder str : strArr) &#123;</span><br><span class="line">            sb.append(str.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution 3"></a>Solution 3</h2><p>這題解法是來自<a href="https://leetcode.com/problems/zigzag-conversion/solutions/3489525/c-java-python-javascript-easy-to-understand-solution-with-explanation/">LeetCode</a>上的大神，內有詳細的解題說明，這個解法截至目前的為止Runtime和Memory都Beats 99%以上。</p>
+<h3 id="解題步驟-2"><a href="#解題步驟-2" class="headerlink" title="解題步驟"></a>解題步驟</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">        <span class="type">int</span> <span class="variable">cycleLen</span> <span class="operator">=</span> <span class="number">2</span> * numRows - <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j + i &lt; n; j += cycleLen) &#123;</span><br><span class="line">                result.append(s.charAt(j + i));</span><br><span class="line">                <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; i != numRows - <span class="number">1</span> &amp;&amp; j + cycleLen - i &lt; n) &#123;</span><br><span class="line">                    result.append(s.charAt(j + cycleLen - i));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>LeetCode筆記</category>
         <category>Array</category>
@@ -401,28 +412,17 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode 6. Zigzag Conversion</title>
-    <url>/2023/10/26/011-LeetCode-6/</url>
-    <content><![CDATA[<p>這題題目挺有趣的，花了一點時間才看懂題目範例的Z字排列方式，因為怎麼看都更像N字型😃，文字須按Z對角線排列如下圖，嘗試了許多方法，最後寫了兩種解法，最後一個則是在Leetcode上看到其他人精簡又兼具效能的寫法。</p>
+    <title>LeetCode 1409. Queries on a Permutation With Key</title>
+    <url>/2023/10/16/009-LeetCode-1409/</url>
+    <content><![CDATA[<p>這題需產生一個陣列<span class="mark">p</span>範圍為{1,2,3,..<span class="mark">m</span>}，再從<span class="mark">queries</span>陣列中各別找出對應到<span class="mark">p</span>陣列值的位置，再將對應到<span class="mark">p</span>的該數值移置陣列首位，繼續比對最後再將每次比對到的索引值存成陣列回傳。</p>
 <span id="more"></span>
-<p><img src="/../image/leetcode6-1.png" alt="leetcode"></p>
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leetcode6.jpg" alt="leetcode"></p>
-<h2 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution 1"></a>Solution 1</h2><h3 id="解題步驟"><a href="#解題步驟" class="headerlink" title="解題步驟"></a>解題步驟</h3><ol>
-<li>初始化一個大小為<span class="mark">numRows</span>的StringBuilder陣列來存放每一列的結果</li>
-<li>依序遍歷每個字元存放到對應的StringBuilder陣列，直線表示陣列索引位置遞增，對角線表示遞減，用<span class="mark">flag </span>來控制走直線或對角線</li>
-<li>在將StringBuilder陣列依序加總即可</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        StringBuilder[] strArr = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>[numRows];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            strArr[i] = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> ch : s.toCharArray()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (idx &lt;= numRows &amp;&amp; flag) &#123;</span><br><span class="line">                strArr[idx++].append(ch);</span><br><span class="line">                <span class="keyword">if</span> (idx == numRows) &#123;</span><br><span class="line">                    <span class="comment">//當索引值++至numRows表示直線走到盡頭，flag設成false轉至對角線</span></span><br><span class="line">                    flag = <span class="literal">false</span>;</span><br><span class="line">                    <span class="comment">//numRows - 2 表示從對角線第二個元素開始算起，因為第一個為直線和對角線的交會點，在直線的時候已經存過了</span></span><br><span class="line">                    idx = numRows - <span class="number">2</span> ;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (!flag &amp;&amp; idx &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                strArr[idx--].append(ch);</span><br><span class="line">                <span class="keyword">if</span> (idx &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">//須針對只有兩列的狀況做處理</span></span><br><span class="line">                    idx = numRows == <span class="number">2</span> ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">                    flag = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (StringBuilder str : strArr) &#123;</span><br><span class="line">            sb.append(str.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Solution-2"><a href="#Solution-2" class="headerlink" title="Solution 2"></a>Solution 2</h2><p>方法一的方式須用flag來判斷直線或對角線，還要針對只有兩列的狀況作處理，後來想到可以一組直線到對角線為單位去存每個字元到對應的陣列索引，這樣不用針對2列的情況處理，code也簡單很多，只是與方法一的執行效能和記憶體是差不多的。</p>
-<h3 id="解題步驟-1"><a href="#解題步驟-1" class="headerlink" title="解題步驟"></a>解題步驟</h3><ol>
-<li>步驟一同上</li>
-<li>起始索引為<span class="mark">0</span>，<span class="mark">0</span>至<span class="mark">numRows-1</span>為直線索引遞增，再將索引位置調整成<span class="mark">numRows - 2</span>，進入對角線迴圈索引遞減。</li>
-<li>步驟三同上</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        StringBuilder[] strArr = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>[numRows];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            strArr[i] = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">            row = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//遍歷直線</span></span><br><span class="line">            <span class="keyword">while</span> (row &lt; numRows &amp;&amp; i &lt; n) &#123;</span><br><span class="line">                strArr[row++].append(s.charAt(i++));</span><br><span class="line">            &#125;</span><br><span class="line">            row = numRows - <span class="number">2</span>;</span><br><span class="line">            <span class="comment">//遍歷對角線</span></span><br><span class="line">            <span class="keyword">while</span> (row &gt; <span class="number">0</span> &amp;&amp; i &lt; n) &#123;</span><br><span class="line">                strArr[row--].append(s.charAt(i++));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="keyword">for</span> (StringBuilder str : strArr) &#123;</span><br><span class="line">            sb.append(str.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution 3"></a>Solution 3</h2><p>這題解法是來自<a href="https://leetcode.com/problems/zigzag-conversion/solutions/3489525/c-java-python-javascript-easy-to-understand-solution-with-explanation/">LeetCode</a>上的大神，內有詳細的解題說明，這個解法截至目前的為止Runtime和Memory都Beats 99%以上。</p>
-<h3 id="解題步驟-2"><a href="#解題步驟-2" class="headerlink" title="解題步驟"></a>解題步驟</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">        <span class="type">int</span> <span class="variable">cycleLen</span> <span class="operator">=</span> <span class="number">2</span> * numRows - <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j + i &lt; n; j += cycleLen) &#123;</span><br><span class="line">                result.append(s.charAt(j + i));</span><br><span class="line">                <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; i != numRows - <span class="number">1</span> &amp;&amp; j + cycleLen - i &lt; n) &#123;</span><br><span class="line">                    result.append(s.charAt(j + cycleLen - i));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p><img src="/../image/leecode1409.jpg" alt="leetcode"></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ol>
+<li>第一個for迴圈set p的資料</li>
+<li>第二組for迴圈找出所有queries[j]對應到p[]的位置，並逐一改變其位置。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] processQueries(<span class="type">int</span>[] queries, <span class="type">int</span> m) &#123;</span><br><span class="line">        <span class="type">int</span>[] p = <span class="keyword">new</span> <span class="title class_">int</span>[m];</span><br><span class="line">        <span class="type">int</span>[] ans = <span class="keyword">new</span> <span class="title class_">int</span>[queries.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            p[i] = i + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; queries.length; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">                <span class="comment">// 找出queries中對應p[i]的索引，傳入updateIdx()</span></span><br><span class="line">                <span class="keyword">if</span> (queries[j] == p[i]) &#123;</span><br><span class="line">                    p = updateIdx(p, i, queries[j]);</span><br><span class="line">                    ans[j] = i;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] updateIdx(<span class="type">int</span>[] arr, <span class="type">int</span> idx, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="comment">//調整索引值(含)以前的位置</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> idx; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">//往後挪一個位置</span></span><br><span class="line">            arr[i] = arr[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//target移置首位</span></span><br><span class="line">        arr[<span class="number">0</span>] = target;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>LeetCode筆記</category>
         <category>Array</category>
